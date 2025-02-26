@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <POU Name="FB_PID" Id="{82525b6a-bab3-47a5-9135-c2fab2ed579c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_PID
+VAR_INPUT
+	/// Set Point 
+	Sp: REAL;
+	/// Variable de proceso 
+	Pv: REAL;
+	/// constante proporcional 
+	Kp: REAL := 12;
+	/// Tiempo integrativo 
+	Ti: REAL := 180;
+	/// Tiempo derivativo 
+	Td: REAL := 1;
+	/// delta de tiempo 
+	_dt: REAL := 0.05;
+	/// valor minimo de salida 
+	_minOut: REAL;
+	/// valor máximo de salida 
+	_maxOut: REAL;
+	/// =1 modo Automatico 
+	Auto: BOOL;
+	/// reset 
+	Reset: BOOL;
+	bandaMuerta: REAL;
+	PID_Inverso: BOOL;
+END_VAR
+VAR
+	/// error SP-PV
+	error: REAL;
+	/// diferencial de error para calculo derivativo 
+	pre_error: REAL;
+	/// proporcional 
+	Pout: REAL;
+	/// integral
+	Iout: REAL;
+	/// derivativo 
+	Dout: REAL;
+	Sp_anterior: REAL;
+	Auto_anterior: BOOL;
+	Kp_anterior: REAL;
+	bandaMuerta_Anterior: REAL;
+	bandaMuerta_Sup: REAL;
+	Out_anterior:REAL;
+	TON_Teste: TON;
+	AuxOut: LREAL;
+	TestePID: FB_BasicPID;
+END_VAR
+VAR_IN_OUT
+	/// forzar salida manual 
+	OutMan: REAL;
+END_VAR
+VAR_OUTPUT
+	/// Salida del lazo 
+	Out: REAL;
+	///Se llegó al valor del SP
+	Sp_Alcanzado: BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF (Auto) THEN
+	//=== AUTOMATICO ===
+	IF PID_Inverso THEN
+		error := Pv - Sp;
+	ELSE
+		error := Sp - Pv;
+	END_IF
+	
+	(* Banda Muerta *)
+	IF ( ABS(error) < bandaMuerta ) THEN
+		error := 0;
+		Sp_Alcanzado:=TRUE;
+	ELSE
+		Sp_Alcanzado:=FALSE;
+	END_IF
+	
+	(* Termino PROPORCIONAL *)
+	Pout := Kp * error;
+	
+	(* Termino INTEGRAL *)
+	IF ( Ti > 0) THEN
+		IF ( (Sp_anterior <> Sp) OR (Auto_anterior <> Auto) OR (Kp_anterior <> Kp)) THEN
+			(* 
+			Parto desde el Iout anterior para evitar el salto y en el proximo scan cambia la pendiente 
+			ya sea por el cambio de Sp(nuevo error) o por cambio de parametro Ti.
+			*)
+			Iout := 0;
+		ELSE
+			Iout := Iout +( Kp / Ti ) * error * _dt;
+		END_IF
+	ELSE
+		Iout := 0.0;
+	END_IF
+	 
+	(* termino DERIVATIVO *)	
+	IF ( _dt > 0.0 AND Td > 0.0) THEN
+		IF (Sp = Sp_anterior) THEN
+			Dout := Dout + Kp * (error - pre_error);
+		END_IF
+		Dout := Dout * ( 1 - (_dt / Td ) );
+
+		IF ( ABS(Dout) < (_maxOut / 1000.0)) THEN
+			Dout := 0;
+		END_IF
+	ELSE
+		Dout := 0;
+	END_IF
+	
+	(* Salida Lazo de control *)
+	//Out := Pout + Out_anterior + Iout + Dout;
+	pre_error := error;
+END_IF
+
+//Temporizador de teste
+	TON_Teste(IN:=Auto, PT:=T#1S);
+	
+	IF TON_Teste.Q THEN
+		Out := SEL(Pout + Out_anterior + Iout + Dout > 0, 0, Pout + Out_anterior + Iout + Dout);
+	END_IF
+	
+
+// Modo Manual
+IF NOT(Auto) THEN
+	Out :=  OutMan;
+	Sp_Alcanzado:=FALSE;
+END_IF
+
+IF ( Pout > _maxOut ) THEN
+	Pout := _maxOut;
+ELSIF ( Pout < _minOut ) THEN
+	Pout := _minOut;
+END_IF
+
+(* Restriccion MIN - MAX *)
+IF ( Out > _maxOut ) THEN
+	Iout := _maxOut;
+	Out := _maxOut;
+(*ELSIF ( Out < _minOut ) THEN
+	Iout := _minOut;
+	Out := _minOut;*)
+END_IF	
+
+Out_anterior:=Out;	
+Auto_anterior := Auto;
+Sp_anterior := Sp;
+Kp_anterior := Kp;
+OutMan := Out;]]></ST>
+    </Implementation>
+    <LineIds Name="FB_PID">
+      <LineId Id="3" Count="48" />
+      <LineId Id="249" Count="0" />
+      <LineId Id="56" Count="1" />
+      <LineId Id="255" Count="5" />
+      <LineId Id="254" Count="0" />
+      <LineId Id="317" Count="0" />
+      <LineId Id="58" Count="20" />
+      <LineId Id="135" Count="0" />
+      <LineId Id="79" Count="3" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

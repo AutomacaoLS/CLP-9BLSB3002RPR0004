@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.13">
+  <DUT Name="stReceta_Circuito" Id="{4534081a-bc30-49c9-a800-3be587a7f9b9}">
+    <Declaration><![CDATA[TYPE stReceta_Circuito :
+STRUCT
+	Paso		:INT  := 0;
+	Demora		:REAL := 0;//seg
+	Inyeccion	:REAL := 0;//seg
+	Dosis		:REAL := 0;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

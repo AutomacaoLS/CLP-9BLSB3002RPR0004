@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.13">
+  <DUT Name="stListado_Polvos" Id="{98e41844-b86a-4ac1-a9d2-3e458bfbd3d7}">
+    <Declaration><![CDATA[TYPE stListado_Polvos :
+STRUCT
+		sProducto		:STRING:='';
+		rRelacionHz		:REAL;// gr/s x  Hz
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

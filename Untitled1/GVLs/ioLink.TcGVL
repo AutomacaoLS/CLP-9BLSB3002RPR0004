@@ -1,0 +1,266 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="ioLink" Id="{dca7e220-42a7-4654-b4e2-918a9f9e087d}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+		
+	//Valvulas ioLink PC1
+	//St1  	posicion angular (-1800 To 1799) * 0.1 grados
+	//St2	bit0=open..bit1=close..bit2=seat..bit3=n/a..bit4..7(Byte)= 0=Ok 1=Mant  2=fuera especificacion  3=funcion chequeo  4=falla
+	b0St1_CA1_L1_V1 AT%I*	:BYTE;			//
+	b1St1_CA1_L1_V1 AT%I*	:BYTE;			//
+	b2St1_CA1_L1_V1 AT%I*	:BYTE;			//
+	b3St1_CA1_L1_V1 AT%I*	:BYTE;			//
+	b0Cmd_CA1_L1_V1 AT%Q*	:BYTE;
+	b0St1_CA1_L2_V1 AT%I*	:BYTE;			//
+	b1St1_CA1_L2_V1 AT%I*	:BYTE;			//
+	b2St1_CA1_L2_V1 AT%I*	:BYTE;			//
+	b3St1_CA1_L2_V1 AT%I*	:BYTE;			//
+	b0Cmd_CA1_L2_V1 AT%Q*	:BYTE;
+	b0St1_CA1_L3_V1 AT%I*	:BYTE;			//
+	b1St1_CA1_L3_V1 AT%I*	:BYTE;			//
+	b2St1_CA1_L3_V1 AT%I*	:BYTE;			//
+	b3St1_CA1_L3_V1 AT%I*	:BYTE;			//
+	b0Cmd_CA1_L3_V1 AT%Q*	:BYTE;
+	b0St1_CA1_L4_V1 AT%I*	:BYTE;			//
+	b1St1_CA1_L4_V1 AT%I*	:BYTE;			//
+	b2St1_CA1_L4_V1 AT%I*	:BYTE;			//
+	b3St1_CA1_L4_V1 AT%I*	:BYTE;			//
+	b0Cmd_CA1_L4_V1 AT%Q*	:BYTE;
+	b0St1_CA2_L5_V1 AT%I*	:BYTE;			//
+	b1St1_CA2_L5_V1 AT%I*	:BYTE;			//
+	b2St1_CA2_L5_V1 AT%I*	:BYTE;			//
+	b3St1_CA2_L5_V1 AT%I*	:BYTE;			//
+	b0Cmd_CA2_L5_V1 AT%Q*	:BYTE;
+	b0St1_CA2_L6_V1 AT%I*	:BYTE;			//
+	b1St1_CA2_L6_V1 AT%I*	:BYTE;			//
+	b2St1_CA2_L6_V1 AT%I*	:BYTE;			//
+	b3St1_CA2_L6_V1 AT%I*	:BYTE;			//
+	b0Cmd_CA2_L6_V1 AT%Q*	:BYTE;
+	b0St1_CA2_L7_V1 AT%I*	:BYTE;			//
+	b1St1_CA2_L7_V1 AT%I*	:BYTE;			//
+	b2St1_CA2_L7_V1 AT%I*	:BYTE;			//
+	b3St1_CA2_L7_V1 AT%I*	:BYTE;			//
+	b0Cmd_CA2_L7_V1 AT%Q*	:BYTE;
+	b0St1_CA2_L8_V1 AT%I*	:BYTE;			//
+	b1St1_CA2_L8_V1 AT%I*	:BYTE;			//
+	b2St1_CA2_L8_V1 AT%I*	:BYTE;			//
+	b3St1_CA2_L8_V1 AT%I*	:BYTE;			//
+	b0Cmd_CA2_L8_V1 AT%Q*	:BYTE;
+	b0St1_CA3_L9_V1 AT%I*	:BYTE;			//
+	b1St1_CA3_L9_V1 AT%I*	:BYTE;			//
+	b2St1_CA3_L9_V1 AT%I*	:BYTE;			//
+	b3St1_CA3_L9_V1 AT%I*	:BYTE;			//
+	b0Cmd_CA3_L9_V1 AT%Q*	:BYTE;
+	b0St1_CA3_L10_V1 AT%I*	:BYTE;			//
+	b1St1_CA3_L10_V1 AT%I*	:BYTE;			//
+	b2St1_CA3_L10_V1 AT%I*	:BYTE;			//
+	b3St1_CA3_L10_V1 AT%I*	:BYTE;			//
+	b0Cmd_CA3_L10_V1 AT%Q*	:BYTE;
+	b0St1_CA3_L11_V1 AT%I*	:BYTE;			//
+	b1St1_CA3_L11_V1 AT%I*	:BYTE;			//
+	b2St1_CA3_L11_V1 AT%I*	:BYTE;			//
+	b3St1_CA3_L11_V1 AT%I*	:BYTE;			//
+	b0Cmd_CA3_L11_V1 AT%Q*	:BYTE;
+	b0St1_CA3_L12_V1 AT%I*	:BYTE;			//
+	b1St1_CA3_L12_V1 AT%I*	:BYTE;			//
+	b2St1_CA3_L12_V1 AT%I*	:BYTE;			//
+	b3St1_CA3_L12_V1 AT%I*	:BYTE;			//
+	b0Cmd_CA3_L12_V1 AT%Q*	:BYTE;		
+	
+	b0St1_CA1_L1_V2 AT%I*	:BYTE;			//
+	b1St1_CA1_L1_V2 AT%I*	:BYTE;			//
+	b2St1_CA1_L1_V2 AT%I*	:BYTE;			//
+	b3St1_CA1_L1_V2 AT%I*	:BYTE;			//
+	b0Cmd_CA1_L1_V2 AT%Q*	:BYTE;
+	b0St1_CA1_L1_V3 AT%I*	:BYTE;			//
+	b1St1_CA1_L1_V3 AT%I*	:BYTE;			//
+	b2St1_CA1_L1_V3 AT%I*	:BYTE;			//
+	b3St1_CA1_L1_V3 AT%I*	:BYTE;			//
+	b0Cmd_CA1_L1_V3 AT%Q*	:BYTE;
+	b0St1_CA1_L1_V4 AT%I*	:BYTE;			//
+	b1St1_CA1_L1_V4 AT%I*	:BYTE;			//
+	b2St1_CA1_L1_V4 AT%I*	:BYTE;			//
+	b3St1_CA1_L1_V4 AT%I*	:BYTE;			//
+	b0Cmd_CA1_L1_V4 AT%Q*	:BYTE;
+	b0St1_CA1_L2_V2 AT%I*	:BYTE;			//
+	b1St1_CA1_L2_V2 AT%I*	:BYTE;			//
+	b2St1_CA1_L2_V2 AT%I*	:BYTE;			//
+	b3St1_CA1_L2_V2 AT%I*	:BYTE;			//
+	b0Cmd_CA1_L2_V2 AT%Q*	:BYTE;
+	b0St1_CA1_L2_V3 AT%I*	:BYTE;			//
+	b1St1_CA1_L2_V3 AT%I*	:BYTE;			//
+	b2St1_CA1_L2_V3 AT%I*	:BYTE;			//
+	b3St1_CA1_L2_V3 AT%I*	:BYTE;			//
+	b0Cmd_CA1_L2_V3 AT%Q*	:BYTE;
+	b0St1_CA1_L2_V4 AT%I*	:BYTE;			//
+	b1St1_CA1_L2_V4 AT%I*	:BYTE;			//
+	b2St1_CA1_L2_V4 AT%I*	:BYTE;			//
+	b3St1_CA1_L2_V4 AT%I*	:BYTE;			//
+	b0Cmd_CA1_L2_V4 AT%Q*	:BYTE;
+	b0St1_CA1_L3_V2 AT%I*	:BYTE;			//
+	b1St1_CA1_L3_V2 AT%I*	:BYTE;			//
+	b2St1_CA1_L3_V2 AT%I*	:BYTE;			//
+	b3St1_CA1_L3_V2 AT%I*	:BYTE;			//
+	b0Cmd_CA1_L3_V2 AT%Q*	:BYTE;
+	b0St1_CA1_L3_V3 AT%I*	:BYTE;			//
+	b1St1_CA1_L3_V3 AT%I*	:BYTE;			//
+	b2St1_CA1_L3_V3 AT%I*	:BYTE;			//
+	b3St1_CA1_L3_V3 AT%I*	:BYTE;			//
+	b0Cmd_CA1_L3_V3 AT%Q*	:BYTE;
+	b0St1_CA1_L3_V4 AT%I*	:BYTE;			//
+	b1St1_CA1_L3_V4 AT%I*	:BYTE;			//
+	b2St1_CA1_L3_V4 AT%I*	:BYTE;			//
+	b3St1_CA1_L3_V4 AT%I*	:BYTE;			//
+	b0Cmd_CA1_L3_V4 AT%Q*	:BYTE;
+	b0St1_CA1_L4_V2 AT%I*	:BYTE;			//
+	b1St1_CA1_L4_V2 AT%I*	:BYTE;			//
+	b2St1_CA1_L4_V2 AT%I*	:BYTE;			//
+	b3St1_CA1_L4_V2 AT%I*	:BYTE;			//
+	b0Cmd_CA1_L4_V2 AT%Q*	:BYTE;
+	b0St1_CA1_L4_V3 AT%I*	:BYTE;			//
+	b1St1_CA1_L4_V3 AT%I*	:BYTE;			//
+	b2St1_CA1_L4_V3 AT%I*	:BYTE;			//
+	b3St1_CA1_L4_V3 AT%I*	:BYTE;			//
+	b0Cmd_CA1_L4_V3 AT%Q*	:BYTE;
+	b0St1_CA1_L4_V4 AT%I*	:BYTE;			//
+	b1St1_CA1_L4_V4 AT%I*	:BYTE;			//
+	b2St1_CA1_L4_V4 AT%I*	:BYTE;			//
+	b3St1_CA1_L4_V4 AT%I*	:BYTE;			//
+	b0Cmd_CA1_L4_V4 AT%Q*	:BYTE;
+	b1St1_CA2_L5_V2 AT%I*	:BYTE;			//
+	b2St1_CA2_L5_V2 AT%I*	:BYTE;			//
+	b3St1_CA2_L5_V2 AT%I*	:BYTE;			//
+	b0Cmd_CA2_L5_V2 AT%Q*	:BYTE;
+	b0St1_CA2_L5_V3 AT%I*	:BYTE;			//
+	b1St1_CA2_L5_V3 AT%I*	:BYTE;			//
+	b2St1_CA2_L5_V3 AT%I*	:BYTE;			//
+	b3St1_CA2_L5_V3 AT%I*	:BYTE;			//
+	b0Cmd_CA2_L5_V3 AT%Q*	:BYTE;
+	b0St1_CA2_L5_V4 AT%I*	:BYTE;			//
+	b1St1_CA2_L5_V4 AT%I*	:BYTE;			//
+	b2St1_CA2_L5_V4 AT%I*	:BYTE;			//
+	b3St1_CA2_L5_V4 AT%I*	:BYTE;			//
+	b0Cmd_CA2_L5_V4 AT%Q*	:BYTE;
+	b1St1_CA2_L6_V2 AT%I*	:BYTE;			//
+	b2St1_CA2_L6_V2 AT%I*	:BYTE;			//
+	b3St1_CA2_L6_V2 AT%I*	:BYTE;			//
+	b0Cmd_CA2_L6_V2 AT%Q*	:BYTE;
+	b0St1_CA2_L6_V3 AT%I*	:BYTE;			//
+	b1St1_CA2_L6_V3 AT%I*	:BYTE;			//
+	b2St1_CA2_L6_V3 AT%I*	:BYTE;			//
+	b3St1_CA2_L6_V3 AT%I*	:BYTE;			//
+	b0Cmd_CA2_L6_V3 AT%Q*	:BYTE;
+	b0St1_CA2_L6_V4 AT%I*	:BYTE;			//
+	b1St1_CA2_L6_V4 AT%I*	:BYTE;			//
+	b2St1_CA2_L6_V4 AT%I*	:BYTE;			//
+	b3St1_CA2_L6_V4 AT%I*	:BYTE;			//
+	b0Cmd_CA2_L6_V4 AT%Q*	:BYTE;
+	b1St1_CA2_L7_V2 AT%I*	:BYTE;			//
+	b2St1_CA2_L7_V2 AT%I*	:BYTE;			//
+	b3St1_CA2_L7_V2 AT%I*	:BYTE;			//
+	b0Cmd_CA2_L7_V2 AT%Q*	:BYTE;
+	b0St1_CA2_L7_V3 AT%I*	:BYTE;			//
+	b1St1_CA2_L7_V3 AT%I*	:BYTE;			//
+	b2St1_CA2_L7_V3 AT%I*	:BYTE;			//
+	b3St1_CA2_L7_V3 AT%I*	:BYTE;			//
+	b0Cmd_CA2_L7_V3 AT%Q*	:BYTE;
+	b0St1_CA2_L7_V4 AT%I*	:BYTE;			//
+	b1St1_CA2_L7_V4 AT%I*	:BYTE;			//
+	b2St1_CA2_L7_V4 AT%I*	:BYTE;			//
+	b3St1_CA2_L7_V4 AT%I*	:BYTE;			//
+	b0Cmd_CA2_L7_V4 AT%Q*	:BYTE;
+	b1St1_CA2_L8_V2 AT%I*	:BYTE;			//
+	b2St1_CA2_L8_V2 AT%I*	:BYTE;			//
+	b3St1_CA2_L8_V2 AT%I*	:BYTE;			//
+	b0Cmd_CA2_L8_V2 AT%Q*	:BYTE;
+	b0St1_CA2_L8_V3 AT%I*	:BYTE;			//
+	b1St1_CA2_L8_V3 AT%I*	:BYTE;			//
+	b2St1_CA2_L8_V3 AT%I*	:BYTE;			//
+	b3St1_CA2_L8_V3 AT%I*	:BYTE;			//
+	b0Cmd_CA2_L8_V3 AT%Q*	:BYTE;
+	b0St1_CA2_L8_V4 AT%I*	:BYTE;			//
+	b1St1_CA2_L8_V4 AT%I*	:BYTE;			//
+	b2St1_CA2_L8_V4 AT%I*	:BYTE;			//
+	b3St1_CA2_L8_V4 AT%I*	:BYTE;			//
+	b0Cmd_CA2_L8_V4 AT%Q*	:BYTE;
+	b1St1_CA3_L9_V2 AT%I*	:BYTE;			//
+	b2St1_CA3_L9_V2 AT%I*	:BYTE;			//
+	b3St1_CA3_L9_V2 AT%I*	:BYTE;			//
+	b0Cmd_CA3_L9_V2 AT%Q*	:BYTE;
+	b0St1_CA3_L9_V3 AT%I*	:BYTE;			//
+	b1St1_CA3_L9_V3 AT%I*	:BYTE;			//
+	b2St1_CA3_L9_V3 AT%I*	:BYTE;			//
+	b3St1_CA3_L9_V3 AT%I*	:BYTE;			//
+	b0Cmd_CA3_L9_V3 AT%Q*	:BYTE;
+	b0St1_CA3_L9_V4 AT%I*	:BYTE;			//
+	b1St1_CA3_L9_V4 AT%I*	:BYTE;			//
+	b2St1_CA3_L9_V4 AT%I*	:BYTE;			//
+	b3St1_CA3_L9_V4 AT%I*	:BYTE;			//
+	b0Cmd_CA3_L9_V4 AT%Q*	:BYTE;
+	b1St1_CA3_L10_V2 AT%I*	:BYTE;			//
+	b2St1_CA3_L10_V2 AT%I*	:BYTE;			//
+	b3St1_CA3_L10_V2 AT%I*	:BYTE;			//
+	b0Cmd_CA3_L10_V2 AT%Q*	:BYTE;
+	b0St1_CA3_L10_V3 AT%I*	:BYTE;			//
+	b1St1_CA3_L10_V3 AT%I*	:BYTE;			//
+	b2St1_CA3_L10_V3 AT%I*	:BYTE;			//
+	b3St1_CA3_L10_V3 AT%I*	:BYTE;			//
+	b0Cmd_CA3_L10_V3 AT%Q*	:BYTE;
+	b0St1_CA3_L10_V4 AT%I*	:BYTE;			//
+	b1St1_CA3_L10_V4 AT%I*	:BYTE;			//
+	b2St1_CA3_L10_V4 AT%I*	:BYTE;			//
+	b3St1_CA3_L10_V4 AT%I*	:BYTE;			//
+	b0Cmd_CA3_L10_V4 AT%Q*	:BYTE;
+	b1St1_CA3_L11_V2 AT%I*	:BYTE;			//
+	b2St1_CA3_L11_V2 AT%I*	:BYTE;			//
+	b3St1_CA3_L11_V2 AT%I*	:BYTE;			//
+	b0Cmd_CA3_L11_V2 AT%Q*	:BYTE;
+	b0St1_CA3_L11_V3 AT%I*	:BYTE;			//
+	b1St1_CA3_L11_V3 AT%I*	:BYTE;			//
+	b2St1_CA3_L11_V3 AT%I*	:BYTE;			//
+	b3St1_CA3_L11_V3 AT%I*	:BYTE;			//
+	b0Cmd_CA3_L11_V3 AT%Q*	:BYTE;
+	b0St1_CA3_L11_V4 AT%I*	:BYTE;			//
+	b1St1_CA3_L11_V4 AT%I*	:BYTE;			//
+	b2St1_CA3_L11_V4 AT%I*	:BYTE;			//
+	b3St1_CA3_L11_V4 AT%I*	:BYTE;			//
+	b0Cmd_CA3_L11_V4 AT%Q*	:BYTE;
+	b1St1_CA3_L12_V2 AT%I*	:BYTE;			//
+	b2St1_CA3_L12_V2 AT%I*	:BYTE;			//
+	b3St1_CA3_L12_V2 AT%I*	:BYTE;			//
+	b0Cmd_CA3_L12_V2 AT%Q*	:BYTE;
+	b0St1_CA3_L12_V3 AT%I*	:BYTE;			//
+	b1St1_CA3_L12_V3 AT%I*	:BYTE;			//
+	b2St1_CA3_L12_V3 AT%I*	:BYTE;			//
+	b3St1_CA3_L12_V3 AT%I*	:BYTE;			//
+	b0Cmd_CA3_L12_V3 AT%Q*	:BYTE;
+	b0St1_CA3_L12_V4 AT%I*	:BYTE;			//
+	b1St1_CA3_L12_V4 AT%I*	:BYTE;			//
+	b2St1_CA3_L12_V4 AT%I*	:BYTE;			//
+	b3St1_CA3_L12_V4 AT%I*	:BYTE;			//
+	b0Cmd_CA3_L12_V4 AT%Q*	:BYTE;		
+	//Valvula agua limpia
+	b0St1_PU_Lav_V6  AT%I*	:BYTE;
+	b1St1_PU_Lav_V6  AT%I*	:BYTE;	
+	b2St1_PU_Lav_V6  AT%I*	:BYTE;
+	b3St1_PU_Lav_V6  AT%I*	:BYTE;
+	b0Cmd_PU_Lav_V6  AT%Q*	:BYTE;
+	//Valvula agua residual
+	b0St1_PU_Lav_V5  AT%I*	:BYTE;
+	b1St1_PU_Lav_V5  AT%I*	:BYTE;	
+	b2St1_PU_Lav_V5  AT%I*	:BYTE;
+	b3St1_PU_Lav_V5  AT%I*	:BYTE;
+	b0Cmd_PU_Lav_V5  AT%Q*	:BYTE;	
+	
+	
+	wSt1_PC1_V10:WORD;			//
+	wSt2_PC1_V10:WORD;			
+	wSt1_PC1_V20:WORD;			//
+	wSt2_PC1_V20:WORD;	
+
+
+		
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

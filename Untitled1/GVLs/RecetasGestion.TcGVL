@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.13">
+  <GVL Name="RecetasGestion" Id="{0a3a7191-7561-4e84-b227-6c96e73f52a4}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL PERSISTENT
+	aComboboxRecipes : ARRAY [1..100] OF stComboBoxRecipes;
+	RecetaEditar:RecetaEdicion;
+	EdicionRecetaNro:INT;
+	GrabarRecetaEdicion:BOOL;
+	LeerRecetaEditar:BOOL;
+	BibliotecaRecetas:ARRAY [1..100] OF RecetaEdicion;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

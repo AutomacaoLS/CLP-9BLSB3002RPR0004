@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <POU Name="Calibracao_V03" Id="{9c102509-397a-4bb3-aac4-4d63d182f1e4}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK Calibracao_V03
+VAR_INPUT
+	Flowmeter:REAL;
+END_VAR
+VAR_OUTPUT
+	TurnOnPump:BOOL;
+	Valv1:BOOL;
+	Valv2:BOOL;
+	Valv3:BOOL;
+	Valv4:BOOL;
+	PumpSpeed:REAL;	//Velocidade enviada para a bomba
+END_VAR
+VAR
+	SwitchCase:INT;
+	Start: BOOL;
+	Stop: BOOL;
+	TON_Temporizador1: TON;
+	TON_Temporizador2: TON;
+	BaixaVazao	:ARRAY[1..10] OF REAL;
+	AltaVazao	:ARRAY[1..10] OF REAL;
+	MediaBaixaVazao :REAL;
+	MediaAltaVazao	:REAL;
+	Counter: INT;
+	i: INT;
+	CoefAngular: REAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Esse programa encontrará dois pontos relacionando vazão e velocidade (x e y), assim, será possível definir a função da bomba
+
+IF Start AND NOT Stop  AND Seguridad.PB_Emergencia THEN
+	SwitchCase := 10;
+	Start := FALSE;
+END_IF
+
+IF STOP OR NOT Seguridad.PB_Emergencia THEN
+	SwitchCase := 0;
+	STOP := FALSE;
+END_IF
+
+//Temporizadores
+TON_Temporizador1(PT:=T#5S);
+TON_Temporizador2( IN:=TON_Temporizador1.Q AND NOT TON_Temporizador2.Q, PT:=T#1S);
+
+
+CASE SwitchCase OF
+	0:	//Desliga o sistema
+		TurnOnPump := FALSE;
+		Valv1 := FALSE;
+		Valv2 := FALSE;
+		Valv3 := FALSE;
+		Valv4 := FALSE;
+		
+	10:	//Inicia a bomba com 20%
+		PumpSpeed := 20;
+		TurnOnPump := TRUE;
+		TON_Temporizador1.IN := TRUE;
+		
+		//Após 5s da bomba ligada, a vazão é computada a cada 1s
+		IF TON_Temporizador1.Q THEN
+			Counter := 1;
+			SwitchCase := 20;
+		END_IF
+		
+	20:	//Cômputo da vazão com 10% da velocidade e aguarda a estabilização
+		IF TON_Temporizador2.Q THEN
+			IF Flowmeter > 0 THEN
+				BaixaVazao[Counter] := Flowmeter;
+				Counter := Counter + 1;
+			END_IF
+		END_IF
+		IF Counter > 10 THEN
+			TON_Temporizador1.IN := FALSE;
+			SwitchCase := 30;
+		END_IF
+	
+	30:	//Inicia a bomba com 80% e aguarda a estabilização
+		PumpSpeed := 80;
+		TON_Temporizador1.IN := TRUE;
+		IF TON_Temporizador1.Q THEN
+			Counter := 1;
+			SwitchCase := 40;
+		END_IF
+		
+	40:	//Cômputo da vazão com 80% da velocidade
+		IF TON_Temporizador2.Q THEN
+			IF Flowmeter > 0 THEN
+				AltaVazao[Counter] := Flowmeter;
+				Counter := Counter + 1;
+			END_IF
+		END_IF
+		IF Counter > 10 THEN
+			TON_Temporizador1.IN := FALSE;
+			SwitchCase := 50;
+		END_IF
+		
+	50:	//Cálculo das médias
+		MediaBaixaVazao	:= 0;
+		MediaAltaVazao	:= 0;
+		FOR i := 1 TO 10 BY 1 DO
+			MediaBaixaVazao	:= MediaBaixaVazao + BaixaVazao[i];
+			MediaAltaVazao	:= MediaAltaVazao + AltaVazao[i];
+		END_FOR
+		MediaBaixaVazao	:= MediaBaixaVazao/10;
+		MediaAltaVazao	:= MediaAltaVazao/10;
+		
+		//Cálculo do coeficiente angular
+		CoefAngular := (MediaAltaVazao - MediaBaixaVazao)/(80 - 20);
+		TurnOnPump := FALSE;
+		SwitchCase := 0;
+		
+	60:	//
+		
+END_CASE]]></ST>
+    </Implementation>
+    <LineIds Name="Calibracao_V03">
+      <LineId Id="9" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="53" Count="1" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="36" Count="3" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="40" Count="1" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="116" Count="0" />
+      <LineId Id="50" Count="2" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="57" Count="3" />
+      <LineId Id="64" Count="0" />
+      <LineId Id="145" Count="0" />
+      <LineId Id="65" Count="0" />
+      <LineId Id="69" Count="0" />
+      <LineId Id="146" Count="0" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="70" Count="0" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="71" Count="1" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="73" Count="1" />
+      <LineId Id="77" Count="0" />
+      <LineId Id="79" Count="2" />
+      <LineId Id="78" Count="0" />
+      <LineId Id="82" Count="1" />
+      <LineId Id="85" Count="0" />
+      <LineId Id="143" Count="0" />
+      <LineId Id="86" Count="1" />
+      <LineId Id="144" Count="0" />
+      <LineId Id="88" Count="3" />
+      <LineId Id="84" Count="0" />
+      <LineId Id="92" Count="1" />
+      <LineId Id="100" Count="1" />
+      <LineId Id="94" Count="0" />
+      <LineId Id="102" Count="1" />
+      <LineId Id="98" Count="0" />
+      <LineId Id="104" Count="1" />
+      <LineId Id="109" Count="2" />
+      <LineId Id="115" Count="0" />
+      <LineId Id="106" Count="2" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="29" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

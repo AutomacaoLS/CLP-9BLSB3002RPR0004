@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="u_SM6020_caudal" Id="{66af79c1-0813-4e58-8ffb-e7907026bf8c}">
+    <Declaration><![CDATA[TYPE u_SM6020_caudal :
+UNION
+	caudal: ARRAY[0..1] OF BYTE;
+	icaudal			:INT;
+END_UNION
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

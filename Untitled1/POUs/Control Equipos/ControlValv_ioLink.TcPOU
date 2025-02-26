@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <POU Name="ControlValv_ioLink" Id="{2557b125-896a-4d9a-b8fa-f53da0f1731a}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK ControlValv_ioLink
+VAR_INPUT
+	Comando:BOOL;
+	Status_1:BYTE;
+	Teste:BOOL:=FALSE;
+	Inverter:BOOL;
+	PosicaoIN:INT;		//Posição da válvula. Valor vindo do IOLink
+END_VAR
+VAR_OUTPUT
+	Estado:INT;
+	Falla:BOOL;
+	END_VAR
+VAR_IN_OUT
+	Actuar:BYTE;
+END_VAR
+VAR
+	TemposAcionamento	:ARRAY[1..10] OF DINT;	//Array com os últimos tempos de acionamento
+	SwitchCase: INT;
+	RTrig: R_TRIG;
+	TON_Acionamento: TON;
+	iCounter: INT;
+	TON_Teste: TON;
+	ResetContagem: BOOL;
+	PosicaoOUT	:REAL;	//Posição da válvula convertida em %
+	IniciarCfg	:BOOL;	//Se a válvula estiver aberta e esse comando for dado, salva o valor de posição como 100%. O mesmo para ela fechada
+END_VAR
+
+VAR PERSISTENT
+	qntAcionamentos:DINT;	//Quantidade de acionamentos da válvula
+	cfgPosicao	:DUT_cfgPosicValvula;		//Configuração de conversão do posicionamento das válvulas
+	UltimasPosicoes	:ARRAY[1..2] OF REAL;	//Esse array salva as últimas posições de abertura e fechamento [1] - Abertura, [2] - Fechamento
+	
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Acionamento da válvula
+Actuar.04 := (Comando AND NOT Inverter) OR (NOT Comando AND Inverter) OR (Teste AND AquecimentoValvulas.Acionar);
+
+TON_Teste(IN:= Actuar.04, PT:= T#465MS);
+
+//Se não estiver em teste, verifica se está aberta, fechada ou em falha
+IF NOT Teste THEN
+	IF Status_1.0 = 1 THEN	//Válvula aberta
+		Estado := 2;
+		UltimasPosicoes[1] := PosicaoOUT;	//Salva a posição da válvula no array
+	END_IF
+	IF Status_1.1 = 1 THEN	//Válvula fechada
+		Estado := 1;
+		UltimasPosicoes[2] := PosicaoOUT;	//Salva a posição da válvula no array
+	END_IF
+	IF Status_1.4 = 1 THEN	//Em falha
+		Falla := 1;
+		Estado := 6;
+	END_IF
+ELSE
+	IF TON_Teste.Q THEN
+		Estado := 1;
+	ELSE
+		Estado := 2;
+	END_IF
+END_IF
+
+//A lógica abaixo foi feita para calcular o tempo de acionamento da válvula
+//Detecta a borda de subida do comando de acionamento
+RTrig(CLK:= Actuar.04, Q=> );
+
+
+//Temporizador do acionamento
+TON_Acionamento(IN:= , PT:= T#1M, Q=> , ET=> );
+
+//Se a borda for detectada, inicia a máquina de estados
+IF RTRIG.Q THEN
+	SwitchCase := 1;
+	TON_Acionamento.IN := TRUE;
+	//Incrementa os acionamentos
+	qntAcionamentos := qntAcionamentos + 1;
+END_IF
+
+//Reset da contagem de acionamentos
+IF ResetContagem THEN
+	qntAcionamentos := 0;
+	ResetContagem := FALSE;
+END_IF
+
+//Temporizador do acionamento
+TON_Acionamento(IN:= , PT:= , Q=> , ET=> );
+
+//Cancela o cálculo se a válvula entrar em falha
+IF Falla THEN
+	SwitchCase := 0;
+END_IF
+
+CASE SwitchCase OF
+	1:	IF Estado = 2 THEN
+			TemposAcionamento[10] := TIME_TO_DINT(TON_Acionamento.ET);
+			SwitchCase := 2;
+		END_IF
+		
+	2:	FOR iCounter := 1 TO 9 BY 1 DO 
+			TemposAcionamento[iCounter] := TemposAcionamento[iCounter + 1];
+		END_FOR
+		TON_Acionamento.IN := FALSE;
+		SwitchCase := 0;
+END_CASE
+
+//Se a válvula estiver aberta e esse comando for dado, salva o valor de posição como 100%. O mesmo para ela fechada
+IF IniciarCfg THEN
+	IF Estado = 2 THEN
+		cfgPosicao.Aberta := PosicaoIN;
+	ELSIF Estado = 1 THEN
+		cfgPosicao.Fechada := PosicaoIN;
+	END_IF;
+	IniciarCfg := FALSE;
+END_IF
+
+PosicaoOUT := SEL((cfgPosicao.Aberta - cfgPosicao.Fechada) <> 0,0,(100/(TO_REAL(cfgPosicao.Aberta - cfgPosicao.Fechada))) * (PosicaoIN - cfgPosicao.Fechada));
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="ControlValv_ioLink">
+      <LineId Id="96" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="134" Count="0" />
+      <LineId Id="98" Count="0" />
+      <LineId Id="135" Count="0" />
+      <LineId Id="97" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="19" Count="1" />
+      <LineId Id="233" Count="0" />
+      <LineId Id="21" Count="2" />
+      <LineId Id="234" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="29" Count="1" />
+      <LineId Id="75" Count="1" />
+      <LineId Id="52" Count="1" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="58" Count="1" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="121" Count="0" />
+      <LineId Id="111" Count="0" />
+      <LineId Id="105" Count="0" />
+      <LineId Id="101" Count="0" />
+      <LineId Id="138" Count="0" />
+      <LineId Id="119" Count="1" />
+      <LineId Id="118" Count="0" />
+      <LineId Id="113" Count="0" />
+      <LineId Id="112" Count="0" />
+      <LineId Id="108" Count="1" />
+      <LineId Id="122" Count="0" />
+      <LineId Id="141" Count="1" />
+      <LineId Id="110" Count="0" />
+      <LineId Id="144" Count="0" />
+      <LineId Id="143" Count="0" />
+      <LineId Id="145" Count="1" />
+      <LineId Id="149" Count="0" />
+      <LineId Id="147" Count="0" />
+      <LineId Id="117" Count="0" />
+      <LineId Id="115" Count="0" />
+      <LineId Id="114" Count="0" />
+      <LineId Id="154" Count="0" />
+      <LineId Id="151" Count="0" />
+      <LineId Id="150" Count="0" />
+      <LineId Id="152" Count="1" />
+      <LineId Id="107" Count="0" />
+      <LineId Id="100" Count="0" />
+      <LineId Id="102" Count="0" />
+      <LineId Id="123" Count="0" />
+      <LineId Id="125" Count="0" />
+      <LineId Id="124" Count="0" />
+      <LineId Id="126" Count="3" />
+      <LineId Id="132" Count="0" />
+      <LineId Id="131" Count="0" />
+      <LineId Id="103" Count="0" />
+      <LineId Id="194" Count="0" />
+      <LineId Id="187" Count="0" />
+      <LineId Id="186" Count="0" />
+      <LineId Id="190" Count="0" />
+      <LineId Id="188" Count="0" />
+      <LineId Id="191" Count="2" />
+      <LineId Id="195" Count="0" />
+      <LineId Id="189" Count="0" />
+      <LineId Id="200" Count="0" />
+      <LineId Id="199" Count="0" />
+      <LineId Id="197" Count="0" />
+      <LineId Id="196" Count="0" />
+      <LineId Id="80" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

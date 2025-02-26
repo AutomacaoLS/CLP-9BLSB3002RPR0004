@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.13">
+  <POU Name="LiqNaReceita" Id="{a8c5e6a8-585e-4fb6-b20f-abe3bafe6f03}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM LiqNaReceita
+VAR
+	iCounter: INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Esse bloco verifica quais liquidos que estão sendo usados na receita, para que não seja possível iniciar a limpeza neles
+FOR iCounter := 1 TO 12 DO
+		Liquidos.LiqNaReceita[iCounter] := Receta_Activa.SetCircuitosLiq[iCounter].Paso <> 0;
+END_FOR]]></ST>
+    </Implementation>
+    <LineIds Name="LiqNaReceita">
+      <LineId Id="6" Count="2" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

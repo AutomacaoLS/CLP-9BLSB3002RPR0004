@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.13">
+  <POU Name="AbreValvulasLavagem" Id="{420fc450-6bd3-4216-9b52-9d9b9dfaba1f}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM AbreValvulasLavagem
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[HMI.AbreValvLimpa :=	   Circuito_L1.Lavagem_Circuito01.AguaLimpa 
+						OR Circuito_L2.Lavagem_Circuito02.AguaLimpa
+						OR Circuito_L3.Lavagem_Circuito03.AguaLimpa
+						OR Circuito_L4.Lavagem_Circuito04.AguaLimpa //Colocar aqui todos os contatos que abre a válvula pertinente
+						OR Circuito_L5.Lavagem_Circuito05.AguaLimpa
+						OR Circuito_L6.Lavagem_Circuito06.AguaLimpa
+						OR Circuito_L7.Lavagem_Circuito07.AguaLimpa
+						OR Circuito_L8.Lavagem_Circuito08.AguaLimpa
+						OR Circuito_L9.Lavagem_Circuito9.AguaLimpa
+						OR Circuito_L10.Lavagem_Circuito10.AguaLimpa
+						OR Circuito_L11.Lavagem_Circuito11.AguaLimpa
+						OR Circuito_L12.Lavagem_Circuito12.AguaLimpa;
+						
+HMI.AbreValvResid :=       Circuito_L1.Lavagem_Circuito01.AguaResid
+						OR Circuito_L2.Lavagem_Circuito02.AguaResid
+						OR Circuito_L3.Lavagem_Circuito03.AguaResid
+						OR Circuito_L4.Lavagem_Circuito04.AguaResid
+						OR Circuito_L5.Lavagem_Circuito05.AguaResid
+						OR Circuito_L6.Lavagem_Circuito06.AguaResid
+						OR Circuito_L7.Lavagem_Circuito07.AguaResid
+						OR Circuito_L8.Lavagem_Circuito08.AguaResid
+						OR Circuito_L9.Lavagem_Circuito9.AguaResid
+						OR Circuito_L10.Lavagem_Circuito10.AguaResid
+						OR Circuito_L11.Lavagem_Circuito11.AguaResid
+						OR Circuito_L12.Lavagem_Circuito12.AguaResid;]]></ST>
+    </Implementation>
+    <LineIds Name="AbreValvulasLavagem">
+      <LineId Id="5" Count="0" />
+      <LineId Id="10" Count="2" />
+      <LineId Id="20" Count="7" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="14" Count="1" />
+      <LineId Id="28" Count="7" />
+      <LineId Id="16" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

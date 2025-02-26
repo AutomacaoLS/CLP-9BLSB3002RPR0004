@@ -1,0 +1,421 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <GVL Name="Entradas" Id="{80a5fd7d-3486-44f5-83cf-0c53d9576fbf}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	//
+	Pulsador_emerg 	AT %I* :BOOL;
+	ReposicionEmerg AT %I* :BOOL;
+	TR_S_PDI		AT %I* :BOOL;//presion aire ok
+	
+	//Agitadores
+	bPP1_L1_AG_Z	AT%I* :BOOL;
+	bPP1_L2_AG_Z	AT%I* :BOOL;
+	bPP1_L3_AG_Z	AT%I* :BOOL;
+	bPP1_L4_AG_Z	AT%I* :BOOL;
+	bPP2_L5_AG_Z	AT%I* :BOOL;
+	bPP2_L6_AG_Z	AT%I* :BOOL;
+	bPP2_L7_AG_Z	AT%I* :BOOL;
+	bPP2_L8_AG_Z	AT%I* :BOOL;
+	bPP3_L9_AG_Z	AT%I* :BOOL;
+	bPP3_L10_AG_Z	AT%I* :BOOL;
+	bPP3_L11_AG_Z	AT%I* :BOOL;
+	bPP3_L12_AG_Z	AT%I* :BOOL;
+	//Soplador tratadora
+	bTR_S_VE1_Z AT%I* :BOOL;
+	
+	//Lavado
+	bHLS_TkAguaResidual:BOOL;
+	
+	//TR_S_WT1 semilla
+	TR_S_WT1_wStatus AT %I*:WORD;
+	TR_S_WT1_rValue_REAL AT %I*:REAL;
+	TR_S_WT1_nValue_DINT AT %I* :DINT;
+	TR_S_WT1_nValue_Supply AT %I*:DINT;		(*only for voltage measurement, change PDO settings"*)
+	TR_S_WT1_nValue_Bridge AT %I*:DINT;		(*only for voltage measurement, change PDO settings"*)
+	TR_S_WT1_stEcSlaveAmsNetAdr AT %I* :ST_AmsAddr;
+	TR_S_WT1_bWcState AT %I*:BOOL;
+	TR_S_WT1_wState AT %I*:WORD;
+	
+	//Tratadora
+	TR_S_V1_ZC AT%I* :BOOL;
+	TR_S_V1_ZO AT%I* :BOOL;
+	TR_S_V2_ZC AT%I* :BOOL;//corte grueso cerrado
+	TR_S_V2_ZO AT%I* :BOOL;//corte grueso abierto
+	TR_S_V3_ZC AT%I* :BOOL;//corte fino cerrado
+	TR_S_V3_ZO AT%I* :BOOL;
+	TR_S_V4_ZC AT%I* :BOOL;//descarga balanza cerrada
+	TR_S_V4_ZO AT%I* :BOOL;//descarga balanza abierta
+	TR_S_LLS AT%I* :BOOL;//nivel minimo tolva descarga semilla
+	TR_S_HLS AT%I* :BOOL;//nivel maximo tolva descarga semilla
+	
+	TR_L1_4_Z AT%I* :BOOL;//inyector L1 a L4 en posicion
+	TR_L5_8_Z AT%I* :BOOL;//inyector L5 a L8 en posicion
+	TR_L9_12_Z AT%I* :BOOL;//inyector L9 a L12 en posicion
+	
+	wTR_S_VF1_St AT%I* :WORD;//homoogenizador
+	wTR_S_VF1_PV AT%I* :WORD;//homoogenizador
+	wTR_S_VF2_St AT%I* :WORD;//aspersor
+	wTR_S_VF2_PV AT%I* :WORD;//aspersor
+	
+	//Bomba Circuito 1
+	wPP1_L1_BD_St AT%I* :WORD;
+	wPP1_L1_BD_PV AT%I* :WORD;
+	bPP1_L1_BD_MangRota AT%I* :BOOL;
+	//Bomba Circuito 2
+	wPP1_L2_BD_St AT%I* :WORD;
+	wPP1_L2_BD_PV AT%I* :WORD;
+	bPP1_L2_BD_MangRota AT%I* :BOOL;
+	//Bomba Circuito 3
+	wPP1_L3_BD_St AT%I* :WORD;
+	wPP1_L3_BD_PV AT%I* :WORD;
+	bPP1_L3_BD_MangRota AT%I* :BOOL;
+	//Bomba Circuito 4
+	wPP1_L4_BD_St AT%I* :WORD;
+	wPP1_L4_BD_PV AT%I* :WORD;
+	bPP1_L4_BD_MangRota AT%I* :BOOL;
+	//Bomba Circuito 5
+	wPP2_L5_BD_St AT%I* :WORD;
+	wPP2_L5_BD_PV AT%I* :WORD;
+	bPP2_L5_BD_MangRota AT%I* :BOOL;
+	//Bomba Circuito 6
+	wPP2_L6_BD_St AT%I* :WORD;
+	wPP2_L6_BD_PV AT%I* :WORD;
+	bPP2_L6_BD_MangRota AT%I* :BOOL;
+	//Bomba Circuito 7
+	wPP2_L7_BD_St AT%I* :WORD;
+	wPP2_L7_BD_PV AT%I* :WORD;
+	bPP2_L7_BD_MangRota AT%I* :BOOL;
+	//Bomba Circuito 8
+	wPP2_L8_BD_St AT%I* :WORD;
+	wPP2_L8_BD_PV AT%I* :WORD;
+	bPP2_L8_BD_MangRota AT%I* :BOOL;
+	//Bomba Circuito 9
+	wPP3_L9_BD_St AT%I* :WORD;
+	wPP3_L9_BD_PV AT%I* :WORD;
+	bPP3_L9_BD_MangRota AT%I* :BOOL;
+	//Bomba Circuito 10
+	wPP3_L10_BD_St AT%I* :WORD;
+	wPP3_L10_BD_PV AT%I* :WORD;
+	bPP3_L10_BD_MangRota AT%I* :BOOL;
+	//Bomba Circuito 11
+	wPP3_L11_BD_St AT%I* :WORD;
+	wPP3_L11_BD_PV AT%I* :WORD;
+	bPP3_L11_BD_MangRota AT%I* :BOOL;
+	//Bomba Circuito 12
+	wPP3_L12_BD_St AT%I* :WORD;
+	wPP3_L12_BD_PV AT%I* :WORD;
+	bPP3_L12_BD_MangRota AT%I* :BOOL;
+	
+	//Caudalimetro Calibracion
+	CA1_L1_FT1_tot AT%I* :u_SM6020;
+	CA1_L1_FT1_temp AT%I* :u_SM6020_temp;
+	CA1_L1_FT1_caudal AT%I* :u_SM6020_caudal;
+	CA1_L2_FT1_tot AT%I* :u_SM6020;
+	CA1_L2_FT1_temp AT%I* :u_SM6020_temp;
+	CA1_L2_FT1_caudal AT%I* :u_SM6020_caudal;
+	CA1_L3_FT1_Tot AT%I* :u_SM6020;
+	CA1_L3_FT1_temp AT%I* :u_SM6020_temp;
+	CA1_L3_FT1_caudal AT%I* :u_SM6020_caudal;
+	CA1_L4_FT1_tot AT%I* :u_SM6020;
+	CA1_L4_FT1_temp AT%I* :u_SM6020_temp;
+	CA1_L4_FT1_caudal AT%I* :u_SM6020_caudal;
+	CA2_L5_FT1_tot AT%I* :u_SM6020;
+	CA2_L5_FT1_temp AT%I* :u_SM6020_temp;
+	CA2_L5_FT1_caudal AT%I* :u_SM6020_caudal;
+	CA2_L6_FT1_tot AT%I* :u_SM6020;
+	CA2_L6_FT1_temp AT%I* :u_SM6020_temp;
+	CA2_L6_FT1_caudal AT%I* :u_SM6020_caudal;
+	CA2_L7_FT1_tot AT%I* :u_SM6020;
+	CA2_L7_FT1_temp AT%I* :u_SM6020_temp;
+	CA2_L7_FT1_caudal AT%I* :u_SM6020_caudal;
+	CA2_L8_FT1_tot AT%I* :u_SM6020;
+	CA2_L8_FT1_temp AT%I* :u_SM6020_temp;
+	CA2_L8_FT1_caudal AT%I* :u_SM6020_caudal;
+	CA3_L9_FT1_tot AT%I* :u_SM6020;
+	CA3_L9_FT1_temp AT%I* :u_SM6020_temp;
+	CA3_L9_FT1_caudal AT%I* :u_SM6020_caudal;
+	CA3_L10_FT1_tot AT%I* :u_SM6020;
+	CA3_L10_FT1_temp AT%I* :u_SM6020_temp;
+	CA3_L10_FT1_caudal AT%I* :u_SM6020_caudal;
+	CA3_L11_FT1_tot AT%I* :u_SM6020;
+	CA3_L11_FT1_temp AT%I* :u_SM6020_temp;
+	CA3_L11_FT1_caudal AT%I* :u_SM6020_caudal;
+	CA3_L12_FT1_tot AT%I* :u_SM6020;
+	CA3_L12_FT1_temp AT%I* :u_SM6020_temp;
+	CA3_L12_FT1_caudal AT%I* :u_SM6020_caudal;
+	
+	//Caudalimetro Tratadora
+	TR_L1_FT2_tot AT%I* :u_SM6020;
+	TR_L1_FT2_temp AT%I* :u_SM6020_temp;
+	TR_L1_FT2_caudal AT%I* :u_SM6020_caudal;
+	TR_L2_FT2_tot AT%I* :u_SM6020;
+	TR_L2_FT2_temp AT%I* :u_SM6020_temp;
+	TR_L2_FT2_caudal AT%I* :u_SM6020_caudal;
+	TR_L3_FT2_tot AT%I* :u_SM6020;
+	TR_L3_FT2_temp AT%I* :u_SM6020_temp;
+	TR_L3_FT2_caudal AT%I* :u_SM6020_caudal;
+	TR_L4_FT2_tot AT%I* :u_SM6020;
+	TR_L4_FT2_temp AT%I* :u_SM6020_temp;
+	TR_L4_FT2_caudal AT%I* :u_SM6020_caudal;
+	TR_L5_FT2_tot AT%I* :u_SM6020;
+	TR_L5_FT2_temp AT%I* :u_SM6020_temp;
+	TR_L5_FT2_caudal AT%I* :u_SM6020_caudal;
+	TR_L6_FT2_tot AT%I* :u_SM6020;
+	TR_L6_FT2_temp AT%I* :u_SM6020_temp;
+	TR_L6_FT2_caudal AT%I* :u_SM6020_caudal;
+	TR_L7_FT2_tot AT%I* :u_SM6020;
+	TR_L7_FT2_temp AT%I* :u_SM6020_temp;
+	TR_L7_FT2_caudal AT%I* :u_SM6020_caudal;
+	TR_L8_FT2_tot AT%I* :u_SM6020;
+	TR_L8_FT2_temp AT%I* :u_SM6020_temp;
+	TR_L8_FT2_caudal AT%I* :u_SM6020_caudal;
+	TR_L9_FT2_tot AT%I* :u_SM6020;
+	TR_L9_FT2_temp AT%I* :u_SM6020_temp;
+	TR_L9_FT2_caudal AT%I* :u_SM6020_caudal;
+	TR_L10_FT2_tot AT%I* :u_SM6020;
+	TR_L10_FT2_temp AT%I* :u_SM6020_temp;
+	TR_L10_FT2_caudal AT%I* :u_SM6020_caudal;
+	TR_L11_FT2_tot AT%I* :u_SM6020;
+	TR_L11_FT2_temp AT%I* :u_SM6020_temp;
+	TR_L11_FT2_caudal AT%I* :u_SM6020_caudal;
+	TR_L12_FT2_tot AT%I* :u_SM6020;
+	TR_L12_FT2_temp AT%I* :u_SM6020_temp;
+	TR_L12_FT2_caudal AT%I* :u_SM6020_caudal;	
+	
+	//Balanza probeta CA1
+	CA1_WT1_wStatus AT%I* :WORD;
+	CA1_WT1_rValue_REAL AT %I*:REAL;
+	CA1_WT1_nValue_DINT AT %I* :DINT;
+	CA1_WT1_stEcSlaveAmsNetAdr AT%I* :ST_AmsAddr;
+	CA1_WT1_bWcState  AT%I* :BOOL;
+	CA1_WT1_wState  AT%I*:WORD;
+	//Balanza probeta CA2
+	CA2_WT1_wStatus AT%I* :WORD;
+	CA2_WT1_rValue_REAL AT %I*:REAL;
+	CA2_WT1_nValue_DINT  :DINT;
+	CA2_WT1_stEcSlaveAmsNetAdr AT%I* :ST_AmsAddr;
+	CA2_WT1_bWcState  AT%I* :BOOL;
+	CA2_WT1_wState  AT%I*:WORD;
+	//Balanza probeta CA3
+	CA3_WT1_wStatus AT%I* :WORD;
+	CA3_WT1_rValue_REAL AT %I*:REAL;
+	CA3_WT1_nValue_DINT  :DINT;
+	CA3_WT1_stEcSlaveAmsNetAdr AT%I* :ST_AmsAddr;
+	CA3_WT1_bWcState  AT%I* :BOOL;
+	CA3_WT1_wState  AT%I*:WORD;
+	//Balanza IBC 1
+	PU1_WT1_wStatus AT%I* :WORD;
+	PU1_WT1_rValue_REAL AT %I*:REAL;
+	PU1_WT1_nValue_DINT  :DINT;
+	PU1_WT1_stEcSlaveAmsNetAdr AT%I* :ST_AmsAddr;
+	PU1_WT1_bWcState  AT%I* :BOOL;
+	PU1_WT1_wState  AT%I*:WORD;
+	//Balanza IBC 2
+	PU1_WT2_wStatus AT%I* :WORD;
+	PU1_WT2_rValue_REAL AT %I*:REAL;
+	PU1_WT2_nValue_DINT  :DINT;
+	PU1_WT2_stEcSlaveAmsNetAdr AT%I* :ST_AmsAddr;
+	PU1_WT2_bWcState  AT%I* :BOOL;
+	PU1_WT2_wState  AT%I*:WORD;
+	//Balanza IBC 3
+	PU1_WT3_wStatus AT%I* :WORD;
+	PU1_WT3_rValue_REAL AT %I*:REAL;
+	PU1_WT3_nValue_DINT  :DINT;
+	PU1_WT3_stEcSlaveAmsNetAdr AT%I* :ST_AmsAddr;
+	PU1_WT3_bWcState  AT%I* :BOOL;
+	PU1_WT3_wState  AT%I*:WORD;
+	//Balanza IBC 4
+	PU1_WT4_wStatus AT%I* :WORD;
+	PU1_WT4_rValue_REAL AT %I*:REAL;
+	PU1_WT4_nValue_DINT  :DINT;
+	PU1_WT4_stEcSlaveAmsNetAdr AT%I* :ST_AmsAddr;
+	PU1_WT4_bWcState  AT%I* :BOOL;
+	PU1_WT4_wState  AT%I*:WORD;
+	//Balanza IBC 5
+	PU2_WT5_wStatus AT%I* :WORD;
+	PU2_WT5_rValue_REAL AT %I*:REAL;
+	PU2_WT5_nValue_DINT  :DINT;
+	PU2_WT5_stEcSlaveAmsNetAdr AT%I* :ST_AmsAddr;
+	PU2_WT5_bWcState  AT%I* :BOOL;
+	PU2_WT5_wState  AT%I*:WORD;
+	//Balanza IBC 6
+	PU2_WT6_wStatus AT%I* :WORD;
+	PU2_WT6_rValue_REAL AT %I*:REAL;
+	PU2_WT6_nValue_DINT  :DINT;
+	PU2_WT6_stEcSlaveAmsNetAdr AT%I* :ST_AmsAddr;
+	PU2_WT6_bWcState  AT%I* :BOOL;
+	PU2_WT6_wState  AT%I*:WORD;
+	//Balanza IBC 7
+	PU2_WT7_wStatus AT%I* :WORD;
+	PU2_WT7_rValue_REAL AT %I*:REAL;
+	PU2_WT7_nValue_DINT  :DINT;
+	PU2_WT7_stEcSlaveAmsNetAdr AT%I* :ST_AmsAddr;
+	PU2_WT7_bWcState  AT%I* :BOOL;
+	PU2_WT7_wState  AT%I*:WORD;
+	//Balanza IBC 8
+	PU2_WT8_wStatus AT%I* :WORD;
+	PU2_WT8_rValue_REAL AT %I*:REAL;
+	PU2_WT8_nValue_DINT  :DINT;
+	PU2_WT8_stEcSlaveAmsNetAdr AT%I* :ST_AmsAddr;
+	PU2_WT8_bWcState  AT%I* :BOOL;
+	PU2_WT8_wState  AT%I*:WORD;
+	//Balanza IBC 9
+	PU3_WT9_wStatus AT%I* :WORD;
+	PU3_WT9_rValue_REAL AT %I*:REAL;
+	PU3_WT9_nValue_DINT  :DINT;
+	PU3_WT9_stEcSlaveAmsNetAdr AT%I* :ST_AmsAddr;
+	PU3_WT9_bWcState  AT%I* :BOOL;
+	PU3_WT9_wState  AT%I*:WORD;
+	//Balanza IBC 10
+	PU3_WT10_wStatus AT%I* :WORD;
+	PU3_WT10_rValue_REAL AT %I*:REAL;
+	PU3_WT10_nValue_DINT  :DINT;
+	PU3_WT10_stEcSlaveAmsNetAdr AT%I* :ST_AmsAddr;
+	PU3_WT10_bWcState  AT%I* :BOOL;
+	PU3_WT10_wState  AT%I*:WORD;
+	//Balanza IBC 11
+	PU3_WT11_wStatus AT%I* :WORD;
+	PU3_WT11_rValue_REAL AT %I*:REAL;
+	PU3_WT11_nValue_DINT  :DINT;
+	PU3_WT11_stEcSlaveAmsNetAdr AT%I* :ST_AmsAddr;
+	PU3_WT11_bWcState  AT%I* :BOOL;
+	PU3_WT11_wState  AT%I*:WORD;
+	//Balanza IBC 12
+	PU3_WT12_wStatus AT%I* :WORD;
+	PU3_WT12_rValue_REAL AT %I*:REAL;
+	PU3_WT12_nValue_DINT  :DINT;
+	PU3_WT12_stEcSlaveAmsNetAdr AT%I* :ST_AmsAddr;
+	PU3_WT12_bWcState  AT%I* :BOOL;
+	PU3_WT12_wState  AT%I*:WORD;
+	//Balanza Polvo 1
+	TR_P1_WT1_wStatus AT%I* :WORD;
+	TR_P1_WT1_rValue_REAL AT %I*:REAL;
+	TR_P1_WT1_nValue_DINT  :DINT;
+	TR_P1_WT1_stEcSlaveAmsNetAdr AT%I* :ST_AmsAddr;
+	TR_P1_WT1_bWcState  AT%I* :BOOL;
+	TR_P1_WT1_wState  AT%I*:WORD;
+	//Balanza Polvo 2
+	TR_P2_WT1_wStatus AT%I* :WORD;
+	TR_P2_WT1_rValue_REAL AT %I*:REAL;
+	TR_P2_WT1_nValue_DINT  :DINT;
+	TR_P2_WT1_stEcSlaveAmsNetAdr AT%I* :ST_AmsAddr;
+	TR_P2_WT1_bWcState  AT%I* :BOOL;
+	TR_P2_WT1_wState  AT%I*:WORD;
+	//Dosificador Polvo 1
+	TR_P1_VF_St AT%I* :WORD;
+	TR_P1_VF_PV AT%I* :WORD;
+	//Dosificador Polvo 2
+	TR_P2_VF_St AT%I* :WORD;
+	TR_P2_VF_PV AT%I* :WORD;
+	//Vibrador  Polvo 1
+	TR_P1_VI_St AT%I* :WORD;
+	TR_P1_VI_PV AT%I* :WORD;
+	// Vibrador  Polvo 2
+	TR_P2_VI_St AT%I* :WORD;
+	TR_P2_VI_PV AT%I* :WORD;
+	
+	TR_P1_ZS	AT %I* :BOOL;	//sensor velocidad dosif Polvo 1
+	TR_P1_ZC	AT %I* :BOOL;	//posicion dosificar Polvo 1
+	TR_P1_ZO	AT %I* :BOOL;	//posicion calibrar Polvo 1
+	TR_P1_LLS	AT %I* :BOOL;	// nivel minimo Polvo 1
+	TR_P2_ZS	AT %I* :BOOL;	//sensor velocidad dosif Polvo 2	
+	TR_P2_ZC	AT %I* :BOOL;	//posicion dosificar Polvo 2
+	TR_P2_ZO	AT %I* :BOOL;	//posicion calibrar Polvo 2
+	TR_P2_LLS	AT %I* :BOOL;	// nivel minimo Polvo 2	
+	
+	//Perifericos Elevador 1
+	wPE_B_VF1_St AT%I* :WORD;
+	wPE_B_VF1_PV AT%I* :WORD;
+	
+	//Perifericos Elevador 2
+	wPE_H_VF1_St AT%I* :WORD;
+	wPE_H_VF1_PV AT%I* :WORD;
+	
+	//Perifericos Elevador 3
+	wPE_H_VF2_St AT%I* :WORD;
+	wPE_H_VF2_PV AT%I* :WORD;
+	
+	PE_B1_V1_ZO			AT%I* :BOOL;	//descarga intermedia 1 no descarga
+	PE_B2_V1_ZO			AT%I* :BOOL;	//descarga intermedia 2 no descarga
+	PE_B3_V1_ZO			AT%I* :BOOL;	//descarga intermedia 3 no descarga	
+	PE_B1_LLS			AT%I* :BOOL;	//nivel minimo tolva embolse CE1	
+	PE_B2_LLS			AT%I* :BOOL;	//nivel minimo tolva embolse CE2
+	PE_B3_LLS			AT%I* :BOOL;	//nivel minimo tolva embolse CE3
+	PE_B1_HLS			AT%I* :BOOL;	//nivel maximo tolva embolse CE1	
+	PE_B2_HLS			AT%I* :BOOL;	//nivel maximo tolva embolse CE2
+	PE_B3_HLS			AT%I* :BOOL;	//nivel maximo tolva embolse CE3
+	PE_H_HLS			AT%I* :BOOL;	//nivel maximo tolva 30t
+	TR_CDT_LLS			AT%I* :BOOL;	//nivel trabajo descarga tratadora	
+	
+{Region "Angulo de rotação das válvulas"}
+	//Linha 1
+	CA1_L1_V1_POSIC AT %I*	:DUT_PosicValvula;
+	CA1_L1_V2_POSIC AT %I*	:DUT_PosicValvula;
+	CA1_L1_V3_POSIC AT %I*	:DUT_PosicValvula;
+	CA1_L1_V4_POSIC AT %I*	:DUT_PosicValvula;
+	//Linha 2
+	CA1_L2_V1_POSIC AT %I*	:DUT_PosicValvula;
+	CA1_L2_V2_POSIC AT %I*	:DUT_PosicValvula;
+	CA1_L2_V3_POSIC AT %I*	:DUT_PosicValvula;
+	CA1_L2_V4_POSIC AT %I*	:DUT_PosicValvula;
+	//Linha 3
+	CA1_L3_V1_POSIC AT %I*	:DUT_PosicValvula;
+	CA1_L3_V2_POSIC AT %I*	:DUT_PosicValvula;
+	CA1_L3_V3_POSIC AT %I*	:DUT_PosicValvula;
+	CA1_L3_V4_POSIC AT %I*	:DUT_PosicValvula;
+	//Linha 4
+	CA1_L4_V1_POSIC AT %I*	:DUT_PosicValvula;
+	CA1_L4_V2_POSIC AT %I*	:DUT_PosicValvula;
+	CA1_L4_V3_POSIC AT %I*	:DUT_PosicValvula;
+	CA1_L4_V4_POSIC AT %I*	:DUT_PosicValvula;
+	
+	//Linha 5
+	CA2_L5_V1_POSIC AT %I*	:DUT_PosicValvula;
+	CA2_L5_V2_POSIC AT %I*	:DUT_PosicValvula;
+	CA2_L5_V3_POSIC AT %I*	:DUT_PosicValvula;
+	CA2_L5_V4_POSIC AT %I*	:DUT_PosicValvula;
+	//Linha 6
+	CA2_L6_V1_POSIC AT %I*	:DUT_PosicValvula;
+	CA2_L6_V2_POSIC AT %I*	:DUT_PosicValvula;
+	CA2_L6_V3_POSIC AT %I*	:DUT_PosicValvula;
+	CA2_L6_V4_POSIC AT %I*	:DUT_PosicValvula;
+	//Linha 7
+	CA2_L7_V1_POSIC AT %I*	:DUT_PosicValvula;
+	CA2_L7_V2_POSIC AT %I*	:DUT_PosicValvula;
+	CA2_L7_V3_POSIC AT %I*	:DUT_PosicValvula;
+	CA2_L7_V4_POSIC AT %I*	:DUT_PosicValvula;
+	//Linha 8
+	CA2_L8_V1_POSIC AT %I*	:DUT_PosicValvula;
+	CA2_L8_V2_POSIC AT %I*	:DUT_PosicValvula;
+	CA2_L8_V3_POSIC AT %I*	:DUT_PosicValvula;
+	CA2_L8_V4_POSIC AT %I*	:DUT_PosicValvula;
+	
+	//Linha 9
+	CA3_L9_V1_POSIC AT %I*	:DUT_PosicValvula;
+	CA3_L9_V2_POSIC AT %I*	:DUT_PosicValvula;
+	CA3_L9_V3_POSIC AT %I*	:DUT_PosicValvula;
+	CA3_L9_V4_POSIC AT %I*	:DUT_PosicValvula;
+	//Linha 10
+	CA3_L10_V1_POSIC AT %I*	:DUT_PosicValvula;
+	CA3_L10_V2_POSIC AT %I*	:DUT_PosicValvula;
+	CA3_L10_V3_POSIC AT %I*	:DUT_PosicValvula;
+	CA3_L10_V4_POSIC AT %I*	:DUT_PosicValvula;
+	//Linha 11
+	CA3_L11_V1_POSIC AT %I*	:DUT_PosicValvula;
+	CA3_L11_V2_POSIC AT %I*	:DUT_PosicValvula;
+	CA3_L11_V3_POSIC AT %I*	:DUT_PosicValvula;
+	CA3_L11_V4_POSIC AT %I*	:DUT_PosicValvula;
+	//Linha 12
+	CA3_L12_V1_POSIC AT %I*	:DUT_PosicValvula;
+	CA3_L12_V2_POSIC AT %I*	:DUT_PosicValvula;
+	CA3_L12_V3_POSIC AT %I*	:DUT_PosicValvula;
+	CA3_L12_V4_POSIC AT %I*	:DUT_PosicValvula;
+{endregion}
+	
+	
+	
+	
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

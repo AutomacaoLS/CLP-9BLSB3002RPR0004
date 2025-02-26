@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <POU Name="AquecimentoValvulas" Id="{19c3cf07-ea84-4369-9782-013a0ec287e3}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM AquecimentoValvulas
+VAR
+	TON_Acionamento: TON;
+	Iniciar	: BOOL;		//Inicia o aquecimento das válvulas
+	Tempo	: DINT := 5;		//Tempo em que elas ficarão acionadas (s)
+	VarAux: INT;
+END_VAR
+VAR_OUTPUT
+	Acionar	:BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[TON_Acionamento(IN:=Iniciar AND NOT TON_Acionamento.Q AND Testes.EmTeste, PT := DINT_TO_TIME(Tempo * 1000));
+
+//Fica variando a variável auxiliar entre 0 e 1
+IF TON_Acionamento.Q THEN
+	IF VarAux = 0 THEN
+		VarAux := 1;
+	ELSE
+		VarAux := 0;
+	END_IF
+END_IF
+
+//Aciona a saída
+Acionar := SEL(VarAux = 1, FALSE, TRUE);]]></ST>
+    </Implementation>
+    <LineIds Name="AquecimentoValvulas">
+      <LineId Id="5" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="21" Count="1" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

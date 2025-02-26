@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <GVL Name="Salidas" Id="{565b285a-629f-4814-ac9c-389ad984f911}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	
+	//Alarmas
+	TR_AL1_L AT %Q*:BYTE;
+	TR_AL2_L AT %Q*:BYTE;
+	TR_AL2_Ac AT %Q*:BYTE;//acustica
+	
+	//Agitadores
+	bPP1_L1_AG_M   AT %Q* :BOOL;
+	bPP1_L2_AG_M   AT %Q* :BOOL;
+	bPP1_L3_AG_M   AT %Q* :BOOL;
+	bPP1_L4_AG_M   AT %Q* :BOOL;
+	bPP2_L5_AG_M   AT %Q* :BOOL;
+	bPP2_L6_AG_M   AT %Q* :BOOL;
+	bPP2_L7_AG_M   AT %Q* :BOOL;
+	bPP2_L8_AG_M   AT %Q* :BOOL;	
+	bPP3_L9_AG_M   AT %Q* :BOOL;
+	bPP3_L10_AG_M   AT %Q* :BOOL;
+	bPP3_L11_AG_M   AT %Q* :BOOL;
+	bPP3_L12_AG_M   AT %Q* :BOOL;
+	
+	//Soplador 
+	bTR_S_VE1 AT %Q*	:BOOL;
+	
+	//valvulas tratadora
+	TR_S_V1 AT %Q* :BOOL;
+	TR_S_V2 AT %Q*:BOOL;
+	TR_S_V3 AT %Q*:BOOL;
+	TR_S_V4 AT %Q*:BOOL;
+	TR_S_V5 AT %Q*:BOOL;	//Pesos de calibração da balança
+	
+	//TR_S_WT1 semilla
+	TR_S_WT1_wControl AT %Q*:WORD;
+	
+	//Balanza probeta CA1
+	CA1_WT1_wControl AT%Q* :WORD;
+	//Balanza probeta CA2
+	CA2_WT1_wControl AT%Q* :WORD;
+	//Balanza probeta CA3
+	CA3_WT1_wControl AT%Q* :WORD;
+	
+	//Balanza IBC L1
+	PU1_WT1_wControl AT%Q* :WORD;
+	//Balanza IBC L2
+	PU1_WT2_wControl AT%Q* :WORD;
+	//Balanza IBC L31
+	PU1_WT3_wControl AT%Q* :WORD;
+	//Balanza IBC L4
+	PU1_WT4_wControl AT%Q* :WORD;
+	//Balanza IBC L5
+	PU2_WT5_wControl AT%Q* :WORD;
+	//Balanza IBC L6
+	PU2_WT6_wControl AT%Q* :WORD;
+	//Balanza IBC L7
+	PU2_WT7_wControl AT%Q* :WORD;
+	//Balanza IBC L8
+	PU2_WT8_wControl AT%Q* :WORD;
+	//Balanza IBC L9
+	PU3_WT9_wControl AT%Q* :WORD;
+	//Balanza IBC L10
+	PU3_WT10_wControl AT%Q* :WORD;	
+	//Balanza IBC L11
+	PU3_WT11_wControl AT%Q* :WORD;
+	//Balanza IBC L12
+	PU3_WT12_wControl AT%Q* :WORD;
+	
+	//Bomba Circuito 1
+	wPP1_L1_BD_Cmd AT%Q* :WORD;
+	wPP1_L1_BD_Set AT%Q* :WORD;
+	//Bomba Circuito 2
+	wPP1_L2_BD_Cmd AT%Q* :WORD;
+	wPP1_L2_BD_Set AT%Q* :WORD;
+	//Bomba Circuito 3
+	wPP1_L3_BD_Cmd AT%Q* :WORD;
+	wPP1_L3_BD_Set AT%Q* :WORD;
+	//Bomba Circuito 4
+	wPP1_L4_BD_Cmd AT%Q* :WORD;
+	wPP1_L4_BD_Set AT%Q* :WORD;
+	//Bomba Circuito 5
+	wPP2_L5_BD_Cmd AT%Q* :WORD;
+	wPP2_L5_BD_Set AT%Q* :WORD;
+	//Bomba Circuito 6
+	wPP2_L6_BD_Cmd AT%Q* :WORD;
+	wPP2_L6_BD_Set AT%Q* :WORD;
+	//Bomba Circuito 7
+	wPP2_L7_BD_Cmd AT%Q* :WORD;
+	wPP2_L7_BD_Set AT%Q* :WORD;
+	//Bomba Circuito 8
+	wPP2_L8_BD_Cmd AT%Q* :WORD;
+	wPP2_L8_BD_Set AT%Q* :WORD;
+	//Bomba Circuito 9
+	wPP3_L9_BD_Cmd AT%Q* :WORD;
+	wPP3_L9_BD_Set AT%Q* :WORD;
+	//Bomba Circuito 10
+	wPP3_L10_BD_Cmd AT%Q* :WORD;
+	wPP3_L10_BD_Set AT%Q* :WORD;
+	//Bomba Circuito 11
+	wPP3_L11_BD_Cmd AT%Q* :WORD;
+	wPP3_L11_BD_Set AT%Q* :WORD;
+	//Bomba Circuito 12
+	wPP3_L12_BD_Cmd AT%Q* :WORD;
+	wPP3_L12_BD_Set AT%Q* :WORD;
+
+	//Balanza Polvo P1
+	TR_P1_WT1_wControl AT%Q* :WORD;	
+	//Balanza Polvo P2
+	TR_P2_WT1_wControl AT%Q* :WORD;		
+	//Dosificador Polvo 1
+	TR_P1_VF_Cmd AT%Q* :WORD;
+	TR_P1_VF_Set AT%Q* :WORD;
+	// habilita carga de polvo 1
+	PE_P1_HC AT %Q* :BOOL;
+	//Dosificador Polvo 2
+	TR_P2_VF_Cmd AT%Q* :WORD;
+	TR_P2_VF_Set AT%Q* :WORD;
+	// habilita carga de polvo 2
+	PE_P2_HC AT %Q* :BOOL;	
+	//Vibrador Polvo 1 
+	TR_P1_VI_Cmd AT%Q* :WORD;
+	TR_P1_VI_Set AT%Q* :WORD;	
+	//Vibrador Polvo 2 
+	TR_P2_VI_Cmd AT%Q* :WORD;
+	TR_P2_VI_Set AT%Q* :WORD;	
+	
+	wTR_S_VF1_Cmd AT%Q* :WORD;//homogenizador
+	wTR_S_VF1_Set AT%Q* :WORD;//homogenizador
+
+	wTR_S_VF2_Cmd AT%Q* :WORD;//aspersor
+	wTR_S_VF2_Set AT%Q* :WORD;//aspersor
+	
+	//Perifericos Elevador 1
+	wPE_B_VF1_Cmd AT%Q* :WORD;	
+	wPE_B_VF1_Set AT%Q* :WORD;
+	//Perifericos Elevador 2
+	wPE_H_VF1_Cmd AT%Q* :WORD;	
+	wPE_H_VF1_Set AT%Q* :WORD;
+	//Perifericos Elevador 3
+	wPE_H_VF2_Cmd AT%Q* :WORD;	
+	wPE_H_VF2_Set AT%Q* :WORD;
+
+	PE_B1_V1_Pos1	AT%Q* 	:BOOL;//descargando intermedia 1
+	PE_B1_V1_Pos2	AT%Q*	:BOOL;//no descarga intermedia 1
+	PE_B2_V1_Pos1	AT%Q* 	:BOOL;//descargando intermedia 2
+	PE_B2_V1_Pos2	AT%Q* 	:BOOL;//no descarga intermedia 2
+	PE_B3_V1_Pos1	AT%Q*	:BOOL;//descargando intermedia 3
+	PE_B3_V1_Pos2	AT%Q*	:BOOL;//no descarga intermedia 3
+	PE_B1_V2		AT%Q*	:BOOL;//descarga tolva CE1
+	PE_B2_V2		AT%Q* 	:BOOL;//descarga tolva CE2
+	PE_B3_V2		AT%Q* 	:BOOL;//descarga tolva CE3a
+	PE_B3_V3		AT%Q* 	:BOOL;//descarga tolva CE3b
+	
+	TR_S_V6			AT%Q* 	:BOOL;//registro CP 1,8t
+	TR_S_V7			AT%Q*	:BOOL;//registro CP 30t
+	TR_S_V8			AT%Q*	:BOOL;//registro tolva recepción	
+	
+	TravaHomog		AT%Q*	:BOOL;	//Trava magnética da tampa do homogeneizador
+		
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

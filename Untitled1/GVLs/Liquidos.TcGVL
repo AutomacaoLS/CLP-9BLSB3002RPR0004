@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <GVL Name="Liquidos" Id="{bd02da2c-4ec3-4558-9e7d-7993dbaa4e4a}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+END_VAR
+
+VAR_GLOBAL PERSISTENT
+	TablaLiquidos				:ARRAY[1..64]OF stListado_Liquidos;
+	Circuito_Liquido			:ARRAY[1..12]OF INT;	//Array que salva o indice do produto que está associado ao liquido
+	Circuito_Offset				:ARRAY[1..12]OF REAL;
+	InyectarLiq					:ARRAY[1..12]OF BOOL;
+	LiqNaReceita				:ARRAY[1..12]OF BOOL; 	//Liquidos que estão sendo usados na receita
+	UltimoAlrLavagem			:ARRAY[1..12] OF LINT;	//Hora do ultimo alarme por falta de lavagem
+	
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

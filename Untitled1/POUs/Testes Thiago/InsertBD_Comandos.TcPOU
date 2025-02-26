@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.13">
+  <POU Name="InsertBD_Comandos" Id="{b479969b-2e03-4c13-ac28-832966b9da98}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK InsertBD_Comandos
+VAR_INPUT
+	Insert:BOOL;	//Comando para inserir os dados
+	NomeComando:STRING;	//Nome do comando
+	
+END_VAR
+VAR_OUTPUT
+	InsertOut:BOOL;
+	Comando:STRING[255];
+END_VAR
+VAR
+	Parte1Comandos: STRING(100);
+	Parte2Comandos: STRING(255);
+	Parte3Comandos: STRING(255);
+	sCmdInsert: STRING(255);
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Esse bloco é para fazer insert dos comandos no banco de dados
+Parte1Comandos := 'INSERT INTO `comandos` (`comando`, `data_hora`, `usuario`, `serial_maquina`) VALUES ($'';
+Parte2Comandos := CONCAT('$', CURRENT_TIMESTAMP,$'', Main.NomeUsuario);
+Parte3Comandos := CONCAT('$', $'', CONCAT(Main.SerialDaMaquina, '$')'));
+
+sCmdInsert := CONCAT(Parte1Comandos,CONCAT(NomeComando, CONCAT(Parte2Comandos, Parte3Comandos)));
+Comando := sCmdInsert;
+InsertOut := Insert;]]></ST>
+    </Implementation>
+    <LineIds Name="InsertBD_Comandos">
+      <LineId Id="9" Count="0" />
+      <LineId Id="14" Count="1" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="26" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

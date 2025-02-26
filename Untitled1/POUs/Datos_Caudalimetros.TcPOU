@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <POU Name="Datos_Caudalimetros" Id="{5be0e032-cd28-443d-ba62-025f995b96b0}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM Datos_Caudalimetros
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*
+HMI.CA1_L1_FT1_caudal	:= SEL(TO_REAL(Entradas.CA1_L1_FT1_caudal.icaudal)*16.6667/1000 > 0, 0, TO_REAL(Entradas.CA1_L1_FT1_caudal.icaudal)*16.6667/1000);		// Em L/min 
+HMI.CA1_L1_FT1_temp 	:= TO_REAL(Entradas.CA1_L1_FT1_temp.itemp)*0.01; // en grados centigrados
+HMI.CA1_L2_FT1_caudal	:= SEL(TO_REAL(Entradas.CA1_L2_FT1_caudal.icaudal)*16.6667/1000 > 0, 0, TO_REAL(Entradas.CA1_L2_FT1_caudal.icaudal)*16.6667/1000);		// Em L/min 
+HMI.CA1_L2_FT1_temp		:= TO_REAL(Entradas.CA1_L2_FT1_temp.itemp)*0.01; // en grados centigrados
+HMI.CA1_L3_FT1_caudal 	:= SEL(TO_REAL(Entradas.CA1_L3_FT1_caudal.icaudal)*16.6667/1000 > 0, 0, TO_REAL(Entradas.CA1_L3_FT1_caudal.icaudal)*16.6667/1000);		// Em L/min
+HMI.CA1_L3_FT1_temp 	:= TO_REAL(Entradas.CA1_L3_FT1_temp.itemp)*0.01; // en grados centigrados
+HMI.CA1_L4_FT1_caudal 	:= SEL(TO_REAL(Entradas.CA1_L4_FT1_caudal.icaudal)*16.6667/1000 > 0, 0, TO_REAL(Entradas.CA1_L4_FT1_caudal.icaudal)*16.6667/1000);		// Em L/min
+HMI.CA1_L4_FT1_temp 	:= TO_REAL(Entradas.CA1_L4_FT1_temp.itemp)*0.01; // en grados centigrados
+HMI.CA2_L5_FT1_caudal 	:= SEL(TO_REAL(Entradas.CA2_L5_FT1_caudal.icaudal)*16.6667/1000 > 0, 0, TO_REAL(Entradas.CA2_L5_FT1_caudal.icaudal)*16.6667/1000);		// Em L/min
+HMI.CA2_L5_FT1_temp 	:= TO_REAL(Entradas.CA2_L5_FT1_temp.itemp)*0.01; // en grados centigrados
+HMI.CA2_L6_FT1_caudal 	:= SEL(TO_REAL(Entradas.CA2_L6_FT1_caudal.icaudal)*16.6667/1000 > 0, 0, TO_REAL(Entradas.CA2_L6_FT1_caudal.icaudal)*16.6667/1000);		// Em L/min
+HMI.CA2_L6_FT1_temp 	:= TO_REAL(Entradas.CA2_L6_FT1_temp.itemp)*0.01; // en grados centigrados
+HMI.CA2_L7_FT1_caudal 	:= SEL(TO_REAL(Entradas.CA2_L7_FT1_caudal.icaudal)*16.6667/1000 > 0, 0, TO_REAL(Entradas.CA2_L7_FT1_caudal.icaudal)*16.6667/1000);		// Em L/min
+HMI.CA2_L7_FT1_temp 	:= TO_REAL(Entradas.CA2_L7_FT1_temp.itemp)*0.01; // en grados centigrados
+HMI.CA2_L8_FT1_caudal 	:= SEL(TO_REAL(Entradas.CA2_L8_FT1_caudal.icaudal)*16.6667/1000 > 0, 0, TO_REAL(Entradas.CA2_L8_FT1_caudal.icaudal)*16.6667/1000);		// Em L/min
+HMI.CA2_L8_FT1_temp 	:= TO_REAL(Entradas.CA2_L8_FT1_temp.itemp)*0.01; // en grados centigrados
+HMI.CA3_L9_FT1_caudal 	:= SEL(TO_REAL(Entradas.CA3_L9_FT1_caudal.icaudal)*16.6667/1000 > 0, 0, TO_REAL(Entradas.CA3_L9_FT1_caudal.icaudal)*16.6667/1000);		// Em L/min
+HMI.CA3_L9_FT1_temp 	:= TO_REAL(Entradas.CA3_L9_FT1_temp.itemp)*0.01; // en grados centigrados
+HMI.CA3_L10_FT1_caudal 	:= SEL(TO_REAL(Entradas.CA3_L10_FT1_caudal.icaudal)*16.6667/1000 > 0, 0, TO_REAL(Entradas.CA3_L10_FT1_caudal.icaudal)*16.6667/1000);		// Em L/min
+HMI.CA3_L10_FT1_temp 	:= TO_REAL(Entradas.CA3_L10_FT1_temp.itemp)*0.01; // en grados centigrados
+HMI.CA3_L11_FT1_caudal 	:= SEL(TO_REAL(Entradas.CA3_L11_FT1_caudal.icaudal)*16.6667/1000 > 0, 0, TO_REAL(Entradas.CA3_L11_FT1_caudal.icaudal)*16.6667/1000);		// Em L/min
+HMI.CA3_L11_FT1_temp 	:= TO_REAL(Entradas.CA3_L11_FT1_temp.itemp)*0.01; // en grados centigrados 
+HMI.CA3_L12_FT1_caudal 	:= SEL(TO_REAL(Entradas.CA3_L12_FT1_caudal.icaudal)*16.6667/1000 > 0, 0, TO_REAL(Entradas.CA3_L12_FT1_caudal.icaudal)*16.6667/1000);		// Em L/min
+HMI.CA3_L12_FT1_temp 	:= TO_REAL(Entradas.CA3_L12_FT1_temp.itemp)*0.01; // en grados centigrados
+//
+HMI.TR_L1_FT2_caudal	:= SEL(TO_REAL(Entradas.TR_L1_FT2_caudal.icaudal)*16.6667/1000 > 0, 0, TO_REAL(Entradas.TR_L1_FT2_caudal.icaudal)*16.6667/1000); // en ml/s
+HMI.TR_L1_FT2_temp 		:= TO_REAL(Entradas.TR_L1_FT2_temp.itemp)*0.01; // en grados centigrados
+HMI.TR_L2_FT2_caudal 	:= SEL(TO_REAL(Entradas.TR_L2_FT2_caudal.icaudal)*16.6667/1000 > 0, 0, TO_REAL(Entradas.TR_L2_FT2_caudal.icaudal)*16.6667/1000); // en ml/s
+HMI.TR_L2_FT2_temp 		:= TO_REAL(Entradas.TR_L2_FT2_temp.itemp)*0.01; // en grados centigrados
+HMI.TR_L3_FT2_caudal 	:= SEL(TO_REAL(Entradas.TR_L3_FT2_caudal.icaudal)*16.6667/1000 > 0, 0, TO_REAL(Entradas.TR_L3_FT2_caudal.icaudal)*16.6667/1000); // en ml/s
+HMI.TR_L3_FT2_temp 		:= TO_REAL(Entradas.TR_L3_FT2_temp.itemp)*0.01; // en grados centigrados
+HMI.TR_L4_FT2_caudal 	:= SEL(TO_REAL(Entradas.TR_L4_FT2_caudal.icaudal)*16.6667/1000 > 0, 0, TO_REAL(Entradas.TR_L4_FT2_caudal.icaudal)*16.6667/1000); // en ml/s
+HMI.TR_L4_FT2_temp 		:= TO_REAL(Entradas.TR_L4_FT2_temp.itemp)*0.01; // en grados centigrados
+HMI.TR_L5_FT2_caudal 	:= SEL(TO_REAL(Entradas.TR_L5_FT2_caudal.icaudal)*16.6667/1000 > 0, 0, TO_REAL(Entradas.TR_L5_FT2_caudal.icaudal)*16.6667/1000); // en ml/s
+HMI.TR_L5_FT2_temp 		:= TO_REAL(Entradas.TR_L5_FT2_temp.itemp)*0.01; // en grados centigrados
+HMI.TR_L6_FT2_caudal 	:= SEL(TO_REAL(Entradas.TR_L6_FT2_caudal.icaudal)*16.6667/1000 > 0, 0, TO_REAL(Entradas.TR_L6_FT2_caudal.icaudal)*16.6667/1000); // en ml/s
+HMI.TR_L6_FT2_temp 		:= TO_REAL(Entradas.TR_L6_FT2_temp.itemp)*0.01; // en grados centigrados
+HMI.TR_L7_FT2_caudal 	:= SEL(TO_REAL(Entradas.TR_L7_FT2_caudal.icaudal)*16.6667/1000 > 0, 0, TO_REAL(Entradas.TR_L7_FT2_caudal.icaudal)*16.6667/1000); // en ml/s
+HMI.TR_L7_FT2_temp 		:= TO_REAL(Entradas.TR_L7_FT2_temp.itemp)*0.01; // en grados centigrados
+HMI.TR_L8_FT2_caudal 	:= SEL(TO_REAL(Entradas.TR_L8_FT2_caudal.icaudal)*16.6667/1000 > 0, 0, TO_REAL(Entradas.TR_L8_FT2_caudal.icaudal)*16.6667/1000); // en ml/s
+HMI.TR_L8_FT2_temp 		:= TO_REAL(Entradas.TR_L8_FT2_temp.itemp)*0.01; // en grados centigrados
+HMI.TR_L9_FT2_caudal 	:= SEL(TO_REAL(Entradas.TR_L9_FT2_caudal.icaudal)*16.6667/1000 > 0, 0, TO_REAL(Entradas.TR_L9_FT2_caudal.icaudal)*16.6667/1000); // en ml/s
+HMI.TR_L9_FT2_temp 		:= TO_REAL(Entradas.TR_L9_FT2_temp.itemp)*0.01; // en grados centigrados
+HMI.TR_L10_FT2_caudal 	:= SEL(TO_REAL(Entradas.TR_L10_FT2_caudal.icaudal)*16.6667/1000 > 0, 0, TO_REAL(Entradas.TR_L10_FT2_caudal.icaudal)*16.6667/1000); // en ml/s
+HMI.TR_L10_FT2_temp 	:= TO_REAL(Entradas.TR_L10_FT2_temp.itemp)*0.01; // en grados centigrados
+HMI.TR_L11_FT2_caudal 	:= SEL(TO_REAL(Entradas.TR_L11_FT2_caudal.icaudal)*16.6667/1000 > 0, 0, TO_REAL(Entradas.TR_L11_FT2_caudal.icaudal)*16.6667/1000); // en ml/s
+HMI.TR_L11_FT2_temp 	:= TO_REAL(Entradas.TR_L11_FT2_temp.itemp)*0.01; // en grados centigrados
+HMI.TR_L12_FT2_caudal 	:= SEL(TO_REAL(Entradas.TR_L12_FT2_caudal.icaudal)*16.6667/1000 > 0, 0, TO_REAL(Entradas.TR_L12_FT2_caudal.icaudal)*16.6667/1000); // en ml/s
+HMI.TR_L12_FT2_temp 	:= TO_REAL(Entradas.TR_L12_FT2_temp.itemp)*0.01; // en grados centigrados
+
+*)
+
+{Region "Sensores dos totens"}
+
+//Sensores de vazão doos totens
+	HMI.CA1_L1_FT1_caudal	:=TO_REAL(Entradas.CA1_L1_FT1_caudal.icaudal)*0.0166667*16.6667; // en ml/s
+	HMI.CA1_L2_FT1_caudal	:=TO_REAL(Entradas.CA1_L2_FT1_caudal.icaudal)*0.0166667*16.6667; // en ml/s
+	HMI.CA1_L3_FT1_caudal	:=TO_REAL(Entradas.CA1_L3_FT1_caudal.icaudal)*0.0166667*16.6667; // en ml/s
+	HMI.CA1_L4_FT1_caudal 	:=TO_REAL(Entradas.CA1_L4_FT1_caudal.icaudal)*0.0166667*16.6667; // en ml/s
+	HMI.CA2_L5_FT1_caudal 	:=TO_REAL(Entradas.CA2_L5_FT1_caudal.icaudal)*0.0166667*16.6667; // en ml/s
+	HMI.CA2_L6_FT1_caudal 	:=TO_REAL(Entradas.CA2_L6_FT1_caudal.icaudal)*0.0166667*16.6667; // en ml/s
+	HMI.CA2_L7_FT1_caudal 	:=TO_REAL(Entradas.CA2_L7_FT1_caudal.icaudal)*0.0166667*16.6667; // en ml/s
+	HMI.CA2_L8_FT1_caudal 	:=TO_REAL(Entradas.CA2_L8_FT1_caudal.icaudal)*0.0166667*16.6667; // en ml/s
+	HMI.CA3_L9_FT1_caudal 	:=TO_REAL(Entradas.CA3_L9_FT1_caudal.icaudal)*0.0166667*16.6667; // en ml/s
+	HMI.CA3_L10_FT1_caudal 	:=TO_REAL(Entradas.CA3_L10_FT1_caudal.icaudal)*0.0166667*16.6667; // en ml/s
+	HMI.CA3_L11_FT1_caudal 	:=TO_REAL(Entradas.CA3_L11_FT1_caudal.icaudal)*0.00166667*16.6667; // en ml/s
+	HMI.CA3_L12_FT1_caudal 	:=TO_REAL(Entradas.CA3_L12_FT1_caudal.icaudal)*0.00166667*16.6667; // en ml/s
+	
+	//Sensores de temperatura dos totens
+	HMI.CA1_L1_FT1_temp		:=TO_REAL(Entradas.CA1_L1_FT1_temp.itemp)*0.01; // en grados centigrados
+	HMI.CA1_L2_FT1_temp		:=TO_REAL(Entradas.CA1_L2_FT1_temp.itemp)*0.01; // en grados centigrados
+	HMI.CA1_L3_FT1_temp 	:=TO_REAL(Entradas.CA1_L3_FT1_temp.itemp)*0.01; // en grados centigrados
+	HMI.CA1_L4_FT1_temp 	:=TO_REAL(Entradas.CA1_L4_FT1_temp.itemp)*0.01; // en grados centigrados
+	HMI.CA2_L5_FT1_temp 	:=TO_REAL(Entradas.CA2_L5_FT1_temp.itemp)*0.01; // en grados centigrados
+	HMI.CA2_L6_FT1_temp 	:=TO_REAL(Entradas.CA2_L6_FT1_temp.itemp)*0.01; // en grados centigrados
+	HMI.CA2_L7_FT1_temp 	:=TO_REAL(Entradas.CA2_L7_FT1_temp.itemp)*0.01; // en grados centigrados
+	HMI.CA2_L8_FT1_temp 	:=TO_REAL(Entradas.CA2_L8_FT1_temp.itemp)*0.01; // en grados centigrados
+	HMI.CA3_L9_FT1_temp 	:=TO_REAL(Entradas.CA3_L9_FT1_temp.itemp)*0.01; // en grados centigrados
+	HMI.CA3_L10_FT1_temp 	:=TO_REAL(Entradas.CA3_L10_FT1_temp.itemp)*0.01; // en grados centigrados
+	HMI.CA3_L11_FT1_temp 	:=TO_REAL(Entradas.CA3_L11_FT1_temp.itemp)*0.01; // en grados centigrados
+	HMI.CA3_L12_FT1_temp 	:=TO_REAL(Entradas.CA3_L12_FT1_temp.itemp)*0.01; // en grados centigrados
+{endregion}
+
+
+{Region "Sensores da tratadora"}
+
+	//Sensores de vazão da tratadora
+	HMI.TR_L1_FT2_caudal :=TO_REAL(Entradas.TR_L1_FT2_caudal.icaudal)*0.0166667*16.6667; // en ml/s
+	HMI.TR_L2_FT2_caudal :=TO_REAL(Entradas.TR_L2_FT2_caudal.icaudal)*0.0166667*16.6667; // en ml/s
+	HMI.TR_L3_FT2_caudal :=TO_REAL(Entradas.TR_L3_FT2_caudal.icaudal)*0.0166667*16.6667; // en ml/s
+	HMI.TR_L4_FT2_caudal :=TO_REAL(Entradas.TR_L4_FT2_caudal.icaudal)*0.0166667*16.6667; // en ml/s
+	HMI.TR_L5_FT2_caudal :=TO_REAL(Entradas.TR_L5_FT2_caudal.icaudal)*0.0166667*16.6667; // en ml/s
+	HMI.TR_L6_FT2_caudal :=TO_REAL(Entradas.TR_L6_FT2_caudal.icaudal)*0.0166667*16.6667; // en ml/s
+	HMI.TR_L7_FT2_caudal :=TO_REAL(Entradas.TR_L7_FT2_caudal.icaudal)*0.0166667*16.6667; // en ml/s
+	HMI.TR_L8_FT2_caudal :=TO_REAL(Entradas.TR_L8_FT2_caudal.icaudal)*0.0166667*16.6667; // en ml/s
+	HMI.TR_L9_FT2_caudal :=TO_REAL(Entradas.TR_L9_FT2_caudal.icaudal)*0.0166667*16.6667; // en ml/s
+	HMI.TR_L10_FT2_caudal :=TO_REAL(Entradas.TR_L10_FT2_caudal.icaudal)*0.0166667*16.6667; // en ml/s
+	HMI.TR_L11_FT2_caudal :=TO_REAL(Entradas.TR_L11_FT2_caudal.icaudal)*0.0166667*16.6667; // en ml/s
+	HMI.TR_L12_FT2_caudal :=TO_REAL(Entradas.TR_L12_FT2_caudal.icaudal)*0.0166667*16.6667; // en ml/s
+	
+	//Sensores de temperatura da tratadora
+	HMI.TR_L1_FT2_temp :=TO_REAL(Entradas.TR_L1_FT2_temp.itemp)*0.01; // en grados centigrados
+	HMI.TR_L2_FT2_temp :=TO_REAL(Entradas.TR_L2_FT2_temp.itemp)*0.01; // en grados centigrados
+	HMI.TR_L3_FT2_temp :=TO_REAL(Entradas.TR_L3_FT2_temp.itemp)*0.01; // en grados centigrados
+	HMI.TR_L4_FT2_temp :=TO_REAL(Entradas.TR_L4_FT2_temp.itemp)*0.01; // en grados centigrados
+	HMI.TR_L5_FT2_temp :=TO_REAL(Entradas.TR_L5_FT2_temp.itemp)*0.01; // en grados centigrados
+	HMI.TR_L6_FT2_temp :=TO_REAL(Entradas.TR_L6_FT2_temp.itemp)*0.01; // en grados centigrados
+	HMI.TR_L7_FT2_temp :=TO_REAL(Entradas.TR_L7_FT2_temp.itemp)*0.01; // en grados centigrados
+	HMI.TR_L8_FT2_temp :=TO_REAL(Entradas.TR_L8_FT2_temp.itemp)*0.01; // en grados centigrados
+	HMI.TR_L9_FT2_temp :=TO_REAL(Entradas.TR_L9_FT2_temp.itemp)*0.01; // en grados centigrados
+	HMI.TR_L10_FT2_temp :=TO_REAL(Entradas.TR_L10_FT2_temp.itemp)*0.01; // en grados centigrados
+	HMI.TR_L11_FT2_temp :=TO_REAL(Entradas.TR_L11_FT2_temp.itemp)*0.01; // en grados centigrados
+	HMI.TR_L12_FT2_temp :=TO_REAL(Entradas.TR_L12_FT2_temp.itemp)*0.01;  // en grados centigrados
+
+{endregion}]]></ST>
+    </Implementation>
+    <LineIds Name="Datos_Caudalimetros">
+      <LineId Id="68" Count="0" />
+      <LineId Id="5" Count="1" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="20" Count="6" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="31" Count="6" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="40" Count="22" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="156" Count="0" />
+      <LineId Id="122" Count="0" />
+      <LineId Id="157" Count="0" />
+      <LineId Id="70" Count="1" />
+      <LineId Id="123" Count="10" />
+      <LineId Id="135" Count="0" />
+      <LineId Id="134" Count="0" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="74" Count="0" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="78" Count="0" />
+      <LineId Id="80" Count="0" />
+      <LineId Id="82" Count="0" />
+      <LineId Id="84" Count="0" />
+      <LineId Id="86" Count="0" />
+      <LineId Id="88" Count="0" />
+      <LineId Id="90" Count="0" />
+      <LineId Id="92" Count="0" />
+      <LineId Id="94" Count="0" />
+      <LineId Id="159" Count="0" />
+      <LineId Id="150" Count="1" />
+      <LineId Id="149" Count="0" />
+      <LineId Id="152" Count="0" />
+      <LineId Id="95" Count="1" />
+      <LineId Id="136" Count="10" />
+      <LineId Id="148" Count="0" />
+      <LineId Id="147" Count="0" />
+      <LineId Id="97" Count="0" />
+      <LineId Id="99" Count="0" />
+      <LineId Id="101" Count="0" />
+      <LineId Id="103" Count="0" />
+      <LineId Id="105" Count="0" />
+      <LineId Id="107" Count="0" />
+      <LineId Id="109" Count="0" />
+      <LineId Id="111" Count="0" />
+      <LineId Id="113" Count="0" />
+      <LineId Id="115" Count="0" />
+      <LineId Id="117" Count="0" />
+      <LineId Id="69" Count="0" />
+      <LineId Id="155" Count="0" />
+      <LineId Id="154" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

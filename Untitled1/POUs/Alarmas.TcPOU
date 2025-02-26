@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <POU Name="Alarmas" Id="{4f7180e0-2968-44ad-854e-a933db924016}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM Alarmas
+VAR
+	Resumen_alarmas_BombasLiquidos:BOOL;
+	Alarmas_agitadores:INT;
+	AL_verde :BOOL;
+	AL_verde_fija :BOOL;
+	Al_azul	 :BOOL;
+	AL_roja  :BOOL;
+	AL_amarilla:BOOL;
+	AL_nula  :BOOL;
+	Ac_aviso :BOOL;
+	Ac_alarma:BOOL;
+	Ac_nula :BOOL;
+	
+	Ac_AlarmePorta: BOOL;
+	
+	// Mapeamento de alarmes da máquina
+	AlarmesMaquina: INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Resumen_alarmas_BombasLiquidos :=	HMI.PP1_L1_AG_Alr OR 
+									HMI.PP1_L2_AG_Alr OR 
+									HMI.PP1_L3_AG_Alr OR 
+									HMI.PP1_L4_AG_Alr OR 
+									HMI.PP2_L5_AG_Alr OR 
+									HMI.PP2_L6_AG_Alr OR 
+									HMI.PP2_L7_AG_Alr OR  
+									HMI.PP2_L8_AG_Alr OR  
+									HMI.PP3_L9_AG_Alr OR  
+									HMI.PP3_L10_AG_Alr OR  
+									HMI.PP3_L11_AG_Alr OR  
+									HMI.PP3_L12_AG_Alr;
+Alarmas_agitadores.0:=HMI.PP1_L1_AG_Alr;
+Alarmas_agitadores.1:=HMI.PP1_L2_AG_Alr;
+Alarmas_agitadores.2:=HMI.PP1_L3_AG_Alr;
+
+AL_verde_fija	:= seguridad.PB_Emergencia AND HMI.bRun;
+AL_verde		:= INICIO.Premarcha;	
+AL_azul			:= seguridad.PB_Emergencia AND NOT HMI.bRun;
+AL_roja			:= NOT seguridad.PB_Emergencia;
+AL_nula			:= NOT AL_verde AND NOT AL_roja AND NOT AL_azul;
+Ac_Aviso		:= INICIO.Premarcha;
+Ac_alarma		:= Resumen_alarmas_BombasLiquidos;
+AC_nula			:= NOT Ac_Aviso AND NOT Ac_alarma;
+Ac_AlarmePorta	:= NOT Seguridad.ParadaDePorta;
+
+//Rodando
+IF AL_verde_fija THEN
+	Salidas.TR_AL2_L:=2;	
+END_IF
+
+//Máquina OK, sem produzir
+IF AL_azul THEN
+	Salidas.TR_AL2_L:=4;	
+END_IF
+
+//Em pré marcha
+IF AL_verde THEN
+	Salidas.TR_AL2_L:=50;
+END_IF
+
+//Desliga led
+IF AL_nula THEN
+	Salidas.TR_AL2_L:=0;
+END_IF
+
+//Parada de porta
+IF Ac_AlarmePorta THEN
+	Salidas.TR_AL2_L := 56;
+END_IF
+
+//Em emergência
+IF AL_roja THEN
+	Salidas.TR_AL2_L:=49;
+END_IF
+
+Salidas.TR_AL1_L:=Salidas.TR_AL2_L;
+
+IF Ac_Aviso THEN
+	Salidas.TR_AL2_Ac:=81;
+END_IF
+
+IF Ac_nula THEN
+	Salidas.TR_AL2_Ac:=0;
+END_IF
+
+IF Alarmas_agitadores<>0 THEN 
+	Salidas.TR_AL1_L:=17;
+END_IF
+
+
+AlarmesMaquina := 0;	//Tudo OK. Começa em zero. Se tiver algum alarme, o valor do mapeamento é atribuido abaixo
+//Mapeamento de alarmes para alterar o texto no rodapé da IHM
+IF NOT Seguridad.PB_Emergencia THEN
+	AlarmesMaquina := 1;	//Em emergência
+ELSIF NOT Entradas.TR_S_PDI THEN
+	AlarmesMaquina := 2;	//Sem pressão pneumática
+	
+	(*
+ELSIF NOT SafetyInputs.TR2_E1_CH01 OR NOT SafetyInputs.TR2_E1_CH01 THEN
+	AlarmesMaquina := 51;	//Tampa frontal da balança
+ELSIF NOT SafetyInputs.TR2_E2_CH01 OR NOT SafetyInputs.TR2_E2_CH01 THEN
+	AlarmesMaquina := 52;	//Tampa traseira da balança
+ELSIF NOT SafetyInputs.TR2_E3_CH01 OR NOT SafetyInputs.TR2_E3_CH01 THEN
+	AlarmesMaquina := 53;	//Tampa esquerda da balança
+ELSIF NOT SafetyInputs.TR2_E4_CH01 OR NOT SafetyInputs.TR2_E4_CH01 THEN
+	AlarmesMaquina := 54;	//Tampa direita da balança
+ELSIF NOT SafetyInputs.TR3_E1_CH01 OR NOT SafetyInputs.TR3_E1_CH01 THEN
+	AlarmesMaquina := 55;	//Tampa frontal inferior da balança
+ELSIF NOT SafetyInputs.TR3_E2_CH01 OR NOT SafetyInputs.TR3_E2_CH01 THEN
+	AlarmesMaquina := 56;	//Tampa trazeira inferior da balança
+ELSIF NOT SafetyInputs.TR3_E3_CH01 OR NOT SafetyInputs.TR3_E3_CH01 THEN
+	AlarmesMaquina := 57;	//Tampas do homogeneizador
+ELSIF NOT SafetyInputs.TR3_E4_CH01 OR NOT SafetyInputs.TR3_E4_CH01 THEN
+	AlarmesMaquina := 58;	//Tampa da porta de inspeção da balança
+	
+	
+ELSIF NOT Seguridad.ParadaDePorta THEN
+	AlarmesMaquina := 3;	//Parada de porta. Falta RESET
+	*)
+ELSIF HMI.bModo_Auto THEN
+	IF Tratadora.fbHomogenizador.wEstado = 0 THEN
+		AlarmesMaquina := 9;	//Inversor do homogeneizador desligado
+	ELSIF Tratadora.fbAspersor.wEstado = 0 THEN
+		AlarmesMaquina := 10;	//Inversor do aspersor desligado
+	END_IF;
+ELSIF HMI.bRun AND (Receta_activa.SetCircuitosPo[1].Paso > 0 AND (NOT Entradas.TR_P1_ZC OR NOT entradas.TR_P1_LLS)) THEN
+	AlarmesMaquina := 4;	//Pó 1 com nivel baixo ou fora de posição
+ELSIF HMI.bRun AND (Receta_activa.SetCircuitosPo[2].Paso > 0 AND (NOT Entradas.TR_P2_ZC OR NOT entradas.TR_P2_LLS)) THEN
+	AlarmesMaquina := 5;	//Pó 2 com nivel baixo ou fora de posição
+ELSIF NOT Entradas.TR_S_LLS AND HMI.bRun THEN
+	AlarmesMaquina := 6;	//Caixa superior sem sementes
+ELSIF HMI.bRun AND Entradas.PE_B1_V1_ZO AND Entradas.PE_B2_V1_ZO AND Entradas.PE_B3_V1_ZO THEN
+	AlarmesMaquina := 7;	//Nenhuma descarga das caixas de ensaque está ativa
+ELSIF Resumen_alarmas_BombasLiquidos THEN
+	AlarmesMaquina := 8;	//Falha nos agitadores
+ELSIF (HMI.bModo_Pausa OR Descarga_Semilla.PausaEnsaque) AND HMI.bModo_Auto THEN
+	AlarmesMaquina := 9;	//Máquina pausada
+ELSE
+	AlarmesMaquina := 0;	//Tudo OK
+END_IF
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="Alarmas">
+      <LineId Id="5" Count="0" />
+      <LineId Id="107" Count="0" />
+      <LineId Id="106" Count="0" />
+      <LineId Id="108" Count="2" />
+      <LineId Id="311" Count="1" />
+      <LineId Id="316" Count="3" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="13" Count="1" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="84" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="69" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="132" Count="0" />
+      <LineId Id="149" Count="0" />
+      <LineId Id="88" Count="2" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="148" Count="0" />
+      <LineId Id="147" Count="0" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="85" Count="1" />
+      <LineId Id="146" Count="0" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="145" Count="0" />
+      <LineId Id="57" Count="2" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="143" Count="0" />
+      <LineId Id="142" Count="0" />
+      <LineId Id="134" Count="2" />
+      <LineId Id="141" Count="0" />
+      <LineId Id="140" Count="0" />
+      <LineId Id="138" Count="1" />
+      <LineId Id="137" Count="0" />
+      <LineId Id="144" Count="0" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="66" Count="2" />
+      <LineId Id="65" Count="0" />
+      <LineId Id="62" Count="2" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="8" Count="2" />
+      <LineId Id="167" Count="0" />
+      <LineId Id="349" Count="0" />
+      <LineId Id="168" Count="0" />
+      <LineId Id="166" Count="0" />
+      <LineId Id="211" Count="1" />
+      <LineId Id="214" Count="1" />
+      <LineId Id="252" Count="0" />
+      <LineId Id="287" Count="0" />
+      <LineId Id="253" Count="14" />
+      <LineId Id="250" Count="0" />
+      <LineId Id="249" Count="0" />
+      <LineId Id="288" Count="0" />
+      <LineId Id="216" Count="0" />
+      <LineId Id="220" Count="0" />
+      <LineId Id="289" Count="0" />
+      <LineId Id="322" Count="0" />
+      <LineId Id="324" Count="0" />
+      <LineId Id="323" Count="0" />
+      <LineId Id="325" Count="2" />
+      <LineId Id="221" Count="2" />
+      <LineId Id="228" Count="3" />
+      <LineId Id="225" Count="0" />
+      <LineId Id="320" Count="1" />
+      <LineId Id="347" Count="1" />
+      <LineId Id="226" Count="1" />
+      <LineId Id="213" Count="0" />
+      <LineId Id="184" Count="0" />
+      <LineId Id="172" Count="0" />
+      <LineId Id="131" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

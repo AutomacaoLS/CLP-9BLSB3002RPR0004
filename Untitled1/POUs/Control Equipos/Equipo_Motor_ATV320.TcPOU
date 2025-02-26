@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <POU Name="Equipo_Motor_ATV320" Id="{b80954b0-0d87-49a3-b865-4d98fda21dcd}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK Equipo_Motor_ATV320
+VAR_INPUT
+	wStatus			:UINT;
+	wRpm_var		:WORD; // rpm actuales leidas del variador
+	iVelo			:REAL; // set velocidad en %
+	iRpmNom			:INT;// rpm nominales leidas del variador
+	bCmdMarcha		:BOOL;
+	bReverse		:BOOL;
+	bParada_Quick	:BOOL;//parada rapida 16#0002
+	bParada_Normal	:BOOL;//parada normal 16#0007
+	Interlock	:BOOL;	//Deve estar em TRUE para liberar o funcionamento da bomba
+END_VAR
+VAR_OUTPUT
+	bEnMarcha:BOOL;
+	bAlr:BOOL;
+	wControl:UINT;
+	wEstado:WORD;
+	iVelOUT:UINT;
+	iRPM_a_HMI:INT; //rpm para el HMI
+
+END_VAR
+VAR
+	Aux_Status:DINT;
+	bMarcha:BOOL;
+	TempoFuncionando:UDINT;	//Tempo de funcionamento do motor
+	Acionamentos	:UDINT;	//Quantidade de acionamentos do motor
+	TON_Horimetro: TON;
+	RTRIG_Funcionamento: R_TRIG;
+	ResetContadores: BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+(*cuenta horas de marcha parciales*)
+(*cuenta horas de marcha totales*)
+
+(***********************************************************************Tratamiento PDO*)
+wEstado := wStatus;
+iVelOUT:=REAL_TO_UINT(iRpmNom*iVelo/100);// convierte velocidad solicitada en % a rpm
+iRPM_a_HMI:=WORD_TO_INT (wRpm_var);
+
+Aux_Status:= DINT_TO_UINT(wStatus) AND 16#007F;
+
+
+(*Secuencia Marcha*)
+IF bCmdMarcha AND Interlock THEN
+	IF (Aux_Status=16#0050 OR Aux_Status =16#0060 OR Aux_Status =16#0080) THEN
+		wControl:=16#0006;	
+	END_IF
+	IF Aux_Status=16#0031  THEN
+		wControl:=16#0007;	
+	END_IF
+	IF Aux_Status=16#0033  THEN
+		IF bReverse THEN	
+			wControl:=16#080F;
+		ELSE	
+			wControl:=16#000F;
+		END_IF
+	END_IF	
+END_IF
+
+(*Secuencia Parada*)
+IF  (NOT bCmdMarcha OR NOT Interlock) AND Aux_Status=16#0037 THEN
+	IF bParada_Quick THEN
+		wControl:=16#0002;//quick	
+		ELSE
+		wControl:=16#0007;//normal
+	END_IF
+END_IF 
+
+(*Deshabilita tension*)
+IF  Aux_Status=16#0017 THEN
+	wControl:=16#0000;
+END_IF 
+
+(*Aviso Falla*)
+IF (Aux_Status=16#0008 OR Aux_Status=16#0028 OR Aux_Status=16#000F OR Aux_Status=16#0038 OR Aux_Status=16#002F OR Aux_Status=16#0018 ) THEN
+	bAlr:=1;
+	ELSE
+	bAlr:=0;	
+	END_IF
+	
+(*Reset Falla*)
+(*Estado*)
+IF (Aux_Status=16#0037) THEN
+	bEnMarcha:=1;
+	
+ELSE
+	bEnMarcha:=0;	
+END_IF
+
+//Motor rodando
+TON_Horimetro(IN:= bEnMarcha AND NOT TON_Horimetro.Q, PT:=T#1M);
+IF TON_Horimetro.Q THEN
+	TempoFuncionando := TempoFuncionando + 1;
+END_IF
+
+//Quantidade de acionamentos
+RTRIG_Funcionamento(CLK:=bEnMarcha);
+IF RTRIG_Funcionamento.Q THEN
+	Acionamentos := Acionamentos + 1;
+END_IF
+
+//Reset contadores
+IF ResetContadores THEN
+	Acionamentos		:= 0;
+	TempoFuncionando	:= 0;
+	ResetContadores		:= FALSE;
+END_IF
+
+
+(***********************************************************************Tratamiento SDO*)
+]]></ST>
+    </Implementation>
+    <LineIds Name="Equipo_Motor_ATV320">
+      <LineId Id="39" Count="2" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="117" Count="0" />
+      <LineId Id="137" Count="0" />
+      <LineId Id="139" Count="0" />
+      <LineId Id="116" Count="0" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="193" Count="0" />
+      <LineId Id="81" Count="0" />
+      <LineId Id="10" Count="1" />
+      <LineId Id="62" Count="1" />
+      <LineId Id="65" Count="0" />
+      <LineId Id="67" Count="1" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="70" Count="0" />
+      <LineId Id="94" Count="3" />
+      <LineId Id="93" Count="0" />
+      <LineId Id="69" Count="0" />
+      <LineId Id="64" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="73" Count="1" />
+      <LineId Id="165" Count="0" />
+      <LineId Id="167" Count="1" />
+      <LineId Id="166" Count="0" />
+      <LineId Id="75" Count="0" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="77" Count="1" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="79" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="84" Count="3" />
+      <LineId Id="83" Count="0" />
+      <LineId Id="88" Count="0" />
+      <LineId Id="19" Count="1" />
+      <LineId Id="32" Count="1" />
+      <LineId Id="220" Count="0" />
+      <LineId Id="35" Count="2" />
+      <LineId Id="222" Count="0" />
+      <LineId Id="221" Count="0" />
+      <LineId Id="223" Count="0" />
+      <LineId Id="227" Count="2" />
+      <LineId Id="231" Count="0" />
+      <LineId Id="230" Count="0" />
+      <LineId Id="232" Count="0" />
+      <LineId Id="235" Count="2" />
+      <LineId Id="239" Count="0" />
+      <LineId Id="238" Count="0" />
+      <LineId Id="240" Count="1" />
+      <LineId Id="244" Count="1" />
+      <LineId Id="242" Count="0" />
+      <LineId Id="233" Count="0" />
+      <LineId Id="224" Count="0" />
+      <LineId Id="21" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

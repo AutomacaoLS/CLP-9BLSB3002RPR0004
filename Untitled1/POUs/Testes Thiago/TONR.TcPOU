@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.13">
+  <POU Name="TONR" Id="{d48ade7d-e971-4105-9d02-cf454cc1e5ef}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK TONR
+VAR_INPUT
+    EN: BOOL; // timer enable
+    PRE: TIME; // preset time
+    RES: BOOL; // reset signal
+END_VAR
+VAR_OUTPUT
+    DN: BOOL; // timer done
+    ACC: TIME; // accumulated time
+    TT: BOOL; // timer timing
+END_VAR
+VAR
+    Timer: TON;
+    TempAcc: TIME;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[ACC := TempAcc + Timer.ET;
+DN := (ACC >= PRE);
+
+IF NOT EN OR DN THEN
+    TempAcc := TempAcc + Timer.ET;
+END_IF
+
+IF RES THEN
+    ACC := T#0MS;
+    TempAcc := T#0MS;
+END_IF
+
+Timer(IN:=EN AND NOT DN AND NOT RES, PT:=T#2147483647MS);
+
+TT := Timer.IN;]]></ST>
+    </Implementation>
+    <LineIds Name="TONR">
+      <LineId Id="23" Count="13" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

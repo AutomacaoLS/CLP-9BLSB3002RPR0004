@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.13">
+  <DUT Name="stReceta_Polvo" Id="{019dc3a0-b71b-471f-b46e-174b868a23d0}">
+    <Declaration><![CDATA[TYPE stReceta_Polvo :
+STRUCT
+	Paso		:INT  := 0;
+	Demora		:DINT := 0;//seg
+	Inyeccion	:DINT := 0;//seg
+	Dosis		:REAL := 0;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

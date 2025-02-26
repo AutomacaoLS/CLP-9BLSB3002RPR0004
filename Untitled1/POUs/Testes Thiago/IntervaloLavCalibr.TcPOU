@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <POU Name="IntervaloLavCalibr" Id="{25666d94-579e-4ac7-a152-c4150ffbbcf1}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM IntervaloLavCalibr
+VAR PERSISTENT
+	IntervaloLavagem	:UDINT;	//Intervalo entre lavagens - Vem da IHM (h)
+	AlarmeLavagem		:BOOL;	//Alguma linha excedeu o tempo de lavagem
+	LinhaLavagem		:INT;	//Linha que excedeu o tempo de lavagem
+	
+	IntervaloCalibracao	:UDINT;	//Intervalo entre calibrações - Vem da IHM (h)
+	AlarmeCalibracao	:BOOL;	//Alguma linha excedeu o tempo de calibração
+	LinhaCalibracao		:INT;	//Linha que excedeu o tempo de calibração
+	
+END_VAR
+
+VAR
+	
+	teste:LINT;
+	teste2:LINT;
+	TOF_Alarme: TOF;
+	TOF_Calibracao: TOF;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Essa rotina verifica se alguma calibração ou lavagem excedeu o tempo definido, subindo um alarme na IHM
+
+//Verifica se alguma linha escedeu o intervalo entre lavagens. A primeira detectada, gera um alarme na IHM
+TOF_Alarme(IN:= AlarmeLavagem, PT:= T#1S, Q=> , ET=> );	//Temporizador para garantir que a IHM conseguirá detectar a borda de subida do alarme
+TOF_Calibracao(IN:= AlarmeCalibracao, PT:= T#1S, Q=> , ET=> );	//Temporizador para garantir que a IHM conseguirá detectar a borda de subida do alarme
+
+{Region "Alarmes da lavagem}
+	AlarmeLavagem := FALSE;	//Inicia a variável
+	IF (DT_TO_LINT(Main.HoraAtual) - Liquidos.UltimoAlrLavagem[1]) > IntervaloLavagem * 3600 THEN
+		Liquidos.UltimoAlrLavagem[1] := DT_TO_LINT(Main.HoraAtual) + (IntervaloLavagem * 360); 
+		AlarmeLavagem := TRUE;
+		LinhaLavagem := 1;
+			
+	ELSIF (DT_TO_LINT(Main.HoraAtual) - Liquidos.UltimoAlrLavagem[2]) > IntervaloLavagem * 3600 THEN
+		Liquidos.UltimoAlrLavagem[2] := DT_TO_LINT(Main.HoraAtual) + (IntervaloLavagem * 360);
+		AlarmeLavagem := TRUE;
+		LinhaLavagem := 2;	
+			
+	ELSIF (DT_TO_LINT(Main.HoraAtual) - Liquidos.UltimoAlrLavagem[3]) > IntervaloLavagem * 3600 THEN
+		Liquidos.UltimoAlrLavagem[3] := DT_TO_LINT(Main.HoraAtual) + (IntervaloLavagem * 360);
+		AlarmeLavagem := TRUE;
+		LinhaLavagem := 3;	
+			
+	ELSIF (DT_TO_LINT(Main.HoraAtual) - Liquidos.UltimoAlrLavagem[4]) > IntervaloLavagem * 3600 THEN
+		Liquidos.UltimoAlrLavagem[4] := DT_TO_LINT(Main.HoraAtual) + (IntervaloLavagem * 360);
+		AlarmeLavagem := TRUE;
+		LinhaLavagem := 4;	
+			
+	ELSIF (DT_TO_LINT(Main.HoraAtual) - Liquidos.UltimoAlrLavagem[5]) > IntervaloLavagem * 3600 THEN
+		Liquidos.UltimoAlrLavagem[5] := DT_TO_LINT(Main.HoraAtual) + (IntervaloLavagem * 360);
+		AlarmeLavagem := TRUE;
+		LinhaLavagem := 5;	
+			
+	ELSIF (DT_TO_LINT(Main.HoraAtual) - Liquidos.UltimoAlrLavagem[6]) > IntervaloLavagem * 3600 THEN
+		Liquidos.UltimoAlrLavagem[6] := DT_TO_LINT(Main.HoraAtual) + (IntervaloLavagem * 360);
+		AlarmeLavagem := TRUE;
+		LinhaLavagem := 6;	
+			
+	ELSIF (DT_TO_UDINT(Main.HoraAtual) - Liquidos.UltimoAlrLavagem[7]) > IntervaloLavagem * 3600 THEN
+		Liquidos.UltimoAlrLavagem[7] := DT_TO_LINT(Main.HoraAtual) + (IntervaloLavagem * 360);
+		AlarmeLavagem := TRUE;
+		LinhaLavagem := 7;	
+			
+	ELSIF (DT_TO_UDINT(Main.HoraAtual) - Liquidos.UltimoAlrLavagem[8]) > IntervaloLavagem * 3600 THEN
+		Liquidos.UltimoAlrLavagem[8] := DT_TO_LINT(Main.HoraAtual) + (IntervaloLavagem * 360);
+		AlarmeLavagem := TRUE;
+		LinhaLavagem := 8;	
+			
+	ELSIF (DT_TO_LINT(Main.HoraAtual) - Liquidos.UltimoAlrLavagem[9]) > IntervaloLavagem * 3600 THEN
+		Liquidos.UltimoAlrLavagem[9] := DT_TO_LINT(Main.HoraAtual) + (IntervaloLavagem * 360);
+		AlarmeLavagem := TRUE;
+		LinhaLavagem := 9;	
+			
+	ELSIF (DT_TO_LINT(Main.HoraAtual) - Liquidos.UltimoAlrLavagem[10]) > IntervaloLavagem * 3600 THEN
+		Liquidos.UltimoAlrLavagem[10] := DT_TO_LINT(Main.HoraAtual) + (IntervaloLavagem * 360);
+		AlarmeLavagem := TRUE;
+		LinhaLavagem := 10;	
+			
+	ELSIF (DT_TO_LINT(Main.HoraAtual) - Liquidos.UltimoAlrLavagem[11]) > IntervaloLavagem * 3600 THEN
+		Liquidos.UltimoAlrLavagem[11] := DT_TO_LINT(Main.HoraAtual) + (IntervaloLavagem * 360);
+		AlarmeLavagem := TRUE;
+		LinhaLavagem := 11;
+				
+	ELSIF (DT_TO_LINT(Main.HoraAtual) - Liquidos.UltimoAlrLavagem[12]) > IntervaloLavagem * 3600 THEN
+		Liquidos.UltimoAlrLavagem[12] := DT_TO_LINT(Main.HoraAtual) + (IntervaloLavagem * 360);
+		AlarmeLavagem := TRUE;
+		LinhaLavagem := 12;
+	END_IF
+{endregion}
+
+teste2 := DT_TO_LINT(Main.HoraAtual);
+teste := (DT_TO_LINT(Main.HoraAtual) - HMI.UltimoAlrCalibr[1]);
+{Region "Alarmes da calibração"}
+	AlarmeCalibracao := FALSE;
+	IF DT_TO_UDINT(Main.HoraAtual) - HMI.UltimoAlrCalibr[1] > IntervaloCalibracao * 3600 THEN
+		HMI.UltimoAlrCalibr[1] := DT_TO_LINT(Main.HoraAtual) + (IntervaloCalibracao * 360);	//Se o alarme subir e a linha não for calibrada, o alarme subirá após 1/10 do intervalo
+		AlarmeCalibracao := TRUE;
+		LinhaCalibracao := 1;
+	ELSIF DT_TO_UDINT(Main.HoraAtual) - HMI.UltimoAlrCalibr[2] > IntervaloCalibracao * 3600 THEN
+		HMI.UltimoAlrCalibr[2] := DT_TO_LINT(Main.HoraAtual) + (IntervaloCalibracao * 360);	//Se o alarme subir e a linha não for calibrada, o alarme subirá após 1/10 do intervalo
+		AlarmeCalibracao := TRUE;
+		LinhaCalibracao := 2;
+	ELSIF DT_TO_UDINT(Main.HoraAtual) - HMI.UltimoAlrCalibr[3] > IntervaloCalibracao * 3600 THEN
+		HMI.UltimoAlrCalibr[3] := DT_TO_LINT(Main.HoraAtual) + (IntervaloCalibracao * 360);	//Se o alarme subir e a linha não for calibrada, o alarme subirá após 1/10 do intervalo
+		AlarmeCalibracao := TRUE;
+		LinhaCalibracao := 3;
+	ELSIF DT_TO_UDINT(Main.HoraAtual) - HMI.UltimoAlrCalibr[4] > IntervaloCalibracao * 3600 THEN
+		HMI.UltimoAlrCalibr[4] := DT_TO_LINT(Main.HoraAtual) + (IntervaloCalibracao * 360);	//Se o alarme subir e a linha não for calibrada, o alarme subirá após 1/10 do intervalo
+		AlarmeCalibracao := TRUE;
+		LinhaCalibracao := 4;
+	ELSIF DT_TO_UDINT(Main.HoraAtual) - HMI.UltimoAlrCalibr[5] > IntervaloCalibracao * 3600 THEN
+		HMI.UltimoAlrCalibr[5] := DT_TO_LINT(Main.HoraAtual) + (IntervaloCalibracao * 360);	//Se o alarme subir e a linha não for calibrada, o alarme subirá após 1/10 do intervalo
+		AlarmeCalibracao := TRUE;
+		LinhaCalibracao := 5;
+	ELSIF DT_TO_UDINT(Main.HoraAtual) - HMI.UltimoAlrCalibr[6] > IntervaloCalibracao * 3600 THEN
+		HMI.UltimoAlrCalibr[6] := DT_TO_LINT(Main.HoraAtual) + (IntervaloCalibracao * 360);	//Se o alarme subir e a linha não for calibrada, o alarme subirá após 1/10 do intervalo
+		AlarmeCalibracao := TRUE;
+		LinhaCalibracao := 6;
+	ELSIF DT_TO_UDINT(Main.HoraAtual) - HMI.UltimoAlrCalibr[7] > IntervaloCalibracao * 3600 THEN
+		HMI.UltimoAlrCalibr[7] := DT_TO_LINT(Main.HoraAtual) + (IntervaloCalibracao * 360);	//Se o alarme subir e a linha não for calibrada, o alarme subirá após 1/10 do intervalo
+		AlarmeCalibracao := TRUE;
+		LinhaCalibracao := 7;
+	ELSIF DT_TO_UDINT(Main.HoraAtual) - HMI.UltimoAlrCalibr[8] > IntervaloCalibracao * 3600 THEN
+		HMI.UltimoAlrCalibr[8] := DT_TO_LINT(Main.HoraAtual) + (IntervaloCalibracao * 360);	//Se o alarme subir e a linha não for calibrada, o alarme subirá após 1/10 do intervalo
+		AlarmeCalibracao := TRUE;
+		LinhaCalibracao := 8;
+	ELSIF DT_TO_UDINT(Main.HoraAtual) - HMI.UltimoAlrCalibr[9] > IntervaloCalibracao * 3600 THEN
+		HMI.UltimoAlrCalibr[9] := DT_TO_LINT(Main.HoraAtual) + (IntervaloCalibracao * 360);	//Se o alarme subir e a linha não for calibrada, o alarme subirá após 1/10 do intervalo
+		AlarmeCalibracao := TRUE;
+		LinhaCalibracao := 9;
+	ELSIF DT_TO_UDINT(Main.HoraAtual) - HMI.UltimoAlrCalibr[10] > IntervaloCalibracao * 3600 THEN
+		HMI.UltimoAlrCalibr[10] := DT_TO_LINT(Main.HoraAtual) + (IntervaloCalibracao * 360);	//Se o alarme subir e a linha não for calibrada, o alarme subirá após 1/10 do intervalo
+		AlarmeCalibracao := TRUE;
+		LinhaCalibracao := 10;
+	ELSIF DT_TO_UDINT(Main.HoraAtual) - HMI.UltimoAlrCalibr[11] > IntervaloCalibracao * 3600 THEN
+		HMI.UltimoAlrCalibr[11] := DT_TO_LINT(Main.HoraAtual) + (IntervaloCalibracao * 360);	//Se o alarme subir e a linha não for calibrada, o alarme subirá após 1/10 do intervalo
+		AlarmeCalibracao := TRUE;
+		LinhaCalibracao := 11;
+	ELSIF DT_TO_UDINT(Main.HoraAtual) - HMI.UltimoAlrCalibr[12] > IntervaloCalibracao * 3600 THEN
+		HMI.UltimoAlrCalibr[12] := DT_TO_LINT(Main.HoraAtual) + (IntervaloCalibracao * 360);	//Se o alarme subir e a linha não for calibrada, o alarme subirá após 1/10 do intervalo
+		AlarmeCalibracao := TRUE;
+		LinhaCalibracao := 12;
+	END_IF
+{endregion}
+
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="IntervaloLavCalibr">
+      <LineId Id="77" Count="0" />
+      <LineId Id="98" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="205" Count="1" />
+      <LineId Id="99" Count="1" />
+      <LineId Id="213" Count="1" />
+      <LineId Id="331" Count="0" />
+      <LineId Id="215" Count="3" />
+      <LineId Id="332" Count="0" />
+      <LineId Id="219" Count="3" />
+      <LineId Id="337" Count="0" />
+      <LineId Id="223" Count="3" />
+      <LineId Id="336" Count="0" />
+      <LineId Id="227" Count="3" />
+      <LineId Id="335" Count="0" />
+      <LineId Id="231" Count="3" />
+      <LineId Id="334" Count="0" />
+      <LineId Id="235" Count="3" />
+      <LineId Id="333" Count="0" />
+      <LineId Id="239" Count="3" />
+      <LineId Id="342" Count="0" />
+      <LineId Id="243" Count="3" />
+      <LineId Id="341" Count="0" />
+      <LineId Id="247" Count="3" />
+      <LineId Id="340" Count="0" />
+      <LineId Id="251" Count="3" />
+      <LineId Id="339" Count="0" />
+      <LineId Id="255" Count="3" />
+      <LineId Id="338" Count="0" />
+      <LineId Id="259" Count="1" />
+      <LineId Id="212" Count="0" />
+      <LineId Id="211" Count="0" />
+      <LineId Id="330" Count="0" />
+      <LineId Id="329" Count="0" />
+      <LineId Id="208" Count="0" />
+      <LineId Id="204" Count="0" />
+      <LineId Id="210" Count="0" />
+      <LineId Id="261" Count="0" />
+      <LineId Id="302" Count="0" />
+      <LineId Id="262" Count="0" />
+      <LineId Id="268" Count="1" />
+      <LineId Id="312" Count="0" />
+      <LineId Id="270" Count="2" />
+      <LineId Id="311" Count="0" />
+      <LineId Id="273" Count="2" />
+      <LineId Id="310" Count="0" />
+      <LineId Id="276" Count="2" />
+      <LineId Id="309" Count="0" />
+      <LineId Id="279" Count="2" />
+      <LineId Id="308" Count="0" />
+      <LineId Id="282" Count="2" />
+      <LineId Id="307" Count="0" />
+      <LineId Id="285" Count="2" />
+      <LineId Id="306" Count="0" />
+      <LineId Id="288" Count="2" />
+      <LineId Id="305" Count="0" />
+      <LineId Id="291" Count="2" />
+      <LineId Id="304" Count="0" />
+      <LineId Id="294" Count="2" />
+      <LineId Id="303" Count="0" />
+      <LineId Id="297" Count="2" />
+      <LineId Id="313" Count="0" />
+      <LineId Id="300" Count="0" />
+      <LineId Id="265" Count="0" />
+      <LineId Id="263" Count="0" />
+      <LineId Id="209" Count="0" />
+      <LineId Id="203" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="75" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

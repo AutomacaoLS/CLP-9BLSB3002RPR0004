@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="u_RPM" Id="{fc1a67b6-95ff-41ad-88ee-0fc69eeace08}">
+    <Declaration><![CDATA[TYPE u_RPM :
+UNION
+	rpm: ARRAY[0..1] OF BYTE;
+	iRpm			:INT;
+END_UNION
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

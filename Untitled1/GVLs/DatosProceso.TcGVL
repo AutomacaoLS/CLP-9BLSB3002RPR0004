@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <GVL Name="DatosProceso" Id="{ce2be73f-c62d-494f-bbd5-960fb5d5e5f4}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL PERSISTENT
+	CargarLote		:BOOL;		//Carrega lote
+	Kg_a_Procesar	:REAL;		//Quantidade total de semente a ser tratada
+	NomeLote		:STRING;	//Nome ou número do lote
+	LoteCargado		:BOOL;		//Lote carregado
+	KgLote_Procesados	:REAL;	//Quantidade de semente tratada
+	ConsumoCircuito_1	:REAL;	//Consumo de liquido do circuito 1
+	ConsumoCircuito_2	:REAL;	//Consumo de liquido do circuito 2
+	ConsumoCircuito_3	:REAL;	//Consumo de liquido do circuito 3
+	ConsumoCircuito_4	:REAL;	//Consumo de liquido do circuito 4
+	ConsumoCircuito_5	:REAL;	//Consumo de liquido do circuito 5
+	ConsumoCircuito_6	:REAL;	//Consumo de liquido do circuito 6
+	ConsumoCircuito_7	:REAL;	//Consumo de liquido do circuito 7
+	ConsumoCircuito_8	:REAL;	//Consumo de liquido do circuito 8
+	ConsumoCircuito_9	:REAL;	//Consumo de liquido do circuito 9
+	ConsumoCircuito_10	:REAL;	//Consumo de liquido do circuito 10
+	ConsumoCircuito_11	:REAL;	//Consumo de liquido do circuito 11
+	ConsumoCircuito_12	:REAL;	//Consumo de liquido do circuito 12
+	ConsumoPolvo_1		:REAL;	//Consumo de pó 1
+	ConsumoPolvo_2		:REAL;	//Consumo de pó 2 
+	TempoRestante		:REAL;	//Aproximação do tempo restante para tratar toda a semente do lote
+	TempoTratamento		:UDINT;	//Tempo decorrido do tratamento atual
+	TempoTotal			:REAL;	//Tempo total do tratamento
+	InicioTratamento	:UDINT;	//DAta e hora do inicio do tratamento atual
+	
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

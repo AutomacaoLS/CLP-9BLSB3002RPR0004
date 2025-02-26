@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <GVL Name="SafetyInputs" Id="{61683fca-1941-435b-a633-a7be1d796897}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	//Essa GVL é para os sensores de porta da tratadora
+	
+	//Entradas da régua TR_2
+	TR2_E1_CH01 AT %I*	:BOOL;	//Tampa frontal da balança
+	TR2_E1_CH02 AT %I*	:BOOL;
+	TR2_E2_CH01 AT %I*	:BOOL;	//Tampa traseira da balança
+	TR2_E2_CH02 AT %I*	:BOOL;
+	TR2_E3_CH01 AT %I*	:BOOL;	//Tampa esquerda da balança
+	TR2_E3_CH02 AT %I*	:BOOL;
+	TR2_E4_CH01 AT %I*	:BOOL;	//Tampa direita da balança
+	TR2_E4_CH02 AT %I*	:BOOL;
+	
+		//Entradas da régua TR_2
+	TR3_E1_CH01 AT %I*	:BOOL;	//Tampa frontal inferior da balança
+	TR3_E1_CH02 AT %I*	:BOOL;
+	TR3_E2_CH01 AT %I*	:BOOL;	//Tampa traseira inferior da balança
+	TR3_E2_CH02 AT %I*	:BOOL;
+	TR3_E3_CH01 AT %I*	:BOOL;	//Tampas do homogeneizador
+	TR3_E3_CH02 AT %I*	:BOOL;
+	TR3_E4_CH01 AT %I*	:BOOL;	//Tampa da porta de inspeção da descarga
+	TR3_E4_CH02 AT %I*	:BOOL;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

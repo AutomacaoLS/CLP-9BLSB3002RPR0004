@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.13">
+  <POU Name="Calculo_caudal" Id="{862aec22-93a2-40c2-89dd-4fe5de6dcf58}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK Calculo_caudal
+VAR_INPUT
+	Dosis			:REAL;//ml cada 100Kg
+	TiempoInyeccion	:REAL;//segundos
+	Peso			:REAL;//en Kg
+END_VAR
+VAR_OUTPUT
+	SetCaudal	:REAL;//ml/s
+	Volumen	:REAL;//ml
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Volumen:=Dosis*Peso/100;
+IF TiempoInyeccion=0 THEN
+	TiempoInyeccion:=1;
+END_IF
+SetCaudal:=Volumen/TiempoInyeccion;]]></ST>
+    </Implementation>
+    <LineIds Name="Calculo_caudal">
+      <LineId Id="21" Count="0" />
+      <LineId Id="23" Count="2" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="Porc_inicial_Bomba" Id="{3ec0d559-6418-4e37-8c57-5a4fd3b348ba}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION Porc_inicial_Bomba : BOOL
+VAR_INPUT
+	Caudal_SP:REAL;
+	Caudal_Nominal:REAL;
+END_VAR
+VAR_OUTPUT
+	PorcInicial:REAL;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF Caudal_Nominal=0 THEN
+	Caudal_Nominal:=1;
+END_IF
+PorcInicial:=(Caudal_SP/Caudal_Nominal)*100.0*1.0;
+]]></ST>
+    </Implementation>
+    <LineIds Name="Porc_inicial_Bomba">
+      <LineId Id="15" Count="2" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="14" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

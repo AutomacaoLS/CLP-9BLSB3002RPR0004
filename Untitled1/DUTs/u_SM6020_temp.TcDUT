@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="u_SM6020_temp" Id="{ea5a7fa2-edaa-4f26-9d8f-f24e0403f695}">
+    <Declaration><![CDATA[TYPE u_SM6020_temp :
+UNION
+	temp	:ARRAY[0..1] OF BYTE;
+	itemp			:INT;
+END_UNION
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

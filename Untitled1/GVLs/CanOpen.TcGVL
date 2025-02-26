@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <GVL Name="CanOpen" Id="{19b84136-68f9-482b-b40f-687f26e5e121}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	TR_P2_WT2_rValue_REAL: REAL;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

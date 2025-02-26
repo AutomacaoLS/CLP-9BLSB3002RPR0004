@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="Calc_Veloc_Polvo" Id="{4cacffe3-debf-41c7-952d-609ddc29c72e}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK Calc_Veloc_Polvo
+VAR_INPUT
+	Dosis:REAL;//gr/100 Kg
+	Peso:REAL;// 100 Kg
+	TiempoInyeccion:DINT;// seg
+	CoefConversion:REAL;
+END_VAR
+VAR_OUTPUT
+	Caudal:REAL;//grs/seg
+	Veloc:REAL;//
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF TiempoInyeccion=0 THEN
+	TiempoInyeccion:=1;
+END_IF
+Caudal:= Dosis * Peso/100 / DINT_TO_REAL (TiempoInyeccion);
+Veloc:=Caudal*CoefConversion;]]></ST>
+    </Implementation>
+    <LineIds Name="Calc_Veloc_Polvo">
+      <LineId Id="17" Count="2" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="15" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

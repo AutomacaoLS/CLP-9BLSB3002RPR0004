@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <POU Name="Filtro" Id="{06e7fbb2-e038-45fb-a9df-a42eac37f878}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION Filtro : REAL
+VAR_INPUT
+	Input:REAL;	//Entrada do sensor
+	Tempo:DINT := 500;	//Tempo de amostragem
+END_VAR
+VAR
+	Amostras:ARRAY[1..50] OF REAL;
+	TON_Amostras:TON;
+	i		:INT;	//Variável de iteração do FOR
+	Soma 	:REAL;	//Somatório dos valores do array
+	Teste: INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[TON_Amostras(IN := NOT TON_Amostras.Q, PT:=DINT_TO_TIME(Tempo));
+
+IF TON_Amostras.Q THEN
+	//Faz o shift do array
+	FOR i := 1 TO 49 DO
+		Amostras[i] := Amostras[i + 1];
+	END_FOR
+	
+	//Insere a leitura do sensor na última posição
+	Amostras[50] := Input;
+	
+	//Soma os valores do array
+	Soma := 0;
+	FOR i := 1 TO 50 DO
+		Soma := Soma + Amostras[i];
+	END_FOR
+	
+	Filtro := Soma / 50;
+	
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="Filtro">
+      <LineId Id="7" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="16" Count="1" />
+      <LineId Id="22" Count="1" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="24" Count="1" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="26" Count="2" />
+      <LineId Id="31" Count="1" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="15" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

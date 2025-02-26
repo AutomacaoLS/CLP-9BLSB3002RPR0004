@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.13">
+  <POU Name="Tiempo_seg_to_TIME" Id="{3d19ffec-ff6c-4f1e-ab3a-5f39171c04c8}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK Tiempo_seg_to_TIME
+VAR_INPUT
+	Segundos:REAL;
+END_VAR
+VAR_OUTPUT
+	tTime:TIME;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[tTIME:=REAL_TO_TIME (Segundos*1000);]]></ST>
+    </Implementation>
+    <LineIds Name="Tiempo_seg_to_TIME">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

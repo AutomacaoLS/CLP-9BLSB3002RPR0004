@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.13">
+  <DUT Name="RecetaEdicion" Id="{39cb612e-7540-4a79-baed-962227bc3cfc}">
+    <Declaration><![CDATA[TYPE RecetaEdicion :
+STRUCT
+	Nombre:STRING;
+	SetTmrHomogenizado :DINT := 0;
+	SetTmrDescarga		:DINT := 0;
+	SetVelocHomogenizado:REAL := 0;// %
+	SetVelocDescarga:REAL := 0;// %
+	SetCircuitosLiq	:ARRAY [1..12] OF stReceta_Circuito;
+	SetCircuitosPo	:ARRAY [1..4] OF stReceta_Polvo;
+	SetTiempoTotal:REAL;		
+END_STRUCT
+
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

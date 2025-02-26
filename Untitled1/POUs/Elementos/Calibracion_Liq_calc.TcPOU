@@ -1,0 +1,300 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <POU Name="Calibracion_Liq_calc" Id="{3e1d5bab-621f-4913-a9a3-a2fe196829d6}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK Calibracion_Liq_calc
+VAR_INPUT
+	Dosis :REAL;			//Dose a cada 100 kg
+	PesoSemilla:REAL;		//Peso da batelada a ser tratada
+	TiempoInyectado:DINT;	//Tempo de injeção
+	Tolerancia:REAL;		//Tolerância ao erro
+	PesoBalanza:REAL;
+	PesoEspec:REAL;
+	TiempoIny:DINT;
+	Vol_Probeta:REAL;
+	Pausa:BOOL;
+	
+END_VAR
+VAR_OUTPUT
+	Error_promedio:REAL;	//Erro médio
+	Dosificar:BOOL;			//Fazer dosagem
+	mlProbeta:REAL;
+
+	
+END_VAR
+VAR_IN_OUT
+	ml:ARRAY [1..3] OF REAL;
+	Tiempo:ARRAY [1..3] OF DINT;
+	InicioCal:BOOL;		
+	Continuar:BOOL;
+	Tarar:BOOL;
+	mlPedido:REAL;		//mL que deve ter no recipiente ao final da injeção
+	Offset	:REAL;
+	Inyectar:BOOL;
+	Probeta_Llena:BOOL;
+	Finalizado:BOOL;
+END_VAR
+VAR
+	Cant_cal_ok:INT;
+	trigger:BOOL;
+	posicion:INT;
+	mlMedido:REAL;
+	Aux_tiempo_iny:DINT;
+	toleSup:REAL;	//Limite superior considerando o erro
+	toleInf:REAL;	//Limite inferior considerando o erro
+	sc_L:BOOL;
+	aux_offset:REAL;
+	aux_offset_correc:REAL;
+	TON_3:TON;
+	clock:BOOL;
+	T_PesoBal:ARRAY [1..3] OF REAL;
+	PesoBal:REAL;
+	Prom_T_PesoBal:REAL;
+	ET_clock:TIME;
+	fbInicioCal:R_TRIG;
+
+	Inyectando: BOOL;
+	fbTmrCalculo:TON;
+	fbCalcular:F_TRIG;
+	Corregir:BOOL;
+	fbTarar:TON;
+	TaraOk:BOOL;
+	Vol_enProbeta:REAL;
+	Calcular:BOOL;
+	bProbetaLlena:F_TRIG;
+	bTaraOK:	F_TRIG;
+	bInyectar: F_TRIG;
+	bCalcular: R_TRIG;
+	tarando: BOOL;
+	Hug: BOOL;
+	FinCalculo: BOOL;
+	Calculando: BOOL;
+	Step: INT;
+	AuxVaciar: BOOL;
+END_VAR
+VAR PERSISTENT
+	UltimaCalibracao	:UDINT;	//ùltima calibração feita com sucesso - Está como udint para correta conversão na IHM
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+IF InicioCal AND step=0 THEN
+	Step:=1;
+END_IF
+IF NOT InicioCal  THEN
+	Step:=0;
+END_IF
+CASE Step OF
+	1:  //Inicializo variables y verifico valores peso semilla/dosis/tiempo inyeccion diferente de cero
+		//Verificação se o peso da semente, a dose e tempo de injeção não 0, se for, são setados para 1
+		IF PesoSemilla=0.0  THEN
+			PesoSemilla:=1;
+		END_IF
+		IF Dosis=0.0  THEN
+			Dosis:=1;
+		END_IF
+		IF TiempoIny=0  THEN
+			TiempoIny:=1;
+		END_IF
+		mlPedido	:= Dosis*PesoSemilla/100;
+		toleSup		:= mlPedido*(1.0+Tolerancia/100.0);
+		toleInf		:= mlPedido*(1.0-Tolerancia/100.0);
+		ml[1]		:= 0.0;
+		ml[2]		:= 0.0;
+		ml[3]		:= 0.0;
+		Tiempo[1]	:= 0;
+		Tiempo[2]	:= 0;
+		Tiempo[3]	:= 0;
+		mlProbeta	:= 0.0;
+		Finalizado	:= 0;
+		Tarar		:= TRUE;
+		tarando		:= 1;
+		Step		:= 2;
+		
+	2:  //
+		bProbetaLlena(ClK:=Probeta_Llena,Q=>AuxVaciar);
+		IF AuxVaciar THEN
+			mlProbeta	:=0;
+			AuxVaciar	:=0;
+		END_IF
+		IF NOT Probeta_Llena AND NOT Pausa THEN
+			Tarar	:= InicioCal;
+			tarando	:= InicioCal;
+		END_IF
+		fbTarar(IN:=(tarando),PT:=T#4S);
+		//bProbetaLlena(ClK:=Probeta_Llena,Q=>AuxVaciar);
+		//IF AuxVaciar THEN
+		//	mlProbeta:=0;
+		//	AuxVaciar:=0;
+		//END_IF
+		IF fbTarar.Q AND NOT Probeta_Llena AND NOT Pausa THEN
+		tarando:=0;
+		Inyectar:=1;
+		Step:=3;
+		END_IF
+	3:	//espera de tiempo para realizar calculo de lo dosificado
+		fbTmrCalculo (IN:=NOT Inyectar,PT:=T#6S);
+		IF fbTmrCalculo.Q THEN
+			Step:=4;
+		END_IF
+	4:	//calculo de los valores medidos
+		IF PesoEspec <> 0 THEN
+			mlMedido:=PesoBalanza/PesoEspec*1000;
+		ELSE
+			mlMedido := 0;
+		END_IF
+		
+		mlProbeta:=mlProbeta+mlMedido;
+		Aux_tiempo_iny:=TiempoInyectado;
+		IF ((1.1*mlPedido+mlProbeta)>Vol_Probeta) THEN
+			Probeta_Llena:=1;
+		END_IF
+	
+		FOR posicion:=3 TO 2 BY -1 DO
+			ml[posicion]:=ml[posicion-1];
+			Tiempo[posicion]:=tiempo[posicion-1];
+		END_FOR;
+		ml[1]:=mlMedido;
+		tiempo[1]:=Aux_tiempo_iny;
+	
+		IF ((mlMedido<toleInf) OR (mlMedido>toleSup)) THEN  //medicion fuera de tolerancia
+				//aux_offset:=(mlMedido-mlpedido)/mlPedido;
+				aux_offset:= SEL(mlPedido > 0, mlMedido , mlMedido/mlPedido);
+			
+			IF (aux_offset<=0.9) THEN
+				aux_offset_correc:=0.06;
+			END_IF;
+			
+			IF (aux_offset>0.9 AND aux_offset<1) THEN
+				aux_offset_correc:=0.01;
+			END_IF;	
+			
+			IF (aux_offset>1 AND aux_offset<1.1) THEN
+				aux_offset_correc:=-0.01;
+			END_IF;
+			
+			IF (aux_offset>=1.1) THEN
+				aux_offset_correc:=-0.06;
+			END_IF;
+	
+			Offset:=Offset+aux_offset_correc;
+			Cant_cal_ok:=0;
+			//Tarar:=InicioCal;
+			//tarando:=InicioCal;
+			Step:=2;
+		ELSE
+			Cant_cal_ok:=1+Cant_cal_ok;
+			//Tarar:=InicioCal;
+			//tarando:=InicioCal;
+			Step:=2;
+		END_IF
+END_CASE
+
+
+IF InicioCal AND Cant_cal_ok=3 THEN
+	//Verifica a hora da ultima calibração e escreve na variável da linha em questão
+	UltimaCalibracao := DT_TO_UDINT(MAIN.HoraAtual);
+	HMI.UltimasCalibracoes[HMI.iCircuito_a_calibrar]	:= UltimaCalibracao;
+	HMI.UltimoAlrCalibr[HMI.iCircuito_a_calibrar]		:= UltimaCalibracao;
+	
+	InicioCal	:=0;
+	tarando		:=0;
+	Finalizado	:=1;
+	Error_promedio :=((ABS ( (ml[1]-mlPedido))+ABS ( (ml[2]-mlPedido))+ABS ( (ml[3]-mlPedido)))/(3.0*mlPedido))*100.0;
+	Step	:=0;
+END_IF
+
+//reset valores finalizado
+IF NOT InicioCal THEN
+	Cant_cal_ok:=0;
+	Vol_enProbeta:=0.0;
+END_IF;
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="Calibracion_Liq_calc">
+      <LineId Id="318" Count="0" />
+      <LineId Id="584" Count="2" />
+      <LineId Id="619" Count="1" />
+      <LineId Id="618" Count="0" />
+      <LineId Id="355" Count="0" />
+      <LineId Id="503" Count="0" />
+      <LineId Id="693" Count="0" />
+      <LineId Id="616" Count="0" />
+      <LineId Id="504" Count="6" />
+      <LineId Id="500" Count="0" />
+      <LineId Id="511" Count="2" />
+      <LineId Id="515" Count="4" />
+      <LineId Id="514" Count="0" />
+      <LineId Id="522" Count="0" />
+      <LineId Id="591" Count="0" />
+      <LineId Id="523" Count="1" />
+      <LineId Id="520" Count="0" />
+      <LineId Id="606" Count="0" />
+      <LineId Id="521" Count="0" />
+      <LineId Id="617" Count="0" />
+      <LineId Id="609" Count="2" />
+      <LineId Id="608" Count="0" />
+      <LineId Id="612" Count="1" />
+      <LineId Id="615" Count="0" />
+      <LineId Id="614" Count="0" />
+      <LineId Id="607" Count="0" />
+      <LineId Id="594" Count="0" />
+      <LineId Id="596" Count="1" />
+      <LineId Id="599" Count="0" />
+      <LineId Id="598" Count="0" />
+      <LineId Id="526" Count="2" />
+      <LineId Id="530" Count="0" />
+      <LineId Id="529" Count="0" />
+      <LineId Id="531" Count="0" />
+      <LineId Id="621" Count="0" />
+      <LineId Id="532" Count="2" />
+      <LineId Id="536" Count="0" />
+      <LineId Id="764" Count="1" />
+      <LineId Id="767" Count="1" />
+      <LineId Id="766" Count="0" />
+      <LineId Id="622" Count="0" />
+      <LineId Id="537" Count="1" />
+      <LineId Id="581" Count="1" />
+      <LineId Id="580" Count="0" />
+      <LineId Id="539" Count="9" />
+      <LineId Id="600" Count="0" />
+      <LineId Id="552" Count="0" />
+      <LineId Id="554" Count="2" />
+      <LineId Id="1100" Count="2" />
+      <LineId Id="557" Count="0" />
+      <LineId Id="1103" Count="0" />
+      <LineId Id="558" Count="2" />
+      <LineId Id="1096" Count="0" />
+      <LineId Id="1098" Count="1" />
+      <LineId Id="1097" Count="0" />
+      <LineId Id="605" Count="0" />
+      <LineId Id="563" Count="3" />
+      <LineId Id="578" Count="0" />
+      <LineId Id="567" Count="3" />
+      <LineId Id="579" Count="0" />
+      <LineId Id="571" Count="0" />
+      <LineId Id="501" Count="0" />
+      <LineId Id="455" Count="0" />
+      <LineId Id="147" Count="0" />
+      <LineId Id="146" Count="0" />
+      <LineId Id="871" Count="0" />
+      <LineId Id="842" Count="0" />
+      <LineId Id="845" Count="0" />
+      <LineId Id="946" Count="0" />
+      <LineId Id="872" Count="0" />
+      <LineId Id="148" Count="0" />
+      <LineId Id="490" Count="0" />
+      <LineId Id="590" Count="0" />
+      <LineId Id="588" Count="0" />
+      <LineId Id="583" Count="0" />
+      <LineId Id="149" Count="0" />
+      <LineId Id="1020" Count="0" />
+      <LineId Id="331" Count="3" />
+      <LineId Id="330" Count="0" />
+      <LineId Id="329" Count="0" />
+      <LineId Id="165" Count="0" />
+      <LineId Id="162" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

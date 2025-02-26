@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.13">
+  <DUT Name="DUT_EventLogger" Id="{146d280a-3d3b-452d-bb4d-860a8deaa56f}">
+    <Declaration><![CDATA[TYPE DUT_EventLogger :
+STRUCT
+	ID:DINT;
+	Grupo:STRING;
+	Data:DT;
+	Hora:BYTE;
+	NomeUsuario:STRING;
+	Mensagem:STRING;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

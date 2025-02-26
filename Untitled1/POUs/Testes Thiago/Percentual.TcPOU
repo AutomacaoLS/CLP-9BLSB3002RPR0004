@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <POU Name="Percentual" Id="{4dde3a47-103e-40dc-a643-55cc975f94e9}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK Percentual
+VAR_INPUT
+	VAR_1:DINT;
+	VAR_2:DINT;
+END_VAR
+VAR_OUTPUT
+	OUTPUT:DINT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Retorna o valor percentual da variável 1 em relação a variável 2
+OUTPUT := SEL(VAR_2 > 0, 0,(VAR_1*100/VAR_2*100)/100);]]></ST>
+    </Implementation>
+    <LineIds Name="Percentual">
+      <LineId Id="5" Count="0" />
+      <LineId Id="11" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

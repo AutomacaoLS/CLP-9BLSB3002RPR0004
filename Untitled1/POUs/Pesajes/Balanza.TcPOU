@@ -1,0 +1,235 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <POU Name="Balanza" Id="{31561297-cf91-44d9-8598-dc2110d7e525}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK Balanza
+VAR_INPUT
+				(* process data IN*)
+	wStatus :WORD;
+	rValue_REAL  :REAL;
+	nValue_DINT  :DINT;
+	nValue_Supply :DINT;		(*only for voltage measurement, change PDO settings"*)
+	nValue_Bridge:DINT;		(*only for voltage measurement, change PDO settings"*)
+	stEcSlaveAmsNetAdr :ST_AmsAddr;
+	bWcState:BOOL;
+	wState:WORD;
+	bCmd_FullCalibration:BOOL;
+	bCmd_ZeroCalibration:BOOL;
+	bCmd_Tara:BOOL;
+	bCmd_LoadReference:BOOL;
+	fLoadReference	:REAL;
+
+END_VAR
+VAR_OUTPUT
+				(* process data OUT*)
+	wControl :WORD;
+END_VAR
+
+VAR
+
+	(* commands *)
+	bStartManualCalib:BOOL;
+	bDisableCalibration:BOOL:=TRUE;
+	bInputFreeze:BOOL;
+	bSampleMode:BOOL;
+	bTara:BOOL;
+
+	bCmd_TaraEEProm:BOOL;
+
+	sEcSlaveAmsNetAdr:T_AmsNetId;
+	rValue:REAL;
+	bOverrange, bDataInvalid, bError, bCalibrationInProgress, bSteadyState:BOOL;
+	bTxPDOToggle, bSyncError:BOOL;
+	sfFullCalibration:R_TRIG;
+	sfZeroCalibration:R_TRIG;
+	sfTara:R_TRIG;
+	sfTaraEEProm:R_TRIG;
+	fbCoE:FB_EcCoESdoWrite;
+	wCoeData:WORD;
+	sStatus, sSampleMode:STRING(100);
+	bTermError:BOOL;
+	nCntCalibrations:UDINT;
+	sfCalibInProgress:R_TRIG;
+	sfLoadReference:R_TRIG;
+	sfScaleFactor:R_TRIG;
+	rValueDiff, rValueL:REAL;
+	bActivateAutoInputFreeze:BOOL;
+	rInputFreezeTreshold:REAL:=10;
+	tofInputFreeze:TOF;
+	tInputFreeze:TIME:=t#50ms;
+	sfCntInputFreeze:R_TRIG;
+	nCntInputFreeze:UDINT;
+	rScaleFactor :REAL:=1.0;
+	bCmdScaleFactor:BOOL;
+
+
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*EP3356-0022)	para celdas de carga*)
+(*toma de datos*)
+bOverrange		:= wStatus.1;
+bDataInvalid	:= wStatus.3;
+bError			:= wStatus.6;
+bCalibrationInProgress := wStatus.7;
+bSteadyState	:= wStatus.8;
+bSyncError		:= wStatus.13;
+bTxPDOToggle	:= wStatus.15;
+
+(*triggers*)
+sfScaleFactor(CLK:=bCmdScaleFactor);
+sfZeroCalibration(CLK:=bCmd_ZeroCalibration);
+sfFullCalibration(CLK:=bCmd_FullCalibration);
+sfTara(CLK:=bCmd_Tara);
+sfTaraEEProm(CLK:=bCmd_TaraEEProm);
+sfLoadReference(CLK:=bCmd_LoadReference);
+
+(*value: Integer or Real value*)
+IF (rValue_REAL <> 0) THEN	(*select currently used input data*)
+	rValue := rValue_REAL;
+ELSIF (nValue_DINT <> 0) THEN
+	rValue := DINT_TO_REAL(nValue_DINT)/1000;
+ELSE
+	rValue := 0;
+END_IF
+
+(*status*)
+IF bWcState THEN
+	sStatus := 'Wc fail';
+	bTermError := TRUE;
+ELSIF NOT (wState.3) THEN
+	sStatus := 'Slave not in OP';
+	bTermError := TRUE;
+ELSIF bDataInvalid THEN
+	sStatus := 'DataInvalid';
+	bTermError := TRUE;
+ELSIF bError THEN
+	sStatus := 'Channel Error';
+	bTermError := TRUE;
+ELSIF bOverrange THEN
+	sStatus := 'Overrange';
+	bTermError := TRUE;
+ELSE
+	sStatus := 'ok';
+	bTermError := FALSE;
+END_IF
+
+	(*sample mode 0/1*)
+sSampleMode := SEL(bSampleMode, '0', '1');
+
+	(*count calibrations*)
+sfCalibInProgress(CLK:= bCalibrationInProgress, Q=> );
+nCntCalibrations := SEL(sfCalibInProgress.Q , nCntCalibrations, nCntCalibrations+ 1);
+
+	(*Coe parameter administration*)
+sEcSlaveAmsNetAdr := F_CreateAmsNetId(nIds:=stEcSlaveAmsNetAdr.netId );
+
+	(*test input freeze
+this lines are for a small demonstration of Input freeze: when difference of loadvalue, compared to last PLC cycle, is over rInputFreezeTreshold
+then InputFreeze is activated by tofInputFreeze for some time. See screenshot in documentation for further explanations*)
+rValueDiff := rValue - rValueL;
+rValueL := rValue;
+tofInputFreeze(IN:= bActivateAutoInputFreeze AND (ABS(rValueDiff) >rInputFreezeTreshold) , PT:= tInputFreeze, Q=> , ET=> );
+sfCntInputFreeze(CLK:= tofInputFreeze.Q , Q=> );
+nCntInputFreeze := SEL(sfCntInputFreeze.Q , nCntInputFreeze, nCntInputFreeze+ 1);
+
+(*++++++++++++++ comunicacion CoE  ++++++++++++++++++++++*)
+(* Scale factor*)
+fbCoE(
+	sNetId		:= sEcSlaveAmsNetAdr,
+	nSlaveAddr 	:= stEcSlaveAmsNetAdr.port,
+	nSubIndex 	:= 16#27,
+	nIndex 		:= 16#8000,
+	pSrcBuf 	:= ADR(rScaleFactor),
+	cbBufLen 	:= SIZEOF(rScaleFactor),
+	bExecute 	:= sfScaleFactor.Q,
+	tTimeout 	:= t#5s
+);
+
+wCoeData := 16#0101; (* Comando zerocalibration*)
+fbCoE(
+	sNetId		:= sEcSlaveAmsNetAdr,
+	nSlaveAddr 	:= stEcSlaveAmsNetAdr.port,
+	nSubIndex 	:= 16#01,
+	nIndex 		:= 16#FB00,
+	pSrcBuf 	:= ADR(wCoeData),
+	cbBufLen 	:= SIZEOF(wCoeData),
+	bExecute 	:= sfZeroCalibration.Q,
+	tTimeout 	:= t#5s
+);
+
+wCoeData := 16#0102; (* calibracion*)
+fbCoE(
+	sNetId		:= sEcSlaveAmsNetAdr,
+	nSlaveAddr 	:= stEcSlaveAmsNetAdr.port,
+	nSubIndex 	:= 16#01,
+	nIndex 		:= 16#FB00,
+	pSrcBuf 	:= ADR(wCoeData),
+	cbBufLen 	:= SIZEOF(wCoeData),
+	bExecute 	:= sfFullCalibration.Q,
+	tTimeout 	:= t#5s
+);
+
+wCoeData := 16#0001; (* tara*)
+fbCoE(
+	sNetId		:= sEcSlaveAmsNetAdr,
+	nSlaveAddr 	:= stEcSlaveAmsNetAdr.port,
+	nSubIndex 	:= 16#01,
+	nIndex 		:= 16#FB00,
+	pSrcBuf 	:= ADR(wCoeData),
+	cbBufLen 	:= SIZEOF(wCoeData),
+	bExecute 	:= sfTara.Q,
+	tTimeout 	:= t#5s
+);
+
+wCoeData := 16#0002; (* tara EEProm*)
+fbCoE(
+	sNetId		:= sEcSlaveAmsNetAdr,
+	nSlaveAddr 	:= stEcSlaveAmsNetAdr.port,
+	nSubIndex 	:= 16#01,
+	nIndex 		:= 16#FB00,
+	pSrcBuf 	:= ADR(wCoeData),
+	cbBufLen 	:= SIZEOF(wCoeData),
+	bExecute 	:= sfTaraEEProm.Q,
+	tTimeout 	:= t#5s
+);
+
+(* load reference*)
+fbCoE(
+	sNetId		:= sEcSlaveAmsNetAdr,
+	nSlaveAddr 	:= stEcSlaveAmsNetAdr.port,
+	nSubIndex 	:= 16#28,
+	nIndex 		:= 16#8000,
+	pSrcBuf 	:= ADR(fLoadReference),
+	cbBufLen 	:= SIZEOF(fLoadReference),
+	bExecute 	:= sfLoadReference.Q,
+	tTimeout 	:= t#5s
+);
+
+
+	(*output data to terminal*)
+wControl.0 := bStartManualCalib;
+wControl.1 := bDisableCalibration;
+wControl.2 := bInputFreeze OR tofInputFreeze.Q ;
+wControl.3 := bSampleMode;
+wControl.4 := bTara;]]></ST>
+    </Implementation>
+    <LineIds Name="Balanza">
+      <LineId Id="11" Count="0" />
+      <LineId Id="14" Count="7" />
+      <LineId Id="333" Count="0" />
+      <LineId Id="22" Count="1" />
+      <LineId Id="271" Count="0" />
+      <LineId Id="24" Count="2" />
+      <LineId Id="200" Count="0" />
+      <LineId Id="27" Count="50" />
+      <LineId Id="260" Count="9" />
+      <LineId Id="259" Count="0" />
+      <LineId Id="270" Count="0" />
+      <LineId Id="78" Count="46" />
+      <LineId Id="189" Count="10" />
+      <LineId Id="188" Count="0" />
+      <LineId Id="187" Count="0" />
+      <LineId Id="125" Count="5" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

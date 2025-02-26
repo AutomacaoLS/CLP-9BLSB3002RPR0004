@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <POU Name="VeloAspersorAuto" Id="{05032a6e-9f54-4020-9a75-d6ea9ff45677}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK VeloAspersorAuto
+VAR_INPUT
+	Inyeccion1:BOOL;
+	Inyeccion2:BOOL;	
+	Inyeccion3:BOOL;
+	Inyeccion4:BOOL;
+	Inyeccion5:BOOL;
+	Inyeccion6:BOOL;	
+	Inyeccion7:BOOL;
+	Inyeccion8:BOOL;
+	Inyeccion9:BOOL;
+	Inyeccion10:BOOL;	
+	Inyeccion11:BOOL;
+	Inyeccion12:BOOL;
+		
+END_VAR
+VAR_OUTPUT
+	Velocidad:REAL;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Velocidad:=0;
+IF Inyeccion1 THEN
+	IF Liquidos.TablaLiquidos[Liquidos.Circuito_Liquido[1]].iVelAspersor>Velocidad  THEN
+		Velocidad:=Liquidos.TablaLiquidos[Liquidos.Circuito_Liquido[1]].iVelAspersor;
+	END_IF
+END_IF
+IF Inyeccion2 THEN
+	IF Liquidos.TablaLiquidos[Liquidos.Circuito_Liquido[2]].iVelAspersor>Velocidad  THEN
+		Velocidad:=Liquidos.TablaLiquidos[Liquidos.Circuito_Liquido[2]].iVelAspersor; 
+	END_IF
+END_IF
+IF Inyeccion3 THEN
+	IF Liquidos.TablaLiquidos[Liquidos.Circuito_Liquido[3]].iVelAspersor>Velocidad  THEN
+		Velocidad:=Liquidos.TablaLiquidos[Liquidos.Circuito_Liquido[3]].iVelAspersor;
+	END_IF
+END_IF
+
+IF Inyeccion4 THEN
+	IF Liquidos.TablaLiquidos[Liquidos.Circuito_Liquido[4]].iVelAspersor>Velocidad  THEN
+		Velocidad:=Liquidos.TablaLiquidos[Liquidos.Circuito_Liquido[4]].iVelAspersor;
+	END_IF
+END_IF
+IF Inyeccion5 THEN
+	IF Liquidos.TablaLiquidos[Liquidos.Circuito_Liquido[5]].iVelAspersor>Velocidad  THEN
+		Velocidad:=Liquidos.TablaLiquidos[Liquidos.Circuito_Liquido[5]].iVelAspersor;
+	END_IF
+END_IF
+IF Inyeccion6 THEN
+	IF Liquidos.TablaLiquidos[Liquidos.Circuito_Liquido[6]].iVelAspersor>Velocidad  THEN
+		Velocidad:=Liquidos.TablaLiquidos[Liquidos.Circuito_Liquido[6]].iVelAspersor;
+	END_IF
+END_IF
+IF Inyeccion7 THEN
+	IF Liquidos.TablaLiquidos[Liquidos.Circuito_Liquido[7]].iVelAspersor>Velocidad  THEN
+		Velocidad:=Liquidos.TablaLiquidos[Liquidos.Circuito_Liquido[7]].iVelAspersor;
+	END_IF
+END_IF
+IF Inyeccion8 THEN
+	IF Liquidos.TablaLiquidos[Liquidos.Circuito_Liquido[8]].iVelAspersor>Velocidad  THEN
+		Velocidad:=Liquidos.TablaLiquidos[Liquidos.Circuito_Liquido[8]].iVelAspersor;
+	END_IF
+END_IF
+IF Inyeccion9 THEN
+	IF Liquidos.TablaLiquidos[Liquidos.Circuito_Liquido[9]].iVelAspersor>Velocidad  THEN
+		Velocidad:=Liquidos.TablaLiquidos[Liquidos.Circuito_Liquido[9]].iVelAspersor;
+	END_IF
+END_IF
+IF Inyeccion10 THEN
+	IF Liquidos.TablaLiquidos[Liquidos.Circuito_Liquido[10]].iVelAspersor>Velocidad  THEN
+		Velocidad:=Liquidos.TablaLiquidos[Liquidos.Circuito_Liquido[10]].iVelAspersor;
+	END_IF
+END_IF
+IF Inyeccion11 THEN
+	IF Liquidos.TablaLiquidos[Liquidos.Circuito_Liquido[11]].iVelAspersor>Velocidad  THEN
+		Velocidad:=Liquidos.TablaLiquidos[Liquidos.Circuito_Liquido[11]].iVelAspersor;
+	END_IF
+END_IF
+IF Inyeccion12 THEN
+	IF Liquidos.TablaLiquidos[Liquidos.Circuito_Liquido[12]].iVelAspersor>Velocidad  THEN
+		Velocidad:=Liquidos.TablaLiquidos[Liquidos.Circuito_Liquido[12]].iVelAspersor;
+	END_IF
+END_IF
+IF NOT Inyeccion1 AND
+	NOT Inyeccion2 AND
+	NOT Inyeccion3 AND
+	NOT Inyeccion4 AND
+	NOT Inyeccion5 AND
+	NOT Inyeccion6 AND
+	NOT Inyeccion7 AND
+	NOT Inyeccion8 AND
+	NOT Inyeccion9 AND
+	NOT Inyeccion10 AND
+	NOT Inyeccion11 AND
+	NOT Inyeccion12 THEN
+	Velocidad := 100;
+	END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="VeloAspersorAuto">
+      <LineId Id="28" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="26" Count="1" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="30" Count="3" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="45" Count="4" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="40" Count="3" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="59" Count="3" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="55" Count="3" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="64" Count="3" />
+      <LineId Id="63" Count="0" />
+      <LineId Id="69" Count="3" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="74" Count="3" />
+      <LineId Id="73" Count="0" />
+      <LineId Id="79" Count="3" />
+      <LineId Id="78" Count="0" />
+      <LineId Id="84" Count="3" />
+      <LineId Id="83" Count="0" />
+      <LineId Id="89" Count="3" />
+      <LineId Id="88" Count="0" />
+      <LineId Id="126" Count="10" />
+      <LineId Id="114" Count="0" />
+      <LineId Id="137" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

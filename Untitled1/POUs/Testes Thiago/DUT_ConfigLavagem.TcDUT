@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.13">
+  <DUT Name="DUT_ConfigLavagem" Id="{084edc8e-699e-496e-ac46-41781f8986d5}">
+    <Declaration><![CDATA[TYPE DUT_ConfigLavagem :
+STRUCT
+	LavAguaLimpa:INT; //Quantidade de lavagens feitas com a água limpa
+	LavAguaUsada:INT; //Quantidade de lavagens feitas com a água usada
+	TempoDeCiclo:DINT; //Tempo que a bomba ficará acionada para a água chegar no fim da linha
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

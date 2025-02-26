@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <POU Name="_Seguridad" Id="{6dd59979-a9f8-4ad0-8d6b-1af8580521a0}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM _Seguridad
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Seguridad.Run := TRUE;
+Seguridad.Restart		:= Entradas.ReposicionEmerg OR HMI.Restart;
+Seguridad.ErrorAck		:= Entradas.ReposicionEmerg OR HMI.Restart;
+Seguridad.ResetPorta	:= Entradas.ReposicionEmerg OR HMI.Restart;
+
+IF HMI.Restart THEN
+	HMI.Restart := FALSE;
+END_IF
+
+IF NOT Seguridad.PB_Emergencia THEN
+	Liquidos.InyectarLiq[1] := FALSE;
+	Liquidos.InyectarLiq[2] := FALSE;
+	Liquidos.InyectarLiq[3] := FALSE;
+	Liquidos.InyectarLiq[4] := FALSE;
+	Liquidos.InyectarLiq[5] := FALSE;
+	Liquidos.InyectarLiq[6] := FALSE;
+	Liquidos.InyectarLiq[7] := FALSE;
+	Liquidos.InyectarLiq[8] := FALSE;
+	Liquidos.InyectarLiq[9] := FALSE;
+	Liquidos.InyectarLiq[10] := FALSE;
+	Liquidos.InyectarLiq[11] := FALSE;
+	Liquidos.InyectarLiq[12] := FALSE;
+	Polvos.InyectarPolvo[1] := FALSE;
+	Polvos.InyectarPolvo[2] := FALSE;
+END_IF
+]]></ST>
+    </Implementation>
+    <LineIds Name="_Seguridad">
+      <LineId Id="5" Count="2" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="22" Count="1" />
+      <LineId Id="28" Count="15" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="11" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

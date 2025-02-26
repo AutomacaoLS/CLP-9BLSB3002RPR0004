@@ -1,0 +1,353 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <POU Name="Receitas" Id="{a811645b-e664-4b28-b8de-1aab1d692da5}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM Receitas
+VAR
+	AUX_FS: BOOL := FALSE;	//Auxiliar do First Scan
+	FS: BOOL;			//First Scan
+	iCounter: INT;		//Contador para o FOR
+	IndiceReceita:INT;							//Índice da receita que está na interface
+	NomeReceita:STRING:='SELECIONAR RECEITA';
+	IndiceReceitaAtiva:INT;						//Índice da receita ativa
+	
+	Teste:INT;/////////////////////////////////////////
+	//Comandos
+	Salvar:BOOL;
+	Carregar:BOOL;
+	Excluir:BOOL;
+	Atualizar: BOOL;
+	CarregarReceita: BOOL;
+	ResetReceitas: BOOL;
+	NomeExistente: BOOL;
+	ReceitaOK: BOOL;
+	// Variável para iteração do FOR
+	i: INT;
+	// Variável para verificar a sequencia de passos
+	ii: INT;
+	TempoAux: REAL;
+	TempoDosPassos	:ARRAY[1..12] OF DINT;	//Esse array salva, no índice dos passos, o tempo do mesmo. No final, tudo é somado para retornar o tempo da batelada
+	TempoTotal		:DINT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// FS é um pulso do primeiro scan do CLP
+FS := NOT AUX_FS;
+aux_fs := TRUE;
+
+Receta_Activa.interfaceSetNombreRecetaActiva := SEL(IndiceReceita > 0, '', RecetasGestion.BibliotecaRecetas[IndiceReceita].Nombre);
+
+// No primeiro scan do CLP, os ID's das receitas são configurados e se o texto delas estiver vazio, é setado para "Vazio"
+//Cada ID deve ser único para que o Combobox funcione corretamente
+
+IF FS THEN
+	LiqNaReceita();
+	FOR iCounter := 1 TO 100 BY 1 DO
+  		RecetasGestion.aComboboxRecipes[iCounter].id := iCounter;
+		IF RecetasGestion.aComboboxRecipes[iCounter].text = '' THEN
+			RecetasGestion.aComboboxRecipes[iCounter].text := 'Vazio';
+		END_IF;
+	END_FOR;
+	
+END_IF;
+
+//Salva a receita que foi editada
+IF Salvar THEN
+	FOR iCounter := 1 TO 100 DO	//A receita salva não pode ter o mesmo nome de outra já salva
+		IF NomeReceita = RecetasGestion.BibliotecaRecetas[iCounter].Nombre AND  IndiceReceita <> iCounter AND NomeReceita <> '' THEN	//A receita selecionada pode continuar com o mesmo nome
+			NomeExistente := TRUE;
+			EXIT;
+		END_IF
+	END_FOR
+	IF NomeReceita <> '' AND NOT NomeExistente THEN
+		RecetasGestion.BibliotecaRecetas[IndiceReceita].Nombre				:= NomeReceita;
+		RecetasGestion.aComboboxRecipes[IndiceReceita].text					:= NomeReceita;
+		RecetasGestion.BibliotecaRecetas[IndiceReceita].SetTmrDescarga		:= Receta_Activa.interfaceSetTmrDescarga;
+		RecetasGestion.BibliotecaRecetas[IndiceReceita].SetTmrHomogenizado	:= Receta_Activa.interfaceSetTmrHomogenizado;
+		RecetasGestion.BibliotecaRecetas[IndiceReceita].SetVelocDescarga	:= Receta_Activa.interfaceSetVelocDescarga;
+		RecetasGestion.BibliotecaRecetas[IndiceReceita].SetVelocHomogenizado := Receta_Activa.interfaceSetVelocHomogenizado;
+		RecetasGestion.BibliotecaRecetas[IndiceReceita].SetCircuitosLiq		:= Receta_Activa.interfaceSetCircuitosLiq;
+		RecetasGestion.BibliotecaRecetas[IndiceReceita].SetCircuitosPo		:= Receta_Activa.interfaceSetCircuitosPo;
+		RecetasGestion.BibliotecaRecetas[IndiceReceita].SetTiempoTotal		:= Receta_Activa.interfaceSetTiempoTotal;
+		
+		NomeReceita := Receta_Activa.interfaceSetNombreRecetaActiva;
+	END_IF;
+		
+	Salvar := FALSE;
+END_IF
+
+//É executado quando a receita do ComboBox é trocada. Ele atualiza os dados da tela com a receita selecionada
+IF Atualizar THEN
+	IF IndiceReceita = 0 THEN
+		IndiceReceita := 1;
+	END_IF
+	LiqNaReceita();
+	
+	NomeReceita := RecetasGestion.BibliotecaRecetas[IndiceReceita].Nombre;
+	Receta_Activa.interfaceSetTmrDescarga		:= RecetasGestion.BibliotecaRecetas[IndiceReceita].SetTmrDescarga;
+	Receta_Activa.interfaceSetTmrHomogenizado	:= RecetasGestion.BibliotecaRecetas[IndiceReceita].SetTmrHomogenizado;
+	Receta_Activa.interfaceSetVelocDescarga		:= RecetasGestion.BibliotecaRecetas[IndiceReceita].SetVelocDescarga;
+	Receta_Activa.interfaceSetVelocHomogenizado	:= RecetasGestion.BibliotecaRecetas[IndiceReceita].SetVelocHomogenizado;
+	Receta_Activa.interfaceSetCircuitosLiq		:= RecetasGestion.BibliotecaRecetas[IndiceReceita].SetCircuitosLiq;
+	Receta_Activa.interfaceSetCircuitosPo		:= RecetasGestion.BibliotecaRecetas[IndiceReceita].SetCircuitosPo;
+	//Receta_Activa.interfaceSetTiempoTotal		:= RecetasGestion.BibliotecaRecetas[IndiceReceita].SetTiempoTotal;
+	Atualizar := FALSE;
+END_IF
+
+//Esse bloco exclui os dados de uma receita salva
+IF Excluir THEN
+		RecetasGestion.BibliotecaRecetas[IndiceReceita].Nombre := '';
+		RecetasGestion.aComboboxRecipes[IndiceReceita].text := 'Vazio';
+		RecetasGestion.BibliotecaRecetas[IndiceReceita].SetTmrDescarga := 0;
+		RecetasGestion.BibliotecaRecetas[IndiceReceita].SetTmrHomogenizado := 0;
+		RecetasGestion.BibliotecaRecetas[IndiceReceita].SetVelocDescarga := 0;
+		RecetasGestion.BibliotecaRecetas[IndiceReceita].SetVelocHomogenizado := 0;
+		Receta_Activa.SetNombreRecetaActiva := '';
+		
+		FOR iCounter := 1 TO 12 BY 1 DO
+			RecetasGestion.BibliotecaRecetas[IndiceReceita].SetCircuitosLiq[iCounter].Demora	:= 0;
+			RecetasGestion.BibliotecaRecetas[IndiceReceita].SetCircuitosLiq[iCounter].Dosis		:= 0;
+			RecetasGestion.BibliotecaRecetas[IndiceReceita].SetCircuitosLiq[iCounter].Inyeccion	:= 0;
+			RecetasGestion.BibliotecaRecetas[IndiceReceita].SetCircuitosLiq[iCounter].Paso		:= 0;
+		END_FOR
+		FOR iCounter := 1 TO 4 BY 1 DO
+			RecetasGestion.BibliotecaRecetas[IndiceReceita].SetCircuitosPo[iCounter].Demora		:= 0;
+			RecetasGestion.BibliotecaRecetas[IndiceReceita].SetCircuitosPo[iCounter].Dosis		:= 0;
+			RecetasGestion.BibliotecaRecetas[IndiceReceita].SetCircuitosPo[iCounter].Inyeccion	:= 0;
+			RecetasGestion.BibliotecaRecetas[IndiceReceita].SetCircuitosPo[iCounter].Paso		:= 0;
+		END_FOR
+		Excluir := FALSE;
+END_IF
+
+//Carrega a receita que está sendo editada para a máquina
+IF CarregarReceita THEN
+	Receta_Activa.SetNombreRecetaActiva	:= RecetasGestion.BibliotecaRecetas[IndiceReceita].Nombre;
+	Receta_Activa.SetTmrHomogenizado	:= Receta_Activa.interfaceSetTmrHomogenizado;
+	Receta_Activa.SetTmrDescarga		:= Receta_Activa.interfaceSetTmrDescarga;
+	Receta_Activa.SetVelocHomogenizado	:= Receta_Activa.interfaceSetVelocHomogenizado;
+	Receta_Activa.SetVelocDescarga		:= Receta_Activa.interfaceSetVelocDescarga;
+	Receta_Activa.SetCircuitosLiq		:= Receta_Activa.interfaceSetCircuitosLiq;
+	Receta_Activa.SetCircuitosPo		:= Receta_Activa.interfaceSetCircuitosPo;
+	Receta_Activa.SetTiempoTotal		:= Receta_Activa.interfaceSetTiempoTotal;
+	CarregarReceita := FALSE;
+	LiqNaReceita();
+END_IF
+
+//Verificação se a receita pode ser salva/carregada. 
+//A receita não pode ser carregada/salva se não houver nenhum líquido/pó ou se houver algum com os parametros de dosagem zerado
+ReceitaOK := TRUE;
+
+//Verifica se tem algum líquido colocado na sequência
+FOR iCounter :=  1 TO 12 BY 1 DO
+	IF Receta_Activa.interfaceSetCircuitosLiq[iCounter].Paso <> 0 THEN
+		ReceitaOK := TRUE;
+		EXIT;
+	ELSE
+		Teste := 100 + iCounter;
+		ReceitaOK := FALSE;
+	END_IF
+END_FOR
+
+
+//Verifica se os liquidos na sequencia estão com a dosagem preenchida
+IF ReceitaOK THEN
+	FOR iCounter :=  1 TO 12 BY 1 DO
+		IF Receta_Activa.interfaceSetCircuitosLiq[iCounter].Paso <> 0 THEN
+			IF Receta_Activa.interfaceSetCircuitosLiq[iCounter].Dosis <= 0 OR Receta_Activa.interfaceSetCircuitosLiq[iCounter].Inyeccion <= 0 THEN
+				ReceitaOK := FALSE;
+				Teste := 200 + iCounter;
+				EXIT;
+			END_IF;
+		END_IF;	
+	END_FOR
+END_IF
+
+//Verifica se tem pó na receita
+FOR iCounter :=  1 TO 4 BY 1 DO
+	IF Receta_Activa.InterfaceSetCircuitosPo[iCounter].Paso <> 0 THEN
+		IF Receta_Activa.InterfaceSetCircuitosPo[iCounter].Dosis <= 0 OR Receta_Activa.InterfaceSetCircuitosPo[iCounter].Inyeccion <= 0 THEN
+			ReceitaOK := FALSE;
+			EXIT;
+		END_IF;
+	END_IF
+END_FOR
+
+
+//Cálculo do tempo da receita
+FOR i := 1 TO 12 DO
+	TempoDosPassos[i] := 0;
+END_FOR
+TempoAux := 0;
+FOR i := 1 TO 12 DO
+	//Verifica os tempos dos líquidos
+	IF TempoAux = 0 OR Receta_Activa.interfaceSetCircuitosLiq[i].Demora + Receta_Activa.interfaceSetCircuitosLiq[i].Inyeccion > TempoAux THEN
+		TempoAux := Receta_Activa.interfaceSetCircuitosLiq[i].Demora + Receta_Activa.interfaceSetCircuitosLiq[i].Inyeccion;
+		IF Receta_Activa.interfaceSetCircuitosLiq[i].Paso > 0 THEN
+			IF TO_DINT(TempoAux) > TempoDosPassos[Receta_Activa.interfaceSetCircuitosLiq[i].Paso] THEN
+				TempoDosPassos[Receta_Activa.interfaceSetCircuitosLiq[i].Paso] := TO_DINT(TempoAux);
+			END_IF
+		END_IF
+	END_IF
+	TempoAux := 0;
+END_FOR
+
+FOR i := 1 TO 12 DO
+	IF Receta_Activa.interfaceSetCircuitosPo[1].Paso = i THEN
+		IF Receta_Activa.interfaceSetCircuitosPo[1].Demora + Receta_Activa.interfaceSetCircuitosPo[1].Inyeccion > TempoDosPassos[i] THEN
+			TempoDosPassos[i] := Receta_Activa.interfaceSetCircuitosPo[1].Demora + Receta_Activa.interfaceSetCircuitosPo[1].Inyeccion;
+		END_IF
+	END_IF
+	IF Receta_Activa.interfaceSetCircuitosPo[2].Paso = i THEN
+		IF Receta_Activa.interfaceSetCircuitosPo[2].Demora + Receta_Activa.interfaceSetCircuitosPo[2].Inyeccion > TempoDosPassos[i] THEN
+			TempoDosPassos[i] := Receta_Activa.interfaceSetCircuitosPo[2].Demora + Receta_Activa.interfaceSetCircuitosPo[2].Inyeccion;
+		END_IF
+	END_IF
+END_FOR
+
+TempoTotal := 0;
+FOR i := 1 TO 12 DO
+	TempoTotal := TempoTotal + TempoDosPassos[i];
+END_FOR
+
+TempoTotal := TempoTotal + Receta_Activa.interfaceSetTmrDescarga + Receta_Activa.interfaceSetTmrHomogenizado;
+Receta_Activa.interfaceSetTiempoTotal := TO_REAL(TempoTotal);
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="Receitas">
+      <LineId Id="17" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="300" Count="0" />
+      <LineId Id="299" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="35" Count="1" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="301" Count="0" />
+      <LineId Id="21" Count="1" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="209" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="132" Count="0" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="324" Count="1" />
+      <LineId Id="332" Count="0" />
+      <LineId Id="327" Count="1" />
+      <LineId Id="336" Count="0" />
+      <LineId Id="92" Count="0" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="70" Count="0" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="69" Count="0" />
+      <LineId Id="74" Count="0" />
+      <LineId Id="672" Count="1" />
+      <LineId Id="524" Count="0" />
+      <LineId Id="548" Count="0" />
+      <LineId Id="73" Count="0" />
+      <LineId Id="334" Count="0" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="131" Count="0" />
+      <LineId Id="95" Count="0" />
+      <LineId Id="94" Count="0" />
+      <LineId Id="278" Count="2" />
+      <LineId Id="303" Count="0" />
+      <LineId Id="249" Count="0" />
+      <LineId Id="96" Count="0" />
+      <LineId Id="99" Count="5" />
+      <LineId Id="180" Count="0" />
+      <LineId Id="105" Count="0" />
+      <LineId Id="97" Count="0" />
+      <LineId Id="130" Count="0" />
+      <LineId Id="107" Count="0" />
+      <LineId Id="106" Count="0" />
+      <LineId Id="110" Count="5" />
+      <LineId Id="143" Count="0" />
+      <LineId Id="250" Count="0" />
+      <LineId Id="117" Count="0" />
+      <LineId Id="116" Count="0" />
+      <LineId Id="119" Count="2" />
+      <LineId Id="118" Count="0" />
+      <LineId Id="122" Count="0" />
+      <LineId Id="108" Count="0" />
+      <LineId Id="123" Count="4" />
+      <LineId Id="109" Count="0" />
+      <LineId Id="129" Count="0" />
+      <LineId Id="128" Count="0" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="142" Count="0" />
+      <LineId Id="136" Count="4" />
+      <LineId Id="133" Count="0" />
+      <LineId Id="477" Count="0" />
+      <LineId Id="141" Count="0" />
+      <LineId Id="305" Count="0" />
+      <LineId Id="134" Count="0" />
+      <LineId Id="356" Count="3" />
+      <LineId Id="398" Count="0" />
+      <LineId Id="397" Count="0" />
+      <LineId Id="360" Count="0" />
+      <LineId Id="440" Count="0" />
+      <LineId Id="447" Count="0" />
+      <LineId Id="445" Count="0" />
+      <LineId Id="364" Count="0" />
+      <LineId Id="434" Count="0" />
+      <LineId Id="365" Count="2" />
+      <LineId Id="449" Count="0" />
+      <LineId Id="448" Count="0" />
+      <LineId Id="415" Count="1" />
+      <LineId Id="419" Count="3" />
+      <LineId Id="435" Count="0" />
+      <LineId Id="423" Count="2" />
+      <LineId Id="417" Count="1" />
+      <LineId Id="426" Count="0" />
+      <LineId Id="401" Count="0" />
+      <LineId Id="368" Count="2" />
+      <LineId Id="453" Count="0" />
+      <LineId Id="456" Count="0" />
+      <LineId Id="454" Count="0" />
+      <LineId Id="374" Count="1" />
+      <LineId Id="527" Count="0" />
+      <LineId Id="626" Count="0" />
+      <LineId Id="623" Count="0" />
+      <LineId Id="590" Count="0" />
+      <LineId Id="624" Count="1" />
+      <LineId Id="582" Count="0" />
+      <LineId Id="581" Count="0" />
+      <LineId Id="627" Count="0" />
+      <LineId Id="583" Count="0" />
+      <LineId Id="587" Count="0" />
+      <LineId Id="591" Count="0" />
+      <LineId Id="595" Count="0" />
+      <LineId Id="589" Count="0" />
+      <LineId Id="596" Count="0" />
+      <LineId Id="592" Count="0" />
+      <LineId Id="588" Count="0" />
+      <LineId Id="594" Count="0" />
+      <LineId Id="584" Count="0" />
+      <LineId Id="636" Count="0" />
+      <LineId Id="635" Count="0" />
+      <LineId Id="637" Count="0" />
+      <LineId Id="639" Count="0" />
+      <LineId Id="641" Count="1" />
+      <LineId Id="640" Count="0" />
+      <LineId Id="666" Count="3" />
+      <LineId Id="665" Count="0" />
+      <LineId Id="658" Count="0" />
+      <LineId Id="653" Count="0" />
+      <LineId Id="650" Count="0" />
+      <LineId Id="649" Count="0" />
+      <LineId Id="651" Count="1" />
+      <LineId Id="655" Count="0" />
+      <LineId Id="654" Count="0" />
+      <LineId Id="671" Count="0" />
+      <LineId Id="499" Count="0" />
+      <LineId Id="54" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

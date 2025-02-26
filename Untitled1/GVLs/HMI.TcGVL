@@ -1,0 +1,831 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <GVL Name="HMI" Id="{999b6b05-862b-4057-bb66-ec05a2d9366a}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	//Hora de ajuste
+	HoraParaAjuste:DT;
+	
+	//Lavagem das linhas
+	IniciaLavagem :BOOL;	//Inicia lavagem na linha selecionada
+	PararLavagem:BOOL;		//Interrompe a lavagem
+	AbreValvResid:BOOL;		//Abre a válvula de água resisdual
+	AbreValvLimpa:BOOL;		//Abre a válvula de água limpa
+	
+	// General
+	bModo_Auto:BOOL;
+	bModo_Ciclico:BOOL;
+	bModo_UnCiclo:BOOL;
+	bMarcha		:BOOL;
+	bParada		:BOOL;
+	bReset_Alarma:BOOL;
+	bPB_vaciarTolva:BOOL;
+	bRun			:BOOL;
+	bPesoFueraTolerancia :BOOL;
+	bDemoraCargaBalanza	:BOOL;
+	bDescargarBalanza	:BOOL;
+	iCircuito_a_calibrar:INT;
+	bPararTolvaSupVacia:BOOL;
+	tTiempoBatch:DINT;
+
+	//Agitadores
+	PP1_L1_AG_Cmd_Man:BOOL;
+	PP1_L1_AG_Alr:BOOL;
+	PP1_L1_AG_Alr_discr:BOOL;
+	PP1_L1_AG_Estado:INT;
+	bPP1_L1_AG_HsParc:DINT;
+	bPP1_L1_AG_HsTot:DINT;	
+	bPP1_L1_AG_RstHs:BOOL;
+	bPP1_L1_AG_RstALr:BOOL;
+	//
+	PP1_L2_AG_Cmd_Man:BOOL;
+	PP1_L2_AG_Alr:BOOL;
+	PP1_L2_AG_Alr_discr:BOOL;
+	PP1_L2_AG_Estado:INT;
+	bPP1_L2_AG_HsParc:DINT;
+	bPP1_L2_AG_HsTot:DINT;	
+	bPP1_L2_AG_RstHs:BOOL;
+	bPP1_L2_AG_RstALr:BOOL;
+	//
+	PP1_L3_AG_Cmd_Man:BOOL;
+	PP1_L3_AG_Alr:BOOL;
+	PP1_L3_AG_Alr_discr:BOOL;
+	PP1_L3_AG_Estado:INT;
+	bPP1_L3_AG_HsParc:DINT;
+	bPP1_L3_AG_HsTot:DINT;	
+	bPP1_L3_AG_RstHs:BOOL;
+	bPP1_L3_AG_RstALr:BOOL;
+	//
+	PP1_L4_AG_Cmd_Man:BOOL;
+	PP1_L4_AG_Alr:BOOL;
+	PP1_L4_AG_Alr_discr:BOOL;
+	PP1_L4_AG_Estado:INT;
+	bPP1_L4_AG_HsParc:DINT;
+	bPP1_L4_AG_HsTot:DINT;	
+	bPP1_L4_AG_RstHs:BOOL;
+	bPP1_L4_AG_RstALr:BOOL;
+	
+	PP2_L5_AG_Cmd_Man:BOOL;
+	PP2_L5_AG_Alr:BOOL;
+	PP2_L5_AG_Alr_discr:BOOL;
+	PP2_L5_AG_Estado:INT;
+	bPP2_L5_AG_HsParc:DINT;
+	bPP2_L5_AG_HsTot:DINT;	
+	bPP2_L5_AG_RstHs:BOOL;
+	bPP2_L5_AG_RstALr:BOOL;
+	//
+	PP2_L6_AG_Cmd_Man:BOOL;
+	PP2_L6_AG_Alr:BOOL;
+	PP2_L6_AG_Alr_discr:BOOL;
+	PP2_L6_AG_Estado:INT;
+	bPP2_L6_AG_HsParc:DINT;
+	bPP2_L6_AG_HsTot:DINT;	
+	bPP2_L6_AG_RstHs:BOOL;
+	bPP2_L6_AG_RstALr:BOOL;
+	//
+	PP2_L7_AG_Cmd_Man:BOOL;
+	PP2_L7_AG_Alr:BOOL;
+	PP2_L7_AG_Alr_discr:BOOL;
+	PP2_L7_AG_Estado:INT;
+	bPP2_L7_AG_HsParc:DINT;
+	bPP2_L7_AG_HsTot:DINT;	
+	bPP2_L7_AG_RstHs:BOOL;
+	bPP2_L7_AG_RstALr:BOOL;
+		//
+	PP2_L8_AG_Cmd_Man:BOOL;
+	PP2_L8_AG_Alr:BOOL;
+	PP2_L8_AG_Alr_discr:BOOL;
+	PP2_L8_AG_Estado:INT;
+	bPP2_L8_AG_HsParc:DINT;
+	bPP2_L8_AG_HsTot:DINT;	
+	bPP2_L8_AG_RstHs:BOOL;
+	bPP2_L8_AG_RstALr:BOOL;
+	//
+	PP3_L9_AG_Cmd_Man:BOOL;
+	PP3_L9_AG_Alr:BOOL;
+	PP3_L9_AG_Alr_discr:BOOL;
+	PP3_L9_AG_Estado:INT;
+	bPP3_L9_AG_HsParc:DINT;
+	bPP3_L9_AG_HsTot:DINT;	
+	bPP3_L9_AG_RstHs:BOOL;
+	bPP3_L9_AG_RstALr:BOOL;
+	//
+	PP3_L10_AG_Cmd_Man:BOOL;
+	PP3_L10_AG_Alr:BOOL;
+	PP3_L10_AG_Alr_discr:BOOL;
+	PP3_L10_AG_Estado:INT;
+	bPP3_L10_AG_HsParc:DINT;
+	bPP3_L10_AG_HsTot:DINT;	
+	bPP3_L10_AG_RstHs:BOOL;
+	bPP3_L10_AG_RstALr:BOOL;
+	//
+	PP3_L11_AG_Cmd_Man:BOOL;
+	PP3_L11_AG_Alr:BOOL;
+	PP3_L11_AG_Alr_discr:BOOL;
+	PP3_L11_AG_Estado:INT;
+	bPP3_L11_AG_HsParc:DINT;
+	bPP3_L11_AG_HsTot:DINT;	
+	bPP3_L11_AG_RstHs:BOOL;
+	bPP3_L11_AG_RstALr:BOOL;
+	//
+	PP3_L12_AG_Cmd_Man:BOOL;
+	PP3_L12_AG_Alr:BOOL;
+	PP3_L12_AG_Alr_discr:BOOL;
+	PP3_L12_AG_Estado:INT;
+	bPP3_L12_AG_HsParc:DINT;
+	bPP3_L12_AG_HsTot:DINT;	
+	bPP3_L12_AG_RstHs:BOOL;
+	bPP3_L12_AG_RstALr:BOOL;
+	
+	
+	//Soplador tratadora
+	TR_S_VE1_Cmd_Man:BOOL;
+	TR_S_VE1_Alr:BOOL;
+	TR_S_VE1_Alr_discr:BOOL;
+	TR_S_VE1_Estado:INT;
+	TR_S_VE1_HsParc:DINT;
+	TR_S_VE1_HsTot:DINT;	
+	TR_S_VE1_RstHs:BOOL;
+	TR_S_VE1_RstAlr:BOOL;
+	
+	//Lavado Gral
+	bBypassNivelAguaResidual:BOOL;
+	
+	//Lavado Circuito 1
+	bInicioLavado_Cir1:BOOL;//Inicio de Lavado
+	bModoECO_Cir1:BOOL;//Seleccion modo ECO
+	bCancelarLavado_Cir1:BOOL;//Cancelacion de lavado (finaliza con circuito vacio)
+	wEstadoLavado_Cir1:WORD; //1=vaciado 2=prelavado 3=lavado
+	iCantCiclosLavado_Cir1:INT;//Cantidad de ciclos a realizar de Lavado
+	iCantCiclosECO_Cir1:INT;//Cantidad de ciclos a realizar de Eco
+	rPorcECO_Cir1:REAL;//Porcentaje de ciclos ECO en relacion al total pedido (ECO+Lavado)
+	rPorcLavado_Cir1:REAL;//Porcentaje de ciclos Lavado en relacion al total pedido (ECO+Lavado)
+	rPorcAvance_Cir1:REAL;//Porcentaje de avance en relacion al total pedido (ECO+Lavado)
+	tSetTmrVaciado_Cir1:TIME;//Tiempo luego de detectar caudalimetro inferior en cero
+	tSetTmrLlenado_Cir1:TIME;//Tiempo luego de detectar caudalimetro superior mayor a cero
+	rVelBbaVaciado_Cir1:REAL;//Velocidad de bomba durante vaciado (unidad?)
+	rVelBbaLlenado_Cir1:REAL;//Velocidad de bomba durante llenado (unidad?)
+	
+	//valvula descarga semilla de tambor
+	TR_S_V1_Cmd_Man		:BOOL;
+	TR_S_V1_Alr			:BOOL;
+	TR_S_V1_Alr_discr	:BOOL;
+	TR_S_V1_Estado		:INT;  // 1= cerrado 2=abierto 3=alarma 4=emergencia
+	TR_S_V1_EventoParc	:DINT;//cant de actuaciones parciales
+	TR_S_V1_EventoTot	:DINT;//cant de actuaciones totales
+	
+	//valvula carga grueso semilla a balanza
+	TR_S_V2_Cmd_Man		:BOOL;
+	TR_S_V2_Alr			:BOOL;
+	TR_S_V2_Alr_discr	:BOOL;
+	TR_S_V2_Estado		:INT;
+	
+	//valvula carga fino semilla a balanza
+	TR_S_V3_Cmd_Man		:BOOL;
+	TR_S_V3_Alr			:BOOL;
+	TR_S_V3_Alr_discr	:BOOL;
+	TR_S_V3_Estado		:INT;
+	
+	//valvula descarga semilla de balanza
+	TR_S_V4_Cmd_Man		:BOOL;
+	TR_S_V4_Alr			:BOOL;
+	TR_S_V4_Alr_discr	:BOOL;
+	TR_S_V4_Estado		:INT;
+	
+	
+	//Homogenizador
+	CmdM_TR_S_VF1		:BOOL; //marcha en manual
+	CmdR_TR_S_VF1		:BOOL; //seleccion reversa en manual
+	StMarcha_TR_S_VF1	:BOOL; //confirmacion en marcha
+	StAlarma_TR_S_VF1	:BOOL;
+	StVeloc_TR_S_VF1	:INT;	
+	
+	//Aspersor
+	CmdM_TR_S_VF2		:BOOL; //marcha en manual
+	CmdR_TR_S_VF2		:BOOL; //seleccion reversa en manual
+	StMarcha_TR_S_VF2	:BOOL; //confirmacion en marcha
+	StAlarma_TR_S_VF2	:BOOL;
+	StVeloc_TR_S_VF2	:INT;	
+	
+	//Valv Calibracion L1
+	CA1_L1_V1_estado	:INT;
+	CA1_L1_V1_Cmd_Man	:BOOL;
+	CA1_L1_V1_RsAlr		:BOOL;
+	//Valv Calibracion L2
+	CA1_L2_V1_estado	:INT;
+	CA1_L2_V1_Cmd_Man	:BOOL;
+	CA1_L2_V1_RsAlr		:BOOL;	
+	//Valv Calibracion L3
+	CA1_L3_V1_estado	:INT;
+	CA1_L3_V1_Cmd_Man	:BOOL;
+	CA1_L3_V1_RsAlr		:BOOL;
+	//Valv Calibracion L4
+	CA1_L4_V1_estado	:INT;
+	CA1_L4_V1_Cmd_Man	:BOOL;
+	CA1_L4_V1_RsAlr		:BOOL;
+	//Valv Calibracion L5
+	CA2_L5_V1_estado	:INT;
+	CA2_L5_V1_Cmd_Man	:BOOL;
+	CA2_L5_V1_RsAlr		:BOOL;
+	//Valv Calibracion L6
+	CA2_L6_V1_estado	:INT;
+	CA2_L6_V1_Cmd_Man	:BOOL;
+	CA2_L6_V1_RsAlr		:BOOL;
+	//Valv Calibracion L7
+	CA2_L7_V1_estado	:INT;
+	CA2_L7_V1_Cmd_Man	:BOOL;
+	CA2_L7_V1_RsAlr		:BOOL;
+	//Valv Calibracion L8
+	CA2_L8_V1_estado	:INT;
+	CA2_L8_V1_Cmd_Man	:BOOL;
+	CA2_L8_V1_RsAlr		:BOOL;				
+	//Valv Calibracion L9
+	CA3_L9_V1_estado	:INT;
+	CA3_L9_V1_Cmd_Man	:BOOL;	
+	CA3_L9_V1_RsAlr		:BOOL;
+	//Valv Calibracion L10
+	CA3_L10_V1_estado	:INT;
+	CA3_L10_V1_Cmd_Man	:BOOL;
+	CA3_L10_V1_RsAlr		:BOOL;
+	//Valv Calibracion L11
+	CA3_L11_V1_estado	:INT;
+	CA3_L11_V1_Cmd_Man	:BOOL;
+	CA3_L11_V1_RsAlr		:BOOL;	
+	//Valv Calibracion L12
+	CA3_L12_V1_estado	:INT;
+	CA3_L12_V1_Cmd_Man	:BOOL;
+	CA3_L12_V1_RsAlr		:BOOL;		
+	
+	//Valv Calibracion L1
+	CA1_L1_V2_estado	:INT;
+	CA1_L1_V2_Cmd_Man	:BOOL;
+	CA1_L1_V2_RsAlr		:BOOL;
+	//Valv Lavado L1
+	CA1_L1_V3_estado	:INT;
+	CA1_L1_V3_Cmd_Man	:BOOL;
+	CA1_L1_V3_RsAlr		:BOOL;
+	//Valv IBC L1
+	CA1_L1_V4_estado	:INT;
+	CA1_L1_V4_Cmd_Man	:BOOL;
+	CA1_L1_V4_RsAlr		:BOOL;
+	//Valv Calibracion L2
+	CA1_L2_V2_estado	:INT;
+	CA1_L2_V2_Cmd_Man	:BOOL;
+	CA1_L2_V2_RsAlr		:BOOL;
+	//Valv Lavado L2
+	CA1_L2_V3_estado	:INT;
+	CA1_L2_V3_Cmd_Man	:BOOL;
+	CA1_L2_V3_RsAlr		:BOOL;
+	//Valv IBC L2
+	CA1_L2_V4_estado	:INT;
+	CA1_L2_V4_Cmd_Man	:BOOL;
+	CA1_L2_V4_RsAlr		:BOOL;
+	//Valv Calibracion L3
+	CA1_L3_V2_estado	:INT;
+	CA1_L3_V2_Cmd_Man	:BOOL;
+	CA1_L3_V2_RsAlr		:BOOL;
+	//Valv Lavado L3
+	CA1_L3_V3_estado	:INT;
+	CA1_L3_V3_Cmd_Man	:BOOL;
+	CA1_L3_V3_RsAlr		:BOOL;
+	//Valv IBC L3
+	CA1_L3_V4_estado	:INT;
+	CA1_L3_V4_Cmd_Man	:BOOL;
+	CA1_L3_V4_RsAlr		:BOOL;
+	//Valv Calibracion L4
+	CA1_L4_V2_estado	:INT;
+	CA1_L4_V2_Cmd_Man	:BOOL;
+	CA1_L4_V2_RsAlr		:BOOL;
+	//Valv Lavado L4
+	CA1_L4_V3_estado	:INT;
+	CA1_L4_V3_Cmd_Man	:BOOL;
+	CA1_L4_V3_RsAlr		:BOOL;
+	//Valv IBC L4
+	CA1_L4_V4_estado	:INT;
+	CA1_L4_V4_Cmd_Man	:BOOL;
+	CA1_L4_V4_RsAlr		:BOOL;
+	//Valv Calibracion L5
+	CA2_L5_V2_estado	:INT;
+	CA2_L5_V2_Cmd_Man	:BOOL;
+	CA2_L5_V2_RsAlr		:BOOL;
+	//Valv Lavado L5
+	CA2_L5_V3_estado	:INT;
+	CA2_L5_V3_Cmd_Man	:BOOL;
+	CA2_L5_V3_RsAlr		:BOOL;
+	//Valv IBC L5
+	CA2_L5_V4_estado	:INT;
+	CA2_L5_V4_Cmd_Man	:BOOL;
+	CA2_L5_V4_RsAlr		:BOOL;
+	//Valv Calibracion L6
+	CA2_L6_V2_estado	:INT;
+	CA2_L6_V2_Cmd_Man	:BOOL;
+	CA2_L6_V2_RsAlr		:BOOL;
+	//Valv Lavado L6
+	CA2_L6_V3_estado	:INT;
+	CA2_L6_V3_Cmd_Man	:BOOL;
+	CA2_L6_V3_RsAlr		:BOOL;
+	//Valv IBC L6
+	CA2_L6_V4_estado	:INT;
+	CA2_L6_V4_Cmd_Man	:BOOL;
+	CA2_L6_V4_RsAlr		:BOOL;
+	//Valv Calibracion L7
+	CA2_L7_V2_estado	:INT;
+	CA2_L7_V2_Cmd_Man	:BOOL;
+	CA2_L7_V2_RsAlr		:BOOL;
+	//Valv Lavado L7
+	CA2_L7_V3_estado	:INT;
+	CA2_L7_V3_Cmd_Man	:BOOL;
+	CA2_L7_V3_RsAlr		:BOOL;
+	//Valv IBC L7
+	CA2_L7_V4_estado	:INT;
+	CA2_L7_V4_Cmd_Man	:BOOL;
+	CA2_L7_V4_RsAlr		:BOOL;
+	//Valv Calibracion L8
+	CA2_L8_V2_estado	:INT;
+	CA2_L8_V2_Cmd_Man	:BOOL;
+	CA2_L8_V2_RsAlr		:BOOL;
+	//Valv Lavado L8
+	CA2_L8_V3_estado	:INT;
+	CA2_L8_V3_Cmd_Man	:BOOL;
+	CA2_L8_V3_RsAlr		:BOOL;
+	//Valv IBC L8
+	CA2_L8_V4_estado	:INT;
+	CA2_L8_V4_Cmd_Man	:BOOL;
+	CA2_L8_V4_RsAlr		:BOOL;
+	//Valv Calibracion L9
+	CA3_L9_V2_estado	:INT;
+	CA3_L9_V2_Cmd_Man	:BOOL;
+	CA3_L9_V2_RsAlr		:BOOL;
+	//Valv Lavado L9
+	CA3_L9_V3_estado	:INT;
+	CA3_L9_V3_Cmd_Man	:BOOL;
+	CA3_L9_V3_RsAlr		:BOOL;
+	//Valv IBC L9
+	CA3_L9_V4_estado	:INT;
+	CA3_L9_V4_Cmd_Man	:BOOL;
+	CA3_L9_V4_RsAlr		:BOOL;
+	//Valv Calibracion L10
+	CA3_L10_V2_estado	:INT;
+	CA3_L10_V2_Cmd_Man	:BOOL;
+	CA3_L10_V2_RsAlr	:BOOL;
+	//Valv Lavado L10
+	CA3_L10_V3_estado	:INT;
+	CA3_L10_V3_Cmd_Man	:BOOL;
+	CA3_L10_V3_RsAlr	:BOOL;
+	//Valv IBC L10
+	CA3_L10_V4_estado	:INT;
+	CA3_L10_V4_Cmd_Man	:BOOL;
+	CA3_L10_V4_RsAlr	:BOOL;
+	//Valv Calibracion L11
+	CA3_L11_V2_estado	:INT;
+	CA3_L11_V2_Cmd_Man	:BOOL;
+	CA3_L11_V2_RsAlr	:BOOL;
+	//Valv Lavado L11
+	CA3_L11_V3_estado	:INT;
+	CA3_L11_V3_Cmd_Man	:BOOL;
+	CA3_L11_V3_RsAlr	:BOOL;
+	//Valv IBC L11
+	CA3_L11_V4_estado	:INT;
+	CA3_L11_V4_Cmd_Man	:BOOL;
+	CA3_L11_V4_RsAlr	:BOOL;
+	//Valv Calibracion L12
+	CA3_L12_V2_estado	:INT;
+	CA3_L12_V2_Cmd_Man	:BOOL;
+	CA3_L12_V2_RsAlr	:BOOL;
+	//Valv Lavado L12
+	CA3_L12_V3_estado	:INT;
+	CA3_L12_V3_Cmd_Man	:BOOL;
+	CA3_L12_V3_RsAlr	:BOOL;
+	//Valv IBC L12
+	CA3_L12_V4_estado	:INT;
+	CA3_L12_V4_Cmd_Man	:BOOL;
+	CA3_L12_V4_RsAlr	:BOOL;
+	//Valv Agua limpia
+	PU_Lav_V5_estado	:INT;
+	PU_Lav_V5_Cmd_Man	:BOOL;
+	PU_Lav_V5_RsAlr		:BOOL;
+	//Valv Agua residual
+	PU_Lav_V6_estado	:INT;
+	PU_Lav_V6_Cmd_Man	:BOOL;
+	PU_Lav_V6_RsAlr		:BOOL;	
+	
+	//Bomba circuito L1
+	CmdM_PC1_L1_BD	:BOOL; //marcha en manual
+	CmdR_PC1_L1_BD	:BOOL; //seleccion reversa en manual
+	StMarcha_PC1_L1_BD :BOOL; //confirmacion bomba en marcha
+	StAlarma_PC1_L1_BD :BOOL;
+	StVeloc_PC1_L1_BD :INT;
+	//Bomba circuito L2
+	CmdM_PC1_L2_BD	:BOOL; //marcha en manual
+	CmdR_PC1_L2_BD	:BOOL; //seleccion reversa en manual
+	StMarcha_PC1_L2_BD :BOOL; //confirmacion bomba en marcha
+	StAlarma_PC1_L2_BD :BOOL;
+	StVeloc_PC1_L2_BD :INT;	
+	//Bomba circuito L3
+	CmdM_PC1_L3_BD	:BOOL; //marcha en manual
+	CmdR_PC1_L3_BD	:BOOL; //seleccion reversa en manual
+	StMarcha_PC1_L3_BD :BOOL; //confirmacion bomba en marcha
+	StAlarma_PC1_L3_BD :BOOL;
+	StVeloc_PC1_L3_BD :INT;	
+	//Bomba circuito L4
+	CmdM_PC1_L4_BD	:BOOL; //marcha en manual
+	CmdR_PC1_L4_BD	:BOOL; //seleccion reversa en manual
+	StMarcha_PC1_L4_BD :BOOL; //confirmacion bomba en marcha
+	StAlarma_PC1_L4_BD :BOOL;
+	StVeloc_PC1_L4_BD :INT;		
+	//Bomba circuito L5
+	CmdM_PC2_L5_BD	:BOOL; //marcha en manual
+	CmdR_PC2_L5_BD	:BOOL; //seleccion reversa en manual
+	StMarcha_PC2_L5_BD :BOOL; //confirmacion bomba en marcha
+	StAlarma_PC2_L5_BD :BOOL;
+	StVeloc_PC2_L5_BD :INT;	
+	//Bomba circuito L6
+	CmdM_PC2_L6_BD	:BOOL; //marcha en manual
+	CmdR_PC2_L6_BD	:BOOL; //seleccion reversa en manual
+	StMarcha_PC2_L6_BD :BOOL; //confirmacion bomba en marcha
+	StAlarma_PC2_L6_BD :BOOL;
+	StVeloc_PC2_L6_BD :INT;	
+	//Bomba circuito L7
+	CmdM_PC2_L7_BD	:BOOL; //marcha en manual
+	CmdR_PC2_L7_BD	:BOOL; //seleccion reversa en manual
+	StMarcha_PC2_L7_BD :BOOL; //confirmacion bomba en marcha
+	StAlarma_PC2_L7_BD :BOOL;
+	StVeloc_PC2_L7_BD :INT;	
+	//Bomba circuito L8
+	CmdM_PC2_L8_BD	:BOOL; //marcha en manual
+	CmdR_PC2_L8_BD	:BOOL; //seleccion reversa en manual
+	StMarcha_PC2_L8_BD :BOOL; //confirmacion bomba en marcha
+	StAlarma_PC2_L8_BD :BOOL;
+	StVeloc_PC2_L8_BD :INT;					
+	//Bomba circuito L9
+	CmdM_PC3_L9_BD	:BOOL; //marcha en manual
+	CmdR_PC3_L9_BD	:BOOL; //seleccion reversa en manual
+	StMarcha_PC3_L9_BD :BOOL; //confirmacion bomba en marcha
+	StAlarma_PC3_L9_BD :BOOL;
+	StVeloc_PC3_L9_BD :INT;	
+	//Bomba circuito L10
+	CmdM_PC3_L10_BD	:BOOL; //marcha en manual
+	CmdR_PC3_L10_BD	:BOOL; //seleccion reversa en manual
+	StMarcha_PC3_L10_BD :BOOL; //confirmacion bomba en marcha
+	StAlarma_PC3_L10_BD :BOOL;
+	StVeloc_PC3_L10_BD :INT;
+	//Bomba circuito L11
+	CmdM_PC3_L11_BD	:BOOL; //marcha en manual
+	CmdR_PC3_L11_BD	:BOOL; //seleccion reversa en manual
+	StMarcha_PC3_L11_BD :BOOL; //confirmacion bomba en marcha
+	StAlarma_PC3_L11_BD :BOOL;
+	StVeloc_PC3_L11_BD :INT;
+	//Bomba circuito L12
+	CmdM_PC3_L12_BD	:BOOL; //marcha en manual
+	CmdR_PC3_L12_BD	:BOOL; //seleccion reversa en manual
+	StMarcha_PC3_L12_BD :BOOL; //confirmacion bomba en marcha
+	StAlarma_PC3_L12_BD :BOOL;
+	StVeloc_PC3_L12_BD :INT;		
+	
+	//Caudalimetros Calibracion
+	CA1_L1_FT1_caudal :REAL;
+	CA1_L1_FT1_temp :REAL;
+	CA1_L2_FT1_caudal :REAL;
+	CA1_L2_FT1_temp :REAL;	
+	CA1_L3_FT1_caudal :REAL;
+	CA1_L3_FT1_tot	:REAL;
+	CA1_L3_FT1_temp :REAL;
+	CA1_L4_FT1_caudal :REAL;
+	CA1_L4_FT1_temp :REAL;
+	CA2_L5_FT1_caudal :REAL;
+	CA2_L5_FT1_temp :REAL;
+	CA2_L6_FT1_caudal :REAL;
+	CA2_L6_FT1_temp :REAL;	
+	CA2_L7_FT1_caudal :REAL;
+	CA2_L7_FT1_temp :REAL;
+	CA2_L8_FT1_caudal :REAL;
+	CA2_L8_FT1_temp :REAL;
+	CA3_L9_FT1_caudal :REAL;
+	CA3_L9_FT1_temp :REAL;
+	CA3_L10_FT1_caudal :REAL;
+	CA3_L10_FT1_temp :REAL;
+	CA3_L11_FT1_caudal :REAL;
+	CA3_L11_FT1_temp :REAL;
+	CA3_L12_FT1_caudal :REAL;
+	CA3_L12_FT1_temp :REAL;
+	//Caudalimetros Tratadora
+	TR_L1_FT2_caudal :REAL;
+	TR_L1_FT2_temp :REAL;
+	TR_L2_FT2_caudal :REAL;
+	TR_L2_FT2_temp :REAL;	
+	TR_L3_FT2_caudal :REAL;
+	TR_L3_FT2_temp :REAL;
+	TR_L4_FT2_caudal :REAL;
+	TR_L4_FT2_temp :REAL;
+	TR_L5_FT2_caudal :REAL;
+	TR_L5_FT2_temp :REAL;
+	TR_L6_FT2_caudal :REAL;
+	TR_L6_FT2_temp :REAL;	
+	TR_L7_FT2_caudal :REAL;
+	TR_L7_FT2_temp :REAL;
+	TR_L8_FT2_caudal :REAL;
+	TR_L8_FT2_temp :REAL;
+	TR_L9_FT2_caudal :REAL;
+	TR_L9_FT2_temp :REAL;
+	TR_L10_FT2_caudal :REAL;
+	TR_L10_FT2_temp :REAL;
+	TR_L11_FT2_caudal :REAL;
+	TR_L11_FT2_temp :REAL;
+	TR_L12_FT2_caudal :REAL;
+	TR_L12_FT2_temp :REAL;
+	//Balanza probeta CA1
+	bCmd_Zero_WT_CA1 :BOOL;
+	bCmd_Full_WT_CA1 :BOOL;
+	bCmd_LoadReference_WT_CA1:BOOL;
+	rPesoPatron_WT_CA1 :REAL;
+	bCalibrado_WT_CA1:BOOL;
+	//Balanza probeta CA2
+	bCmd_Zero_WT_CA2 :BOOL;
+	bCmd_Full_WT_CA2 :BOOL;
+	bCmd_LoadReference_WT_CA2:BOOL;
+	rPesoPatron_WT_CA2 :REAL;
+	bCalibrado_WT_CA2:BOOL;	
+	//Balanza probeta CA3
+	bCmd_Zero_WT_CA3 :BOOL;
+	bCmd_Full_WT_CA3 :BOOL;
+	bCmd_LoadReference_WT_CA3:BOOL;
+	rPesoPatron_WT_CA3 :REAL;
+	bCalibrado_WT_CA3:BOOL;
+	//Balanza IBC L1
+	bCmd_Zero_WT1_PU1 :BOOL;
+	bCmd_Full_WT1_PU1 :BOOL;
+	bCmd_LoadReference_WT1_PU1:BOOL;
+	rPesoPatron_WT1_PU1 :REAL;
+	bCalibrado_WT1_PU1:BOOL;
+	//Balanza IBC L2
+	bCmd_Zero_WT2_PU1 :BOOL;
+	bCmd_Full_WT2_PU1 :BOOL;
+	bCmd_LoadReference_WT2_PU1:BOOL;
+	rPesoPatron_WT2_PU1 :REAL;
+	bCalibrado_WT2_PU1:BOOL;
+	//Balanza IBC L3
+	bCmd_Zero_WT3_PU1 :BOOL;
+	bCmd_Full_WT3_PU1 :BOOL;
+	bCmd_LoadReference_WT3_PU1:BOOL;
+	rPesoPatron_WT3_PU1 :REAL;
+	bCalibrado_WT3_PU1:BOOL;
+	//Balanza IBC L4
+	bCmd_Zero_WT4_PU1 :BOOL;
+	bCmd_Full_WT4_PU1 :BOOL;
+	bCmd_LoadReference_WT4_PU1:BOOL;
+	rPesoPatron_WT4_PU1 :REAL;
+	bCalibrado_WT4_PU1:BOOL;
+	//Balanza IBC L5
+	bCmd_Zero_WT5_PU2 :BOOL;
+	bCmd_Full_WT5_PU2 :BOOL;
+	bCmd_LoadReference_WT5_PU2:BOOL;
+	rPesoPatron_WT5_PU2 :REAL;
+	bCalibrado_WT5_PU2:BOOL;
+	//Balanza IBC L6
+	bCmd_Zero_WT6_PU2 :BOOL;
+	bCmd_Full_WT6_PU2 :BOOL;
+	bCmd_LoadReference_WT6_PU2:BOOL;
+	rPesoPatron_WT6_PU2 :REAL;
+	bCalibrado_WT6_PU2:BOOL;
+	//Balanza IBC L7
+	bCmd_Zero_WT7_PU2 :BOOL;
+	bCmd_Full_WT7_PU2 :BOOL;
+	bCmd_LoadReference_WT7_PU2:BOOL;
+	rPesoPatron_WT7_PU2 :REAL;
+	bCalibrado_WT7_PU2:BOOL;
+	//Balanza IBC L8
+	bCmd_Zero_WT8_PU2 :BOOL;
+	bCmd_Full_WT8_PU2 :BOOL;
+	bCmd_LoadReference_WT8_PU2:BOOL;
+	rPesoPatron_WT8_PU2 :REAL;
+	bCalibrado_WT8_PU2:BOOL;
+	//Balanza IBC L9
+	bCmd_Zero_WT9_PU3 :BOOL;
+	bCmd_Full_WT9_PU3 :BOOL;
+	bCmd_LoadReference_WT9_PU3:BOOL;
+	rPesoPatron_WT9_PU3 :REAL;
+	bCalibrado_WT9_PU3:BOOL;
+	//Balanza IBC L10
+	bCmd_Zero_WT10_PU3 :BOOL;
+	bCmd_Full_WT10_PU3 :BOOL;
+	bCmd_LoadReference_WT10_PU3:BOOL;
+	rPesoPatron_WT10_PU3 :REAL;
+	bCalibrado_WT10_PU3:BOOL;
+	//Balanza IBC L11
+	bCmd_Zero_WT11_PU3 :BOOL;
+	bCmd_Full_WT11_PU3 :BOOL;
+	bCmd_LoadReference_WT11_PU3:BOOL;
+	rPesoPatron_WT11_PU3 :REAL;
+	bCalibrado_WT11_PU3:BOOL;
+	//Balanza IBC L12
+	bCmd_Zero_WT12_PU3 :BOOL;
+	bCmd_Full_WT12_PU3 :BOOL;
+	bCmd_LoadReference_WT12_PU3:BOOL;
+	rPesoPatron_WT12_PU3 :REAL;
+	bCalibrado_WT12_PU3:BOOL;	
+	//Balanza Semilla
+	bCmd_Zero_TR_S_WT1 :BOOL;
+	bCmd_Full_TR_S_WT1 :BOOL;
+	bCmd_LoadReference_TR_S_WT1:BOOL;
+	bInicio_Cal_TR_S_WT1 :BOOL;
+	bCalibrando:BOOL;
+	bCalibrado:BOOL;
+	
+	//Dosificador Polvo 1
+	CmdM_TR_P1_VF	:BOOL; //marcha en manual
+	CmdR_TR_P1_VF	:BOOL; //seleccion reversa en manual
+	StMarcha_TR_P1_VF :BOOL; //confirmacion motor en marcha
+	StAlarma_TR_P1_VF :BOOL;
+	StVeloc_TR_P1_VF :INT;
+	//Dosificador Polvo 2
+	CmdM_TR_P2_VF	:BOOL; //marcha en manual
+	CmdR_TR_P2_VF	:BOOL; //seleccion reversa en manual
+	StMarcha_TR_P2_VF :BOOL; //confirmacion motor en marcha
+	StAlarma_TR_P2_VF :BOOL;
+	StVeloc_TR_P2_VF :INT;
+	//Balanza Polvo 1
+	bCmd_Zero_TR_P1_WT1 :BOOL;
+	bCmd_Full_TR_P1_WT1 :BOOL;
+	bCmd_LoadReference_TR_P1_WT1:BOOL;
+	rPesoPatron_TR_P1_WT1 :REAL;
+	bCalibrado_TR_P1_WT1:BOOL;	
+	//Balanza Polvo 2
+	bCmd_Zero_TR_P2_WT1 :BOOL;
+	bCmd_Full_TR_P2_WT1 :BOOL;
+	bCmd_LoadReference_TR_P2_WT1:BOOL;
+	rPesoPatron_TR_P2_WT1 :REAL;
+	bCalibrado_TR_P2_WT1:BOOL;	
+	//Vibrador Polvo 1
+	CmdM_TR_P1_VI	:BOOL; //marcha en manual
+	CmdR_TR_P1_VI	:BOOL; //seleccion reversa en manual
+	CmdV_TR_P1_VI	:REAL; // velocidad manual en % 
+	StMarcha_TR_P1_VI :BOOL; //confirmacion motor en marcha
+	StAlarma_TR_P1_VI :BOOL;
+	StVeloc_TR_P1_VI :INT;
+	//Vibrador Polvo 2
+	CmdM_TR_P2_VI	:BOOL; //marcha en manual
+	CmdR_TR_P2_VI	:BOOL; //seleccion reversa en manual
+	CmdV_TR_P2_VI	:REAL; // velocidad manual en % 
+	StMarcha_TR_P2_VI :BOOL; //confirmacion motor en marcha
+	StAlarma_TR_P2_VI :BOOL;
+	StVeloc_TR_P2_VI :INT;
+	
+	TR_P1_Alr_ZS :BOOL;//alarma zero speed dosificador Polvo 1
+	TR_P1_Alr_ZS_RstAlr :BOOL;
+	TR_P2_Alr_ZS :BOOL;//alarma zero speed dosificador Polvo 2
+	TR_P2_Alr_ZS_RstAlr :BOOL;	
+	
+	//Perifericos Elevador 1
+	CmdM_PE_B_VF1	:BOOL; //marcha en manual
+	CmdR_PE_B_VF1	:BOOL; //seleccion reversa en manual
+	StMarcha_PE_B_VF1 :BOOL; //confirmacion motor en marcha
+	StAlarma_PE_B_VF1 :BOOL;
+	StVeloc_PE_B_VF1 :INT;
+	//Perifericos Elevador 2
+	CmdM_PE_H_VF1	:BOOL; //marcha en manual
+	CmdR_PE_H_VF1	:BOOL; //seleccion reversa en manual
+	StMarcha_PE_H_VF1 :BOOL; //confirmacion motor en marcha
+	StAlarma_PE_H_VF1 :BOOL;
+	StVeloc_PE_H_VF1 :INT;	
+	//Perifericos Elevador 3
+	CmdM_PE_H_VF2	:BOOL; //marcha en manual
+	CmdR_PE_H_VF2	:BOOL; //seleccion reversa en manual
+	StMarcha_PE_H_VF2 :BOOL; //confirmacion motor en marcha
+	StAlarma_PE_H_VF2 :BOOL;
+	StVeloc_PE_H_VF2 :INT;	
+	
+	//valvula intermedia 1 embolse
+	PE_B1_V1_Cmd_Man_Pos1:BOOL;// descargando
+	PE_B1_V1_Cmd_Man_Pos2:BOOL;// no descarga
+	PE_B1_V1_Alr:BOOL;
+	PE_B1_V1_Alr_discr:BOOL;
+	PE_B1_V1_Estado:INT;
+	PE_B1_V1_RsAlr:BOOL;
+	//valvula intermedia 12 embolse
+	PE_B2_V1_Cmd_Man_Pos1:BOOL;// descargando
+	PE_B2_V1_Cmd_Man_Pos2:BOOL;// no descarga
+	PE_B2_V1_Alr:BOOL;
+	PE_B2_V1_Alr_discr:BOOL;
+	PE_B2_V1_Estado:INT;
+	PE_B2_V1_RsAlr:BOOL;
+	//valvula intermedia 3 embolse
+	PE_B3_V1_Cmd_Man_Pos1:BOOL;// descargando
+	PE_B3_V1_Cmd_Man_Pos2:BOOL;// no descarga
+	PE_B3_V1_Alr:BOOL;
+	PE_B3_V1_Alr_discr:BOOL;
+	PE_B3_V1_Estado:INT;
+	PE_B3_V1_RsAlr:BOOL;
+	
+	PE_B1_V2_Cmd_Man:BOOL;//valvula descarga tolva embolse CE1
+	PE_B2_V2_Cmd_Man:BOOL;//valvula descarga tolva embolse CE2
+	PE_B3_V2_Cmd_Man:BOOL;//valvula descarga tolva embolse CE3
+	PE_B3_V3_Cmd_Man:BOOL;//valvula tolva CE3b	
+	TR_S_V6_Cmd_Man	:BOOL;//registro CP 1,8t
+	TR_S_V7_Cmd_Man	:BOOL;//registro CP 30t
+	TR_S_V8_Cmd_Man	:BOOL;//registro tolva recepción
+	
+	
+	StMarcha_PC1_L5_BD: BOOL;
+	Restart: BOOL;
+END_VAR
+VAR_GLOBAL PERSISTENT
+	
+	UltimasCalibracoes	:ARRAY[0..12] OF UDINT;	//Array com as ultima calibrações das linhas
+	UltimoAlrCalibr		:ARRAY[0..12] OF LINT;	//Esse array é usado para subir o alarme na tela
+	//
+	SetTmr_Alr_Mot:TIME;
+	SetTmr_Alr_Valv:TIME:=T#5S;
+	rPesoPatron_TR_S_WT1 :REAL := 198.2;
+	bModo_Pausa:BOOL;
+	PE_B_SelectorBigBag	:BOOL;
+	PE_B_SelectorBolsas	:BOOL;
+	bDeshabilitaRecepcion:BOOL;
+	bDeshabilita30t		:BOOL;	
+	
+	CmdV_TR_S_VF1	:REAL; // Homogenizador velocidad manual en % 
+	CmdV_TR_S_VF2	:REAL; // Aspersor velocidad manual en % 
+	CmdV_PC1_L1_BD	:REAL; //Bomba circuito L1 velocidad manual en % 
+	CmdV_PC1_L2_BD	:REAL; // Bomba circuito L2 velocidad manual en % 
+	CmdV_PC1_L3_BD	:REAL; //Bomba circuito L3 velocidad manual en % 
+	CmdV_PC1_L4_BD	:REAL; //Bomba circuito L4 velocidad manual en % 
+	CmdV_PC2_L5_BD	:REAL; //Bomba circuito L5 velocidad manual en % 
+	CmdV_PC2_L6_BD	:REAL; //Bomba circuito L6 velocidad manual en % 
+	CmdV_PC2_L7_BD	:REAL; //Bomba circuito L7 velocidad manual en % 
+	CmdV_PC2_L8_BD	:REAL; //Bomba circuito L8 velocidad manual en % 
+	CmdV_PC3_L9_BD	:REAL; //Bomba circuito L9 velocidad manual en % 	
+	CmdV_PC3_L10_BD	:REAL; //Bomba circuito L10 velocidad manual en % 
+	CmdV_PC3_L11_BD	:REAL; //Bomba circuito L11 velocidad manual en % 
+	CmdV_PC3_L12_BD	:REAL; //Bomba circuito L12 velocidad manual en % 
+	CmdV_PE_B_VF1	:REAL; //Perifericos Elevador 1 velocidad manual en % 
+	CmdV_PE_H_VF1	:REAL; //Perifericos Elevador 2 velocidad manual en % 
+	CmdV_PE_H_VF2	:REAL; //Perifericos velocidad manual en % 
+	CmdV_TR_P1_VF	:REAL; //Dosificador Polvo 1 velocidad manual en % 
+	CmdV_TR_P2_VF	:REAL; //Dosificador Polvo 2 velocidad manual en % 	
+	
+	CaudalNom_PC1_L1_BD :REAL := 347.22; //Caudal nominal Bomba circuito L1 en ml/s
+	CaudalNom_PC1_L2_BD :REAL := 142.28; //Caudal nominal Bomba circuito L2 en ml/s	
+	CaudalNom_PC1_L3_BD :REAL := 142.28; //Caudal nominal Bomba circuito L3 en ml/s
+	CaudalNom_PC1_L4_BD :REAL := 142.28; //Caudal nominal Bomba circuito L4 en ml/s
+	CaudalNom_PC2_L5_BD :REAL := 142.28; //Caudal nominal Bomba circuito L5 en ml/s
+	CaudalNom_PC2_L6_BD :REAL := 142.28; //Caudal nominal Bomba circuito L6 en ml/s
+	CaudalNom_PC2_L7_BD :REAL := 142.28; //Caudal nominal Bomba circuito L7 en ml/s
+	CaudalNom_PC2_L8_BD :REAL := 80.6; //Caudal nominal Bomba circuito L8 en ml/s
+	CaudalNom_PC3_L9_BD :REAL := 80.6; //Caudal nominal Bomba circuito L9 en ml/s
+	CaudalNom_PC3_L10_BD :REAL := 80.6; //Caudal nominal Bomba circuito L10 en ml/s
+	CaudalNom_PC3_L11_BD :REAL := 36.7; //Caudal nominal Bomba circuito L11 en ml/s
+	CaudalNom_PC3_L12_BD :REAL := 36.7; //Caudal nominal Bomba circuito L12 en ml/s
+	
+	//variables carga semilla
+	bSet_pesoSemilla:REAL;
+	rSet_corteGrueso_semilla:REAL;
+	rSet_corteFino_semilla:REAL;
+	rTolerancia_pesoSemilla:REAL;
+	rBalanzaVacia_TR_S_WT1:REAL;
+	tSetTmrMax_carga_TR_S_WT1:TIME;
+	tSetTmrMax_descarga_TR_S_WT1:TIME;
+	Pesadas :ARRAY [1..10]  OF REAL;
+	
+	//Demoras parada elevadores
+	tDemoraParadaPE_H_VF1 :DINT;
+	tDemoraParadaPE_H_VF2 :DINT;	
+	tDemoraParadaPE_B_VF1 :DINT;
+
+	PID_L1_Kp:REAL;
+	PID_L2_Kp:REAL;
+	PID_L3_Kp:REAL;
+	PID_L4_Kp:REAL;	
+	PID_L5_Kp:REAL;
+	PID_L6_Kp:REAL;
+	PID_L7_Kp:REAL;
+	PID_L8_Kp:REAL;	
+	PID_L9_Kp:REAL;
+	PID_L10_Kp:REAL;
+	PID_L11_Kp:REAL;
+	PID_L12_Kp:REAL;	
+	PID_L1_Ti:REAL;
+	PID_L2_Ti:REAL;	
+	PID_L3_Ti:REAL;
+	PID_L4_Ti:REAL;
+	PID_L5_Ti:REAL;
+	PID_L6_Ti:REAL;	
+	PID_L7_Ti:REAL;
+	PID_L8_Ti:REAL;
+	PID_L9_Ti:REAL;
+	PID_L10_Ti:REAL;	
+	PID_L11_Ti:REAL;
+	PID_L12_Ti:REAL;	
+	PID_L1_bMuerta:REAL;
+	PID_L2_bMuerta:REAL;	
+	PID_L3_bMuerta:REAL;
+	PID_L4_bMuerta:REAL;	
+	PID_L5_bMuerta:REAL;
+	PID_L6_bMuerta:REAL;	
+	PID_L7_bMuerta:REAL;
+	PID_L8_bMuerta:REAL;	
+	PID_L9_bMuerta:REAL;
+	PID_L10_bMuerta:REAL;	
+	PID_L11_bMuerta:REAL;
+	PID_L12_bMuerta:REAL;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

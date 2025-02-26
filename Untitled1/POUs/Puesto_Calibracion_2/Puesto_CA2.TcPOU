@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <POU Name="Puesto_CA2" Id="{792e9ae3-3941-4a3e-89b4-3f7c208d92d5}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM Puesto_CA2
+VAR
+	Balanza_CA2: Balanza;
+	dHS:DINT;
+	Cmd_Full: R_TRIG;
+	TmrLabelFinalizado: TON;
+	AuxFinCalibrar:BOOL;
+	CA2_Calibracion: Calibracion_Liq_calc;
+	Tarar_balanza :BOOL;
+	Offset_ref2:REAL;
+	Inyectar_ref2:BOOL;
+	InicioCal_ref2:BOOL;
+	Offset_ref: REAL;
+	Inyectar_ref: BOOL;
+	InicioCal_ref: BOOL;
+
+	UltimaCalibracao: UDINT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Indica a ultima calibração da linha selecionada
+UltimaCalibracao := HMI.UltimasCalibracoes[HMI.iCircuito_a_calibrar];
+
+
+Balanza_CA2(
+	wStatus:=Entradas.CA2_WT1_wStatus , 
+	rValue_REAL:=Entradas.CA2_WT1_rValue_REAL , 
+	nValue_DINT:=Entradas.CA2_WT1_nValue_DINT , 
+	nValue_Supply:=dHS , 
+	nValue_Bridge:=dHS , 
+	stEcSlaveAmsNetAdr:=Entradas.CA2_WT1_stEcSlaveAmsNetAdr , 
+	bWcState:=Entradas.CA2_WT1_bWcState , 
+	wState:=Entradas.CA2_WT1_wState , 
+	bCmd_FullCalibration:=HMI.bCmd_Full_WT_CA2 , 
+	bCmd_ZeroCalibration:=HMI.bCmd_Zero_WT_CA2 , 
+	bCmd_Tara:=Tarar_balanza , 
+	bCmd_LoadReference:=HMI.bCmd_LoadReference_WT_CA2 ,
+	fLoadReference:=(HMI.rPesoPatron_WT_CA2)/1000,
+	wControl=>Salidas.CA2_WT1_wControl );
+	
+	TmrLabelFinalizado(IN:= HMI.bCmd_Full_WT_CA2 , PT:=T#10S , Q=> , ET=> );
+	
+	HMI.bCmd_LoadReference_WT_CA2:=FALSE;
+	HMI.bCmd_Zero_WT_CA2:=FALSE;
+	HMI.bCmd_Full_WT_CA2:=FALSE;
+	Tarar_balanza:=FALSE;
+	Cmd_Full(CLK:=TmrLabelFinalizado.Q , Q=> );
+	IF 	Cmd_Full.Q THEN
+		HMI.bCalibrado_WT_CA2:=TRUE;
+	END_IF
+/////////////////
+IF (4<HMI.iCircuito_a_calibrar AND HMI.iCircuito_a_calibrar<9) THEN
+//
+/////////
+CASE HMI.iCircuito_a_calibrar OF
+	5:	Offset_ref:=Liquidos.Circuito_Offset[5];
+		Inyectar_ref:=circuito_L5.Modo_Calibrar_L5;
+		InicioCal_ref:=HMICA2.Inicio_calibracion;
+		HMICA2.VolumenPedido_calibracion:=circuito_L5.Volumen_L5;
+	6:	Offset_ref:=Liquidos.Circuito_Offset[6];
+		Inyectar_ref:=circuito_L6.Modo_Calibrar_L6;
+		InicioCal_ref:=HMICA2.Inicio_calibracion;
+		HMICA2.VolumenPedido_calibracion:=circuito_L6.Volumen_L6;
+	7:	Offset_ref:=Liquidos.Circuito_Offset[7];
+		Inyectar_ref:=circuito_L7.Modo_Calibrar_L7;
+		InicioCal_ref:=HMICA2.Inicio_calibracion;
+		HMICA2.VolumenPedido_calibracion:=circuito_L7.Volumen_L7;
+	8:	Offset_ref:=Liquidos.Circuito_Offset[8];
+		Inyectar_ref:=circuito_L8.Modo_Calibrar_L8;
+		InicioCal_ref:=HMICA2.Inicio_calibracion;
+		HMICA2.VolumenPedido_calibracion:=circuito_L8.Volumen_L8;	
+		
+		ELSE
+	;		
+END_CASE
+CA2_Calibracion(
+	Dosis:=HMICA2.Dosis_calibracion , 
+	PesoSemilla:=HMICA2.Peso_calibracion,
+	Tolerancia:=HMICA2.Tolerancia_calibracion , 
+	PesoBalanza:=Entradas.CA2_WT1_rValue_REAL ,
+	mlPedido:= HMICA2.VolumenPedido_calibracion,
+	PesoEspec:=Puesto_CA1.PesoEspec , 
+	Offset:=Offset_ref ,
+	TiempoIny:=HMICA2.TInyeccion_calibracion , 
+	Vol_Probeta:=(HMICA2.VolMaxProbeta_calibracion*1000) , 
+	Pausa:=HMICA2.Pausa_calibracion , 
+	Dosificar=> , 
+	Probeta_Llena:=HMICA2.VaciarProbeta_calibracion , 
+	Inyectar:=Inyectar_ref, 
+	ml:=HMICA2.Volumen_calibracion, 
+	Tiempo:=HMICA2.Tiempo_calibracion , 
+	InicioCal:= InicioCal_ref, 
+	Continuar:=HMICA2.Continuar_calibracion , 
+	Tarar:=Tarar_balanza,
+	Finalizado:=HMICA2.Fin_calibracion,
+	mlProbeta=>HMICA2.Vol_enProbeta , 
+	TiempoInyectado:=HMICA2.TiempoInyectado,
+	Error_promedio=> HMICA2.Error_promedio, );
+//
+CASE HMI.iCircuito_a_calibrar OF
+	5:	Liquidos.Circuito_Offset[5]:=Offset_ref;//Offset_ref
+		circuito_L5.Modo_Calibrar_L5:=Inyectar_ref;//Inyectar_ref
+		HMICA2.Inicio_calibracion:=InicioCal_ref;
+	6:	Liquidos.Circuito_Offset[6]:=Offset_ref;//Offset_ref
+		circuito_L6.Modo_Calibrar_L6:=Inyectar_ref;//Inyectar_ref
+		HMICA2.Inicio_calibracion:=InicioCal_ref;
+	7:	Liquidos.Circuito_Offset[7]:=Offset_ref;//Offset_ref
+		circuito_L7.Modo_Calibrar_L7:=Inyectar_ref;//Inyectar_ref
+		HMICA2.Inicio_calibracion:=InicioCal_ref;
+	8:	Liquidos.Circuito_Offset[8]:=Offset_ref;//Offset_ref
+		circuito_L8.Modo_Calibrar_L8:=Inyectar_ref;//Inyectar_ref
+		HMICA2.Inicio_calibracion:=InicioCal_ref;
+		
+		ELSE
+	;		
+END_CASE	
+END_IF	
+	]]></ST>
+    </Implementation>
+    <LineIds Name="Puesto_CA2">
+      <LineId Id="184" Count="0" />
+      <LineId Id="182" Count="0" />
+      <LineId Id="185" Count="0" />
+      <LineId Id="183" Count="0" />
+      <LineId Id="7" Count="11" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="80" Count="0" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="81" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="70" Count="0" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="76" Count="1" />
+      <LineId Id="91" Count="0" />
+      <LineId Id="116" Count="0" />
+      <LineId Id="115" Count="0" />
+      <LineId Id="118" Count="4" />
+      <LineId Id="161" Count="0" />
+      <LineId Id="123" Count="2" />
+      <LineId Id="162" Count="0" />
+      <LineId Id="126" Count="2" />
+      <LineId Id="163" Count="0" />
+      <LineId Id="129" Count="2" />
+      <LineId Id="164" Count="0" />
+      <LineId Id="132" Count="2" />
+      <LineId Id="117" Count="0" />
+      <LineId Id="92" Count="19" />
+      <LineId Id="158" Count="0" />
+      <LineId Id="157" Count="0" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="139" Count="16" />
+      <LineId Id="138" Count="0" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="24" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

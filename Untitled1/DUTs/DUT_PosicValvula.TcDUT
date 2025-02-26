@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <DUT Name="DUT_PosicValvula" Id="{f468246d-4e81-41bb-b93d-103f281d85aa}">
+    <Declaration><![CDATA[TYPE DUT_PosicValvula :
+UNION
+	Posicao: ARRAY[0..1] OF BYTE;
+	iPosicao			:INT;
+END_UNION
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

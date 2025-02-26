@@ -1,0 +1,290 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <POU Name="PID_GENERICO" Id="{bfd623f6-b61a-4168-a530-f41078fd75c6}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK PID_GENERICO
+
+VAR_INPUT
+	SP: REAL; //SETPOINT
+	PV: REAL; //VARIAVEL DE PROCESSO (ENTRADA)
+	K: REAL; //GANHO PROPORCIONAL
+	Ti: REAL; //GANHO INTEGRAL (TEMPO INTEGRAL)
+	Td: REAL; //GANHO REAL (TEMPO DERIVATIVO)
+	DEAD_BAND: REAL; //BANDA MORTA
+	BIAS: REAL; //BIAS - VALOR SOMANDO A SAIDA DO CONTROLADOR
+	MANUAL_CV: REAL; //VALOR DA SAIDA QUANDO O MANUAL ESTIVER HABILITADO
+	MAX_CV: REAL; //VALOR MAXIMO DA SAIDA
+	MIN_CV: REAL; //VALOR MINIMO DA SAIDA
+	SAMPLETIME_SEG:REAL; //TEMPO DE ATUALIZAÇÃO DA TASK
+	PA: BOOL; //HABILITA FATOR PROPORCIONAL
+	IA: BOOL; //HABILITA FATOR INTEGRAL
+	DA: BOOL; //HABILITA FATOR DERIVATIVO
+	DERIVATIVE_PV: BOOL; //ADICIONAR FATOR DERIVATIVO A VARIAVEL DE PROCESSO
+	DIRECT_MODE: BOOL; //MODO DIRETO OU REVERSO
+	MANUAL: BOOL; //HABILITA MODO MANUAL
+	RESET: BOOL; //RESET DO BLOCO
+END_VAR
+VAR_OUTPUT
+	CV: INT; //VARIAVEL DE CONTROLE (SAIDA)
+	ERROR_PARAM: BOOL; //ERRO DE PARAMETRO
+	CV_ALARM: BOOL; //ALARME DE LIMITES DA SAIDA ATINGIDO (SATURAÇÃO)
+END_VAR
+VAR
+	RealCV : REAL := 0;
+	RealTimeCycle: ARRAY [0..2] OF REAL := [0,0,0];
+	RealSystemError: ARRAY [0..3] OF REAL := [0,0,0,0];
+	RealProcessVariable: ARRAY [0..3] OF REAL := [0,0,0,0];
+	RealProportionalAction: REAL := 0;
+	RealIntegralAction: REAL := 0;
+	RealDerivativeAction: REAL := 0;
+	RealIntegralLastAction: REAL := 0;
+	DwCurrentReferenceCycle: DWORD;
+	DwLastReferenceCycle:DWORD := 0;
+	BoolFirstCycle: BOOL := TRUE;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+(*###################################################################################                                                     
+##  									                                      								                                      
+##	Function Block Name: PID_FB                                                                                                                                  
+##  									                                      								                                      
+##  Version: 1.00                                                                                                                                                                 
+##  									                                      								                                      
+##                                                                                                
+##  									                                      								                                      
+##  Software Description: The PID function block implements the proportional, integral and derivative          
+##  control algorithm. Using a process variable (PV) and a setpoint (SP) the function computes the              
+##  control variable (CV) for the process under control. This value is calculated periodically, and 
+##  takes into consideration the proportional, integral and derivative configured factors. This is a ISA 
+##  PID control algorithm in which the proportional gain is the controller gain, that is applied to the 
+##  controller error as well as it's integral and derivative terms.
+##
+###################################################################################*)
+
+
+
+
+(* ----------------------------------------------------------  RESET TREATMENT-------------------------------------------------------*)
+IF(RESET = TRUE)
+THEN
+		RealSystemError[0] := 0;
+		RealSystemError[1] := 0;
+		RealSystemError[2] := 0;
+		RealSystemError[3] := 0;
+		RealProcessVariable[0] := 0;
+		RealProcessVariable[1] := 0;
+		RealProcessVariable[2] := 0;
+		RealProcessVariable[3] := 0;
+		RealTimeCycle[0] := 0;
+		RealTimeCycle[1] := 0;
+		RealTimeCycle[2] := 0;
+		RealIntegralLastAction := 0;
+		BoolFirstCycle:= TRUE;
+
+		(* Reset the output variables*)
+		ERROR_PARAM := FALSE;
+		CV_ALARM := FALSE;
+		CV := 0;
+		RETURN;
+END_IF;
+(*############################## END OF RESET TREATMENT ############################*)
+
+
+(*------------------------------------------------------- PARAMETERS TEST -----------------------------------------------------------*)
+IF(K<=0 OR Ti<=0 OR Td<0 OR MAX_CV<MIN_CV OR MAX_CV>32767 OR MIN_CV<-32768)
+THEN
+		RealSystemError[0] := 0;
+		RealSystemError[1] := 0;
+		RealSystemError[2] := 0;
+		RealSystemError[3] := 0;
+		RealProcessVariable[0] := 0;
+		RealProcessVariable[1] := 0;
+		RealProcessVariable[2] := 0;
+		RealProcessVariable[3] := 0;
+		RealTimeCycle[0] := 0;
+		RealTimeCycle[1] := 0;
+		RealTimeCycle[2] := 0;
+		RealIntegralLastAction := 0;
+		BoolFirstCycle:= TRUE;
+		CV_ALARM := FALSE;
+		ERROR_PARAM:= TRUE;
+		CV:= 0;
+		RETURN;
+ELSE
+		ERROR_PARAM:= FALSE;
+END_IF;
+
+(*############################## END PARAMETERS TEST ###############################*)
+
+(*------------------ KEEPS A LOG OF THE LAST FOUR ERRORS  AND PROCESS VARIABLES ----------------------*)
+
+RealSystemError[3] := RealSystemError[2];
+RealSystemError[2] := RealSystemError[1];
+RealSystemError[1] := RealSystemError[0];
+
+RealProcessVariable[3] := RealProcessVariable[2];
+RealProcessVariable[2] := RealProcessVariable[1];
+RealProcessVariable[1] := RealProcessVariable[0];
+
+IF(DIRECT_MODE = TRUE)
+THEN	RealSystemError[0]:=PV - SP;
+		RealProcessVariable[0 ]:= -PV;
+
+ELSE	RealSystemError[0]:=SP -PV;
+		RealProcessVariable[0 ]:= PV;
+END_IF;
+
+
+(*  Applys the dead band over the system error *)
+IF(ABS(RealSystemError[0]) <= ABS(DEAD_BAND))
+THEN	RealSystemError[0]:= 0;
+END_IF;
+
+(*################################ END OF ERRORS AND PV LOG ############################*)
+
+
+(*------------------------------------------------------ TIME BASE DEFINITION ----------------------------------------------------------*)
+
+
+IF(BoolFirstCycle = FALSE)
+THEN
+		RealTimeCycle[2] := SAMPLETIME_SEG;
+		RealTimeCycle[1] := SAMPLETIME_SEG;
+		RealTimeCycle[0]:= SAMPLETIME_SEG;
+
+		IF(RealTimeCycle[0] = 0)		(* If the current cycle is less than 1 ms it is forced do 1 ms *)
+		THEN	RealTimeCycle[0] := 0.001;
+		END_IF;
+ELSE
+		BoolFirstCycle := FALSE;
+		RETURN;
+END_IF;
+(*############################# END OF TIME BASE DEFINITION  ############################*)
+
+
+(* -----------------------------------------------------  PROPORTIONAL ACTION -----------------------------------------------------*)
+ IF (PA = TRUE)
+THEN
+		(* The proportional action is only the current error *)
+		(* Remind that "K" is the controller gain and it will be applied to the sum of proportional integral and derivative actions *)
+		RealProportionalAction := RealSystemError[0];
+ELSE
+		(* If the proportional action is not desirable its value would be zero *)
+		RealProportionalAction := 0;
+END_IF;
+(*############################ END OF PROPORTIONAL ACTION #############################*)
+
+
+(* ---------------------------------------------------------  INTEGRAL ACTION ---------------------------------------------------------*)
+IF( IA = TRUE AND MANUAL = FALSE)
+THEN
+		(* It keeps the last egral Action because it must be used when the controled variable reaches its limits *)
+		RealIntegralLastAction := RealIntegralAction;
+
+		(* The integral action is the amount  obtained from the current system error multiplied by the sample time and
+		    divided by  the the programmed integral time*)
+
+		(* Remind that "K" is the controller gain and it will be applied to the sum of proportional integral and derivative actions *)
+		RealIntegralAction := RealIntegralLastAction + RealSystemError[0] * RealTimeCycle[0] / Ti;
+
+		(* Limits the integral action in 10 times the maximum output *)
+		IF(RealIntegralAction > 327670)
+		THEN	RealIntegralAction := 327670;
+		END_IF;
+
+		IF(RealIntegralAction < -327670)
+		THEN	RealIntegralAction := -327670;
+		END_IF;
+ELSE
+		(* If the Integral action is not desirable its value will be zero *)
+		RealIntegralAction:= 0;
+END_IF;
+(*################################ END OF INTEGRAL ACTION ##############################*)
+
+
+(* --------------------------------------------------------  DERIVATIVE ACTION --------------------------------------------------------*)
+IF (DA = TRUE)
+THEN
+		(* The derivative action is the variation of de error during 3 cycles multiplied by the programmed derivative time*)
+		(* Remind that "K" is the controller gain and it will be applied to the sum of proportional integral and derivative actions *)
+		IF(DERIVATIVE_PV = TRUE)
+		THEN	RealDerivativeAction:=  Td * (RealProcessVariable[3] - RealProcessVariable[0]) / (RealTimeCycle[0] + RealTimeCycle[1] + RealTimeCycle[2]);
+		ELSE	RealDerivativeAction:=  Td * (RealSystemError[0] - RealSystemError[3]) / (RealTimeCycle[0] + RealTimeCycle[1] + RealTimeCycle[2]);
+		END_IF;
+
+		(* Limits the derivative action in 10 times the maximum output *)
+		IF(RealDerivativeAction > 327670)
+		THEN	RealDerivativeAction := 327670;
+		END_IF;
+
+		IF(RealDerivativeAction < -327670)
+		THEN	RealDerivativeAction := -327670;
+		END_IF;
+ELSE
+		(* If the derivative action is not desirable its value will be zero *)
+		RealDerivativeAction:=0;
+END_IF;
+(*###############################  END OF DERIVATIVE ACTION ############################*)
+
+
+(*-------------------------------------------- TESTS MANUAL OR AUTOMATIC MODE -----------------------------------------*)
+IF(MANUAL = FALSE)
+THEN
+		(* in automatic mode the control variable is the sum of  the three actions  *)
+		RealCV := K*(RealProportionalAction + RealIntegralAction + RealDerivativeAction) + BIAS;
+
+		(* limits the output in the maximum programmed *)
+		IF(RealCV > MAX_CV)
+		THEN	CV := REAL_TO_INT(MAX_CV);
+				CV_ALARM := TRUE;    (*indicates that the ouput reaches the limit*)
+				(* keeps the current Integral Action only if the system error is negative *)
+				IF(RealSystemError[0] > 0)
+				THEN	RealIntegralAction := RealIntegralLastAction;
+				END_IF;
+
+		(* limits the output in the minimum programmed *)
+		ELSE	IF(RealCV <  MIN_CV)
+				THEN	CV := REAL_TO_INT(MIN_CV);
+						CV_ALARM := TRUE;     (*indicates that the ouput reaches the limit*)
+						(* keeps the current Integral Action only if the system error is positive *)
+						IF(RealSystemError[0] < 0)
+						THEN	RealIntegralAction := RealIntegralLastAction;
+						END_IF;
+				ELSE	CV := REAL_TO_INT(RealCV);
+						CV_ALARM := FALSE;    (*indicates that the ouput is between the limits*)
+				END_IF;
+		END_IF;
+ELSE
+		(*In  manual mode the manual value is copied to the control variable .
+		The stored integral action will be the difference between the CV_MANUAL and the Proportional, Derivative Actions
+		and the programmed FF_Bias. *)
+
+		(* If the Manual CV is configured above or below to the limits the control variable alarm is set and the CV will be
+                 forced to the closest limit*)
+
+		IF(MANUAL_CV > MAX_CV)
+		THEN	CV := REAL_TO_INT(MAX_CV);
+				CV_ALARM := TRUE;
+		ELSE
+				IF(MANUAL_CV <MIN_CV)
+			    	THEN	CV := REAL_TO_INT(MIN_CV);
+						CV_ALARM := TRUE;
+
+				ELSE	CV := REAL_TO_INT(MANUAL_CV);
+						CV_ALARM := FALSE;
+
+				END_IF;
+		END_IF;
+
+		(*This Integral Action will be used in case of switch to automatic mode to ensure a smooth transition. *)
+		RealIntegralAction:= (INT_TO_REAL(CV) - BIAS) / K - RealProportionalAction - RealDerivativeAction;
+
+END_IF;
+
+(*###############################  END MANUAL / AUTOMATIC ############################*)]]></ST>
+    </Implementation>
+    <LineIds Name="PID_GENERICO">
+      <LineId Id="3" Count="237" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

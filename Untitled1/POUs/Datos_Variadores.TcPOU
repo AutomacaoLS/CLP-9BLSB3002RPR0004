@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="Datos_Variadores" Id="{d53b7410-187b-4f15-b0b8-c1963b9f240e}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM Datos_Variadores
+VAR
+	Variador_6 :SDO_READ;
+	ReadStart :BOOL;
+	ReadError :DWORD;
+	ReadData :ARRAY[0..255] OF BYTE;
+	AuxRPM:u_RPM;
+	RPM_6 :INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+
+Variador_6(
+
+    StartReading := ReadStart,
+    CO_Index := 16#2042,
+    CO_SubIndex := 16#5,
+    DataLength := 2,
+    PortNr := 16#1005,
+    ADSNetID:='169.254.25.50.3.1'
+    );
+
+IF Variador_6.ReadDataAvailable THEN
+    ReadStart := FALSE;
+    ReadError := Variador_6.Error;
+    ReadData := Variador_6.ReadData;
+END_IF
+AuxRPM.rpm[0]:=ReadData[0];
+AuxRPM.rpm[1]:=ReadData[1];
+RPM_6 :=AuxRPM.iRpm;
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="Datos_Variadores">
+      <LineId Id="24" Count="1" />
+      <LineId Id="6" Count="13" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="37" Count="2" />
+      <LineId Id="36" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

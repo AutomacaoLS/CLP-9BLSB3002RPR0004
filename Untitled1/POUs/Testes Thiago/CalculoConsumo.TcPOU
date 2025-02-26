@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <POU Name="CalculoConsumo" Id="{70549f2c-35a4-4371-9d7f-55eb3d6f401f}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM CalculoConsumo
+VAR
+	TON_CalculoConsumo	:TON;
+	ResetConsumo		:BOOL;	//Reseta os dados de consumo
+	DiaAtual			:WORD;
+	iCounter: INT;
+	iCounter2: INT;
+	Teste: BOOL;
+	i: INT;
+	// Borda de início de tratamento
+	InicioTrat: R_TRIG;
+	Teste2: TIME;
+END_VAR
+VAR PERSISTENT
+	Consumos		:ARRAY[1..12] OF REAL;	//Array com os consumos atuais
+	UltimosDias		:ARRAY[1..12] OF ARRAY[1..30] OF REAL;
+	RTRIG_Reset		:R_TRIG;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Essa rotina calcula o consumo do uso de cada linha de acordo com o primeiro sensor de vazão
+
+
+TON_CalculoConsumo(IN:=TRUE AND NOT TON_CalculoConsumo.Q, PT:=T#1S); //Pulsa a cada 1s
+
+IF TON_CalculoConsumo.Q THEN
+	//Os dados são divididos por 1000 para converter a vazão de mL/s para L/s. Só a vazão positiva é contabilizada
+	//Totem 1
+	DatosProceso.ConsumoCircuito_1 := DatosProceso.ConsumoCircuito_1 + SEL(HMI.CA1_L1_FT1_caudal/1000 > 0, 0, HMI.CA1_L1_FT1_caudal/1000);
+	DatosProceso.ConsumoCircuito_2 := DatosProceso.ConsumoCircuito_2 + SEL(HMI.CA1_L2_FT1_caudal/1000 > 0, 0, HMI.CA1_L2_FT1_caudal/1000);
+	DatosProceso.ConsumoCircuito_3 := DatosProceso.ConsumoCircuito_3 + SEL(HMI.CA1_L3_FT1_caudal/1000 > 0, 0, HMI.CA1_L3_FT1_caudal/1000);
+	DatosProceso.ConsumoCircuito_4 := DatosProceso.ConsumoCircuito_4 + SEL(HMI.CA1_L4_FT1_caudal/1000 > 0, 0, HMI.CA1_L4_FT1_caudal/1000);
+	Consumos[1] := Consumos[1] + SEL(HMI.CA1_L1_FT1_caudal > 0, 0, HMI.CA1_L1_FT1_caudal/1000);
+	Consumos[2] := Consumos[2] + SEL(HMI.CA1_L2_FT1_caudal > 0, 0, HMI.CA1_L1_FT1_caudal/1000);
+	Consumos[3] := Consumos[3] + SEL(HMI.CA1_L3_FT1_caudal > 0, 0, HMI.CA1_L1_FT1_caudal/1000);
+	Consumos[4] := Consumos[4] + SEL(HMI.CA1_L4_FT1_caudal > 0, 0, HMI.CA1_L1_FT1_caudal/1000);
+	
+	//Totem 2
+	DatosProceso.ConsumoCircuito_5 := DatosProceso.ConsumoCircuito_5 + SEL(HMI.CA2_L5_FT1_caudal/1000 > 0, 0, HMI.CA2_L5_FT1_caudal/1000);
+	DatosProceso.ConsumoCircuito_6 := DatosProceso.ConsumoCircuito_6 + SEL(HMI.CA2_L6_FT1_caudal/1000 > 0, 0, HMI.CA2_L6_FT1_caudal/1000);
+	DatosProceso.ConsumoCircuito_7 := DatosProceso.ConsumoCircuito_7 + SEL(HMI.CA2_L7_FT1_caudal/1000 > 0, 0, HMI.CA2_L7_FT1_caudal/1000);
+	DatosProceso.ConsumoCircuito_8 := DatosProceso.ConsumoCircuito_8 + SEL(HMI.CA2_L8_FT1_caudal/1000 > 0, 0, HMI.CA2_L8_FT1_caudal/1000);
+	Consumos[5] := Consumos[5] + SEL(HMI.CA2_L5_FT1_caudal > 0, 0, HMI.CA2_L5_FT1_caudal/1000);
+	Consumos[6] := Consumos[6] + SEL(HMI.CA2_L6_FT1_caudal > 0, 0, HMI.CA2_L6_FT1_caudal/1000);
+	Consumos[7] := Consumos[7] + SEL(HMI.CA2_L7_FT1_caudal > 0, 0, HMI.CA2_L7_FT1_caudal/1000);
+	Consumos[8] := Consumos[8] + SEL(HMI.CA2_L8_FT1_caudal > 0, 0, HMI.CA2_L8_FT1_caudal/1000);
+	
+	//Totem 3
+	DatosProceso.ConsumoCircuito_9 := DatosProceso.ConsumoCircuito_9 + SEL(HMI.CA3_L9_FT1_caudal/1000 > 0, 0, HMI.CA3_L9_FT1_caudal/1000);
+	DatosProceso.ConsumoCircuito_10 := DatosProceso.ConsumoCircuito_10 + SEL(HMI.CA3_L10_FT1_caudal/1000 > 0, 0, HMI.CA3_L10_FT1_caudal/1000);
+	DatosProceso.ConsumoCircuito_11 := DatosProceso.ConsumoCircuito_11 + SEL(HMI.CA3_L11_FT1_caudal/1000 > 0, 0, HMI.CA3_L11_FT1_caudal/1000);
+	DatosProceso.ConsumoCircuito_12 := DatosProceso.ConsumoCircuito_12 + SEL(HMI.CA3_L12_FT1_caudal/1000 > 0, 0, HMI.CA3_L12_FT1_caudal/1000);
+	Consumos[9] := Consumos[9] + SEL(HMI.CA3_L9_FT1_caudal > 0, 0, HMI.CA3_L9_FT1_caudal/1000);
+	Consumos[10] := Consumos[10] + SEL(HMI.CA3_L10_FT1_caudal > 0, 0, HMI.CA3_L10_FT1_caudal/1000);
+	Consumos[11] := Consumos[11] + SEL(HMI.CA3_L11_FT1_caudal > 0, 0, HMI.CA3_L11_FT1_caudal/1000);
+	Consumos[12] := Consumos[12] + SEL(HMI.CA3_L12_FT1_caudal > 0, 0, HMI.CA3_L12_FT1_caudal/1000);
+	
+END_IF
+
+RTRIG_Reset(CLK:=DatosProceso.CargarLote);
+
+IF ResetConsumo OR RTRIG_Reset.Q THEN
+	DatosProceso.ConsumoCircuito_1 := 0;
+	DatosProceso.ConsumoCircuito_2 := 0;
+	DatosProceso.ConsumoCircuito_3 := 0;
+	DatosProceso.ConsumoCircuito_4 := 0;
+	DatosProceso.ConsumoCircuito_5 := 0;
+	DatosProceso.ConsumoCircuito_6 := 0;
+	DatosProceso.ConsumoCircuito_7 := 0;
+	DatosProceso.ConsumoCircuito_8 := 0;
+	DatosProceso.ConsumoCircuito_9 := 0;
+	DatosProceso.ConsumoCircuito_10 := 0;
+	DatosProceso.ConsumoCircuito_11 := 0;
+	DatosProceso.ConsumoCircuito_12 := 0;
+	DatosProceso.ConsumoPolvo_1 := 0;
+	DatosProceso.ConsumoPolvo_2 := 0;
+	FOR i := 1 TO 12 DO
+		Consumos[i] := 0;
+	END_FOR
+	ResetConsumo := FALSE;
+END_IF
+
+IF DiaAtual <> Main.fbTime.systemTime.wDay THEN
+	FOR iCounter := 1 TO 12 BY 1 DO
+		//Faz o shift do array
+		FOR iCounter2 := 1 TO 29 BY 1 DO
+			UltimosDias[iCounter][iCounter2] := UltimosDias[iCounter][iCounter2 + 1];
+		END_FOR
+		UltimosDias[iCounter][30] := Consumos[iCounter];	//Transfere o consumo para o array de histórico
+		Consumos[iCounter] := 0;							//Zera o array de consumo
+	END_FOR
+	DiaAtual := Main.fbTime.systemTime.wDay;
+	//Teste := FALSE;
+END_IF
+
+//Computa a data e hora do inicio do tratamento atual
+InicioTrat(CLK := HMI.bRun OR Teste);
+
+IF InicioTrat.Q THEN
+	DatosProceso.InicioTratamento := DT_TO_UDINT(MAIN.HoraAtual);
+END_IF
+
+
+//Cálculo do tempo restante para tratar todo o lote. 
+DatosProceso.TempoRestante := SEL(DatosProceso.KgLote_Procesados > 0 AND (HMI.bRun OR Teste), 0,(DatosProceso.Kg_a_Procesar/DatosProceso.KgLote_Procesados) * (DT_TO_UDINT(MAIN.HoraAtual) - DatosProceso.InicioTratamento));
+
+//Cálculo do tempo decorrido no tratamento atual
+DatosProceso.TempoTratamento := SEL(HMI.bRun OR Teste, 0, (DT_TO_UDINT(MAIN.HoraAtual) - DatosProceso.InicioTratamento));
+
+//Cálculo do tempo total da batelada
+DatosProceso.TempoTotal := SEL(DatosProceso.KgLote_Procesados > 0 AND(HMI.bRun OR Teste), 0, DatosProceso.TempoRestante + TO_REAL(DatosProceso.TempoTratamento));
+
+Teste2 := REAL_TO_TIME(DatosProceso.TempoRestante*1000);
+
+
+
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="CalculoConsumo">
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="1" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="132" Count="0" />
+      <LineId Id="82" Count="7" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="90" Count="7" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="102" Count="7" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="166" Count="0" />
+      <LineId Id="163" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="44" Count="11" />
+      <LineId Id="201" Count="1" />
+      <LineId Id="146" Count="2" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="71" Count="0" />
+      <LineId Id="70" Count="0" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="114" Count="0" />
+      <LineId Id="74" Count="0" />
+      <LineId Id="77" Count="1" />
+      <LineId Id="80" Count="0" />
+      <LineId Id="115" Count="0" />
+      <LineId Id="75" Count="0" />
+      <LineId Id="117" Count="1" />
+      <LineId Id="73" Count="0" />
+      <LineId Id="205" Count="0" />
+      <LineId Id="183" Count="0" />
+      <LineId Id="207" Count="0" />
+      <LineId Id="211" Count="0" />
+      <LineId Id="210" Count="0" />
+      <LineId Id="206" Count="0" />
+      <LineId Id="212" Count="0" />
+      <LineId Id="214" Count="0" />
+      <LineId Id="213" Count="0" />
+      <LineId Id="182" Count="0" />
+      <LineId Id="215" Count="0" />
+      <LineId Id="238" Count="0" />
+      <LineId Id="240" Count="1" />
+      <LineId Id="243" Count="0" />
+      <LineId Id="242" Count="0" />
+      <LineId Id="244" Count="0" />
+      <LineId Id="239" Count="0" />
+      <LineId Id="217" Count="0" />
+      <LineId Id="204" Count="0" />
+      <LineId Id="203" Count="0" />
+      <LineId Id="184" Count="0" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

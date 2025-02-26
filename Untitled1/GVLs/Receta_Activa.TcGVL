@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <GVL Name="Receta_Activa" Id="{722b95b7-b3b2-4d83-adcb-13bd9ad55452}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+END_VAR
+VAR_GLOBAL PERSISTENT
+	//Receita enviada para a máquina
+	SetNombreRecetaActiva	:STRING;
+	SetTmrHomogenizado		:DINT;
+	SetTmrDescarga			:DINT;
+	SetVelocHomogenizado	:REAL;// %
+	SetVelocDescarga		:REAL;// %
+	SetCircuitosLiq			:ARRAY [1..12] OF stReceta_Circuito;
+	SetCircuitosPo			:ARRAY [1..4] OF stReceta_Polvo;
+	SetTiempoTotal			:REAL;
+
+	//Interface da receita. Esses variáveis são interligadas com a tela de edição
+	//Quando o operador aperta para carregar a receita, as variáveis de interface
+	//são enviadas para a máquina
+	interfaceSetNombreRecetaActiva	:STRING;	//Nome da receita na interface
+	interfaceSetTmrHomogenizado		:DINT;
+	interfaceSetTmrDescarga			:DINT;
+	interfaceSetVelocHomogenizado	:REAL;// %
+	interfaceSetVelocDescarga		:REAL;// %
+	interfaceSetCircuitosLiq		:ARRAY [1..12] OF stReceta_Circuito;
+	interfaceSetCircuitosPo			:ARRAY [1..4] OF stReceta_Polvo;
+	interfaceSetTiempoTotal			:REAL;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

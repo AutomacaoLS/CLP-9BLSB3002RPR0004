@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <POU Name="Calibracao_V02" Id="{5d289c74-e0a2-4cbd-8e58-161c81126945}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK Calibracao_V02
+VAR_INPUT
+	//Comandos
+	IniciaCalibr	:BOOL;	//Inicia processo de calibração
+	FinalizaCalibr	:BOOL;	//Finaliza calibração
+	PausaCalibr		:BOOL;	//Pausa calibração
+	
+	//Parâmetros inseridos pelo usuário
+	PesoBatelada	:REAL;	//Peso da batelada					(kg)
+	Dose		:REAL;	//Dose de produto a cada 100 kg		(mL/100 kg)
+	TempoInjecao	:DINT;	//Tempo de injeção de produto		(s)
+	Tolerancia		:REAL;	//Tolerância a erros				(%)
+	CapMaxima		:REAL;	//Capacidade máxima do recipiente	(L)
+	Densidade		:REAL;	//Densidade do produto				(kg/L)
+	
+	//Leituras externas
+	PesoBalanca		:REAL;	//Peso da balança					(kg)
+	LeituraVazao	:REAL;	//Valor vindo do sensor de vazão	(L/min)
+END_VAR
+VAR_OUTPUT
+	LigaBomba		:BOOL;	//Saída para ligar a bomba
+	VelocidadeBomba	:LREAL;	//Velocidade enviada para a bomba	(%)
+END_VAR
+VAR
+	PID_BombaInjecao	:FB_BasicPID;	//PID Para controle da bomba de injeção
+	Status				:INT;
+	SwitchCase			:INT := 0;
+	VolRecipiente		:REAL;	//Volume que deve ter no recipiente após a injeção
+	TaraBalanca			:REAL;
+	VazaoTotalizada		:REAL;	//Vazão do sensor totalizada
+	Totalizar			:BOOL;	//Se verdadeiro, o totalizador deve ser ativado
+	PulsosDoTotalizador	:REAL;	//Pulsos que o totalizador deu. Necessário para calcular a vazão média
+	UltimasCalibr		:ARRAY [1..10] OF REAL;	//Array com as últimas calibrações
+	IndexCalibr			:INT := 0;	//Index para o array de calibrações
+	VelocEncontrada		:LREAL;	//Velocidade encontrada pela calibração
+	
+	iCounter			:INT;	// Variável de iteração do FOR
+	SP_VazaoMedia		:REAL;	// Setpoint de vazão média para atingir o objetivo de dosagem
+	PV_VazaoMedia		:REAL;	// Vazão média, calculada pela vazão e tempo de aplicação atual
+	TON_TempoInjecao	:TON;	//Tempo de injeção
+	TON_Totalizador		:TON;	//Temporizador para o totalizador de vazão
+	CalibrSucesso		:BOOL;	// Calibração feita com sucesso
+	
+	Tara				:REAL; //Valor da tara da baalança
+	TON_EntreCalibracoes: TON;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Status da calibração
+IF PesoBatelada <= 0 THEN
+	Status := 1;	//Ajustar peso da batelada
+ELSIF Dose <= 0 THEN
+	Status := 2;	//Ajustar dosagem
+ELSIF TempoInjecao <= 0 THEN
+	Status := 3;	//Ajustar tempo de injeção
+ELSIF Tolerancia <= 0 THEN
+	Status := 4;	//Ajustar tolerância de erro
+ELSIF CapMaxima <= 0 THEN
+	Status := 5;	//Ajustar capacidade máxima
+ELSIF Densidade <= 0 THEN
+	Status := 6;	//Ajustar densidade do produto
+ELSIF PausaCalibr THEN
+	Status := 7;	//Calibração pausada
+ELSIF SwitchCase > 0 THEN
+	Status := 8;	//Calibrando
+ELSIF (PesoBalanca/Densidade) > 0.9 * CapMaxima THEN
+	Status := 9;	//Balança cheia
+ELSIF ((PesoBatelada*Dose)/100)/1000 + (PesoBalanca/Densidade) > 0.9 * CapMaxima THEN
+	Status := 10;	//Próxima aplicação irá transbordar o recipiente
+ELSE
+	Status := 99;	//Pronto para calibrar
+END_IF
+
+//Quando for fazer o teste, tentar aumentar o tempo de dosagem, já que a bomba vai buscar a vazão média, não importa o tempo de dosagem
+
+//Instância dos temporizadores
+TON_TempoInjecao(IN:= , PT:= DINT_TO_TIME(TempoInjecao*1000), Q=> , ET=> ); //Mult. por 1000 pois o timer recebe o valor em ms
+TON_Totalizador(IN:= Totalizar AND NOT TON_Totalizador.Q, PT:= T#1S, Q=> , ET=> );
+TON_EntreCalibracoes(IN:= , PT:= T#5S, Q=> , ET=> );
+
+//Inicia a calibração
+IF Status = 99 AND IniciaCalibr THEN
+	Tara := PesoBalanca;
+	SwitchCase := 5;
+	IniciaCalibr := FALSE;
+END_IF
+
+//Finaliza a calibração
+IF FinalizaCalibr THEN
+	SwitchCase := 0;
+	FinalizaCalibr := FALSE;
+END_IF
+
+//Totalizador de vazão
+IF TON_Totalizador.Q THEN
+	VazaoTotalizada := VazaoTotalizada + (LeituraVazao/60); //Dividido por 60 para converter de L/min para L/s;
+	PulsosDoTotalizador := PulsosDoTotalizador + 1;
+	PV_VazaoMedia := VazaoTotalizada/PulsosDoTotalizador;
+END_IF
+
+//Cálculo das variáveis usadas na calibração
+VolRecipiente := (PesoBatelada*Dose)/100;	//É dividido por 100 por que a dosagem é a quantidade de mL a cada 100 kg
+IF TempoInjecao <> 0 THEN
+	SP_VazaoMedia := VolRecipiente/(DINT_TO_REAL(TempoInjecao)*1000); //É dividido por 100 para transformar de mL/s para L/s
+END_IF
+
+CASE SwitchCase OF
+	0:	LigaBomba := FALSE;
+		VelocidadeBomba := 0.0;
+		PulsosDoTotalizador := 0;
+		VazaoTotalizada := 0.0;
+		Totalizar := FALSE;
+		TON_TempoInjecao.IN := FALSE;
+		IndexCalibr := 0;
+		
+	5:	FOR iCounter := 1 TO 10 BY 1 DO	//Limpa o array das ultimas calibrações
+			UltimasCalibr[iCounter] := 0.0;
+		END_FOR
+		SwitchCase := 10;
+		
+	10:	IndexCalibr := IndexCalibr + 1;	//Incrementa o index do array de calibrações
+		Totalizar := TRUE;
+		SwitchCase := 20;
+		
+	20:	LigaBomba := TRUE;
+		PID_BombaInjecao(
+			fSetpointValue:= SP_VazaoMedia, 
+			fActualValue:= PV_VazaoMedia, 
+			bReset:= , 
+			fCtrlCycleTime:= 0.1, 
+			fKp:= 1, 
+			fTn:= , 
+			fTv:= , 
+			fTd:= , 
+			fCtrlOutput=> VelocidadeBomba, 
+			nErrorStatus=> );
+	PID_BombaInjecao.fTn := SEL(PID_BombaInjecao.fCtrlOutput > 150, 0.1, 0);
+
+			
+		TON_TempoInjecao.IN := TRUE;
+		IF TON_TempoInjecao.Q THEN
+			SwitchCase := 30;
+			VelocEncontrada := VelocidadeBomba;
+			LigaBomba := FALSE;
+			TON_TempoInjecao.IN := FALSE;
+		END_IF
+		
+	30:	//Aguarda confirmação de calibração bem sucedida
+		UltimasCalibr[IndexCalibr] := (PesoBalanca - Tara)/Densidade;	//Fazer tara da balança se for necessário outra calibração
+		
+		//Calibração fora da tolerância
+		IF UltimasCalibr[IndexCalibr] < VolRecipiente * (100 - Tolerancia)/100 OR UltimasCalibr[IndexCalibr] > VolRecipiente * (100 + Tolerancia)/100 THEN
+			TON_EntreCalibracoes.IN := TRUE;
+			IF TON_EntreCalibracoes.Q THEN
+				TON_EntreCalibracoes.IN := FALSE;
+				Tara := PesoBalanca;
+				SwitchCase := 10;
+			END_IF
+			
+		ELSE
+				CalibrSucesso := TRUE;
+				SwitchCase := 0;
+		END_IF
+		
+		
+END_CASE
+
+
+
+(*----SIMULAÇÃO----*)]]></ST>
+    </Implementation>
+    <LineIds Name="Calibracao_V02">
+      <LineId Id="9" Count="0" />
+      <LineId Id="28" Count="1" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="33" Count="2" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="37" Count="7" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="95" Count="1" />
+      <LineId Id="110" Count="0" />
+      <LineId Id="109" Count="0" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="245" Count="1" />
+      <LineId Id="140" Count="0" />
+      <LineId Id="139" Count="0" />
+      <LineId Id="141" Count="0" />
+      <LineId Id="137" Count="0" />
+      <LineId Id="230" Count="0" />
+      <LineId Id="153" Count="0" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="227" Count="0" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="149" Count="0" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="138" Count="0" />
+      <LineId Id="112" Count="0" />
+      <LineId Id="111" Count="0" />
+      <LineId Id="113" Count="0" />
+      <LineId Id="150" Count="0" />
+      <LineId Id="114" Count="0" />
+      <LineId Id="92" Count="0" />
+      <LineId Id="81" Count="0" />
+      <LineId Id="83" Count="0" />
+      <LineId Id="91" Count="0" />
+      <LineId Id="90" Count="0" />
+      <LineId Id="134" Count="0" />
+      <LineId Id="85" Count="0" />
+      <LineId Id="119" Count="0" />
+      <LineId Id="117" Count="1" />
+      <LineId Id="168" Count="0" />
+      <LineId Id="116" Count="0" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="169" Count="0" />
+      <LineId Id="63" Count="0" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="71" Count="0" />
+      <LineId Id="87" Count="0" />
+      <LineId Id="93" Count="1" />
+      <LineId Id="152" Count="0" />
+      <LineId Id="164" Count="0" />
+      <LineId Id="235" Count="0" />
+      <LineId Id="237" Count="1" />
+      <LineId Id="236" Count="0" />
+      <LineId Id="239" Count="0" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="101" Count="0" />
+      <LineId Id="170" Count="0" />
+      <LineId Id="120" Count="2" />
+      <LineId Id="124" Count="9" />
+      <LineId Id="123" Count="0" />
+      <LineId Id="342" Count="0" />
+      <LineId Id="392" Count="0" />
+      <LineId Id="148" Count="0" />
+      <LineId Id="143" Count="2" />
+      <LineId Id="178" Count="0" />
+      <LineId Id="224" Count="0" />
+      <LineId Id="151" Count="0" />
+      <LineId Id="146" Count="0" />
+      <LineId Id="155" Count="1" />
+      <LineId Id="163" Count="0" />
+      <LineId Id="165" Count="2" />
+      <LineId Id="228" Count="0" />
+      <LineId Id="232" Count="1" />
+      <LineId Id="244" Count="0" />
+      <LineId Id="240" Count="0" />
+      <LineId Id="234" Count="0" />
+      <LineId Id="241" Count="2" />
+      <LineId Id="293" Count="0" />
+      <LineId Id="229" Count="0" />
+      <LineId Id="161" Count="0" />
+      <LineId Id="105" Count="0" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="174" Count="2" />
+      <LineId Id="173" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

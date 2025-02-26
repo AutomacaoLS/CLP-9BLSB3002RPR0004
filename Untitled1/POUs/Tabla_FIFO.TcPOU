@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="Tabla_FIFO" Id="{1e18d4a0-ee90-4226-8a09-bcb2f67d2fe2}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK Tabla_FIFO
+VAR_INPUT 
+	Dato :REAL;
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR_IN_OUT
+	Tabla :ARRAY [1..10]OF REAL;
+	Trigger :BOOL;
+END_VAR
+VAR
+	posicion: INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF trigger  THEN
+	posicion:=1;
+	FOR posicion:=10 TO 2 BY -1 DO
+	Tabla[posicion]:=Tabla[posicion-1];
+	END_FOR;
+	Tabla[1]:=Dato;
+	trigger:=FALSE;
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="Tabla_FIFO">
+      <LineId Id="10" Count="3" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="33" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

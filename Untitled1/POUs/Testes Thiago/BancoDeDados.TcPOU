@@ -1,0 +1,1070 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <POU Name="BancoDeDados" Id="{1c2da0d4-ddc2-4df4-87ae-678610d1e3c0}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM BancoDeDados
+VAR_INPUT
+	InsertMarcha: InsertBD_Comandos;
+	InsertParada: InsertBD_Comandos;
+	ComandoSalvar:ARRAY[1..200] OF BOOL;
+	bExecuteInsert		: BOOL; 
+END_VAR
+VAR
+	Parte1Comandos	:STRING[100];
+	Parte2Comandos	:STRING;
+	Parte3Comandos	:STRING;
+	RecordInsert	:FB_DBRecordInsert_EX;
+	sCmdInsert		:T_MaxString;
+	bInsertBusy		:BOOL;
+	bInsertError	:BOOL;
+	bInsertErrID	:UDINT;
+	nRecords		:UDINT;
+	
+	Teste: BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+
+//Código de erro 1142 - Usuário sem permissão para fazer o insert
+//Código de erro 1146 - Tabela não encontrada
+//Código de erro 1064 - Erro de sintaxe
+
+//Pedaços do comando SQL para ficar melhor a montagem no uso delas
+Parte1Comandos := 'INSERT INTO `comandos` (`comando`, `data_hora`, `usuario`, `serial_maquina`) VALUES (';
+Parte2Comandos := CONCAT(', CURRENT_TIMESTAMP,$'', Main.NomeUsuario);
+Parte3Comandos := CONCAT('$', $'', CONCAT(Main.SerialDaMaquina, '$')'));
+
+RecordInsert(
+	sNetID:= '127.0.0.1.1.1', //String containing the AMS network ID of the target device, at which the ADS command is directed.
+	hDBID:= 1, // Indicates the ID of the database to be used.
+	pCmdAddr:= ADR(sCmdInsert), //Pointer to the executing INSERT command
+	cbCmdSize:= SIZEOF(sCmdInsert), //Indicates the length of the INSERT command.
+	bExecute:= bExecuteInsert, 
+	tTimeout:= T#5S, 
+	bBusy=> bInsertBusy, 
+	bError=> bInsertError, 
+	nErrID=> bInsertErrID);
+	
+
+//----------------------- Comandos de funcionamento da máquina -----------------------//
+{region "Comandos da máquina"}
+//Marcha
+bExecuteInsert := FALSE;
+IF ComandoSalvar[1] THEN
+	InsertMarcha(Insert:= TRUE, NomeComando:= 'MARCHA', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[1] := FALSE;
+END_IF
+
+//Parar
+IF ComandoSalvar[2] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'PARADA', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[2] := FALSE;
+END_IF
+
+//Manual
+IF ComandoSalvar[3] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'MAQ. EM MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[3] := FALSE;
+END_IF
+
+//Auto
+IF ComandoSalvar[4] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'MAQ. EM AUTOM.', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[4] := FALSE;
+END_IF
+
+//Fechar Ordem
+IF ComandoSalvar[5] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'FECHAR ORDEM', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[5] := FALSE;
+END_IF
+
+//Aceitar lote
+IF ComandoSalvar[6] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'ACEITAR LOTE', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[6] := FALSE;
+END_IF
+
+//Uma batelada
+IF ComandoSalvar[7] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'UMA BATELADA', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[7] := FALSE;
+END_IF
+
+//Contínuo
+IF ComandoSalvar[8] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'CONTÍNUO', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[8] := FALSE;
+END_IF
+
+//Pausa
+IF ComandoSalvar[9] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'PAUSA', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[9] := FALSE;
+END_IF
+{endregion}
+
+
+//----------------------- Acionamento manual das válvulas -----------------------//
+{region "Válvulas Circuito 1"}
+//------------------- Válvulas Circuito 1 -------------------//
+
+//Circuito 1 Valvula 1 manual
+IF ComandoSalvar[10] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 1 CIRC. 1 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[10] := FALSE;
+END_IF
+
+//Circuito 1 Valvula 2 manual
+IF ComandoSalvar[11] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 2 CIRC. 1 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[11] := FALSE;
+END_IF
+
+//Circuito 1 Valvula 3 manual
+IF ComandoSalvar[12] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 3 CIRC. 1 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[12] := FALSE;
+END_IF
+
+//Circuito 1 Valvula 4 manual
+IF ComandoSalvar[13] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 4 CIRC. 1 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[13] := FALSE;
+END_IF	  
+{endregion}
+
+{region "Válvulas Circuito 2"}
+//------------------- Válvulas Circuito 2 -------------------//
+
+//Circuito 2 Valvula 1 manual
+IF ComandoSalvar[14] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 1 CIRC. 2 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[14] := FALSE;
+END_IF
+
+//Circuito 2 Valvula 2 manual
+IF ComandoSalvar[15] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 2 CIRC. 2 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[15] := FALSE;
+END_IF
+
+//Circuito 2 Valvula 3 manual
+IF ComandoSalvar[16] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 3 CIRC. 2 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[16] := FALSE;
+END_IF
+
+//Circuito 2 Valvula 4 manual
+IF ComandoSalvar[17] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 4 CIRC. 2 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[17] := FALSE;
+END_IF
+{endregion}
+
+{region "Válvulas Circuito 3"}
+//------------------- Válvulas Circuito 3 -------------------//
+
+//Circuito 3 Valvula 1 manual
+IF ComandoSalvar[18] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 1 CIRC. 3 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[18] := FALSE;
+END_IF
+
+//Circuito 3 Valvula 2 manual
+IF ComandoSalvar[19] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 2 CIRC. 3 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[19] := FALSE;
+END_IF
+
+//Circuito 3 Valvula 3 manual
+IF ComandoSalvar[20] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 3 CIRC. 3 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[20] := FALSE;
+END_IF
+
+//Circuito 3 Valvula 4 manual
+IF ComandoSalvar[21] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 4 CIRC. 3 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[21] := FALSE;
+END_IF
+{endregion}
+
+{region "Válvulas Circuito 4"}
+//------------------- Válvulas Circuito 4 -------------------//
+
+//Circuito 4 Valvula 1 manual
+IF ComandoSalvar[22] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 1 CIRC. 4 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[22] := FALSE;
+END_IF
+
+//Circuito 4 Valvula 2 manual
+IF ComandoSalvar[23] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 2 CIRC. 4 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[23] := FALSE;
+END_IF
+
+//Circuito 4 Valvula 3 manual
+IF ComandoSalvar[24] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 3 CIRC. 4 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[24] := FALSE;
+END_IF
+
+//Circuito 4 Valvula 4 manual
+IF ComandoSalvar[25] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 4 CIRC. 4 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[25] := FALSE;
+END_IF
+{endregion}
+
+{region "Válvulas Circuito 5"}
+//------------------- Válvulas Circuito 5 -------------------//
+
+//Circuito 5 Valvula 1 manual
+IF ComandoSalvar[26] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 1 CIRC. 5 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[26] := FALSE;
+END_IF
+
+//Circuito 5 Valvula 2 manual
+IF ComandoSalvar[27] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 2 CIRC. 5 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[27] := FALSE;
+END_IF
+
+//Circuito 5 Valvula 3 manual
+IF ComandoSalvar[28] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 3 CIRC. 5 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[28] := FALSE;
+END_IF
+
+//Circuito 5 Valvula 4 manual
+IF ComandoSalvar[29] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 4 CIRC. 5 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[29] := FALSE;
+END_IF
+{endregion}
+
+{region "Válvulas Circuito 6"}
+//------------------- Válvulas Circuito 6 -------------------//
+
+//Circuito 6 Valvula 1 manual
+IF ComandoSalvar[30] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 1 CIRC. 6 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[30] := FALSE;
+END_IF
+
+//Circuito 6 Valvula 2 manual
+IF ComandoSalvar[31] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 2 CIRC. 6 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[31] := FALSE;
+END_IF
+
+//Circuito 6 Valvula 3 manual
+IF ComandoSalvar[32] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 3 CIRC. 6 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[32] := FALSE;
+END_IF
+
+//Circuito 6 Valvula 4 manual
+IF ComandoSalvar[33] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 4 CIRC. 6 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[33] := FALSE;
+END_IF
+{endregion}
+
+{region "Válvulas Circuito 7"}
+//------------------- Válvulas Circuito 7 -------------------//
+
+//Circuito 7 Valvula 1 manual
+IF ComandoSalvar[34] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 1 CIRC. 7 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[34] := FALSE;
+END_IF
+
+//Circuito 7 Valvula 2 manual
+IF ComandoSalvar[35] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 2 CIRC. 7 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[35] := FALSE;
+END_IF
+
+//Circuito 7 Valvula 3 manual
+IF ComandoSalvar[36] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 3 CIRC. 7 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[36] := FALSE;
+END_IF
+	 
+//Circuito 7 Valvula 4 manual
+IF ComandoSalvar[37] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 4 CIRC. 7 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[37] := FALSE;
+END_IF
+{endregion}
+
+{region "Válvulas Circuito 8"}
+//------------------- Válvulas Circuito 8 -------------------//
+
+//Circuito 8 Valvula 1 manual
+IF ComandoSalvar[38] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 1 CIRC. 8 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[38] := FALSE;
+END_IF
+
+//Circuito 8 Valvula 2 manual
+IF ComandoSalvar[39] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 2 CIRC. 8 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[39] := FALSE;
+END_IF
+
+//Circuito 8 Valvula 3 manual
+IF ComandoSalvar[40] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 3 CIRC. 8 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[40] := FALSE;
+END_IF
+
+//Circuito 8 Valvula 4 manual
+IF ComandoSalvar[41] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 4 CIRC. 8 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[41] := FALSE;
+END_IF
+{endregion}
+	 
+
+{region "Válvulas Circuito 9"}
+//------------------- Válvulas Circuito 9 -------------------//
+
+//Circuito 9 Valvula 1 manual
+IF ComandoSalvar[42] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 1 CIRC. 9 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[42] := FALSE;
+END_IF
+
+//Circuito 9 Valvula 2 manual
+IF ComandoSalvar[43] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 2 CIRC. 9 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[43] := FALSE;
+END_IF
+
+//Circuito 9 Valvula 3 manual
+IF ComandoSalvar[44] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 3 CIRC. 9 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[44] := FALSE;
+END_IF
+
+//Circuito 9 Valvula 4 manual
+IF ComandoSalvar[45] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 4 CIRC. 9 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[45] := FALSE;
+END_IF
+{endregion}
+	 
+
+{region "Válvulas Circuito 10"}
+//------------------- Válvulas Circuito 10 -------------------//
+
+//Circuito 10 Valvula 1 manual
+IF ComandoSalvar[46] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 1 CIRC. 10 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[46] := FALSE;
+END_IF
+
+//Circuito 10 Valvula 2 manual
+IF ComandoSalvar[47] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 2 CIRC. 10 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[47] := FALSE;
+END_IF
+
+//Circuito 10 Valvula 3 manual
+IF ComandoSalvar[48] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 3 CIRC. 10 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[48] := FALSE;
+END_IF
+
+//Circuito 10 Valvula 4 manual
+IF ComandoSalvar[49] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 4 CIRC. 10 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[49] := FALSE;
+END_IF
+{endregion}
+	 
+
+{region "Válvulas Circuito 11"}
+//------------------- Válvulas Circuito 11 -------------------//
+
+//Circuito 11 Valvula 1 manual
+IF ComandoSalvar[50] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 1 CIRC. 11 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[50] := FALSE;
+END_IF
+
+//Circuito 11 Valvula 2 manual
+IF ComandoSalvar[51] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 2 CIRC. 11 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[51] := FALSE;
+END_IF
+
+//Circuito 11 Valvula 3 manual
+IF ComandoSalvar[52] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 3 CIRC. 11 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[52] := FALSE;
+END_IF
+
+//Circuito 11 Valvula 4 manual
+IF ComandoSalvar[53] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 4 CIRC. 11 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[53] := FALSE;
+END_IF
+{endregion}
+	 
+
+{region "Válvulas Circuito 12"}
+//------------------- Válvulas Circuito 12 -------------------//
+
+//Circuito 12 Valvula 1 manual
+IF ComandoSalvar[54] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 1 CIRC. 12 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[54] := FALSE;
+END_IF
+
+//Circuito 12 Valvula 2 manual
+IF ComandoSalvar[55] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 2 CIRC. 12 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[55] := FALSE;
+END_IF
+
+//Circuito 12 Valvula 3 manual
+IF ComandoSalvar[56] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 3 CIRC. 12 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[56] := FALSE;
+END_IF
+
+//Circuito 12 Valvula 4 manual
+IF ComandoSalvar[57] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 4 CIRC. 12 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[57] := FALSE;
+END_IF
+{endregion}
+
+
+//-----------------------			Acionamento manual das válvulas de água			-----------------------//
+{region "Válvulas de água"}
+//Válvula de água limpa
+IF ComandoSalvar[58] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. AGUA LIMPA MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[58] := FALSE;
+END_IF
+
+//Válvula de água residual
+IF ComandoSalvar[59] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'VALV. 4 AGUA RESID. MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[59] := FALSE;
+END_IF
+{endregion}
+	 
+
+//-----------------------			Acionamento manual das bombas de dosagem		-----------------------//
+{region "Bombas de dosagem"}
+//Bomba da linha 1
+IF ComandoSalvar[60] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'BOMBA DOSAD. 1 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[60] := FALSE;
+END_IF	
+//Bomba da linha 2 
+IF ComandoSalvar[61] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'BOMBA DOSAD. 2 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[61] := FALSE;
+END_IF	 
+//Bomba da linha 3
+IF ComandoSalvar[62] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'BOMBA DOSAD. 3 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[62] := FALSE;
+END_IF	 
+//Bomba da linha 4
+IF ComandoSalvar[63] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'BOMBA DOSAD. 4 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[63] := FALSE;
+END_IF	 
+//Bomba da linha 5
+IF ComandoSalvar[64] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'BOMBA DOSAD. 5 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[64] := FALSE;
+END_IF	 
+//Bomba da linha 6
+IF ComandoSalvar[65] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'BOMBA DOSAD. 6 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[65] := FALSE;
+END_IF	 
+//Bomba da linha 7
+IF ComandoSalvar[66] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'BOMBA DOSAD. 7 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[66] := FALSE;
+END_IF	 
+//Bomba da linha 8
+IF ComandoSalvar[67] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'BOMBA DOSAD. 8 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[67] := FALSE;
+END_IF	 
+//Bomba da linha 9
+IF ComandoSalvar[68] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'BOMBA DOSAD. 9 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[68] := FALSE;
+END_IF	 
+//Bomba da linha 10
+IF ComandoSalvar[69] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'BOMBA DOSAD. 10 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[69] := FALSE;
+END_IF	 
+//Bomba da linha 11
+IF ComandoSalvar[70] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'BOMBA DOSAD. 11 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[70] := FALSE;
+END_IF	 
+//Bomba da linha 12
+IF ComandoSalvar[71] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'BOMBA DOSAD. 12 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[71] := FALSE;
+END_IF
+{endregion}
+
+//-----------------------			Acionamento manual dos agitadores				-----------------------//
+{region "Agitadores"}
+//Agitador da linha 1
+IF ComandoSalvar[72] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'AGITADOR 1 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[72] := FALSE;
+END_IF
+//Agitador da linha 2
+IF ComandoSalvar[73] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'AGITADOR 2 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[73] := FALSE;
+END_IF
+//Agitador da linha 3
+IF ComandoSalvar[74] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'AGITADOR 3 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[74] := FALSE;
+END_IF
+//Agitador da linha 4
+IF ComandoSalvar[75] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'AGITADOR 4 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[75] := FALSE;
+END_IF
+//Agitador da linha 5
+IF ComandoSalvar[76] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'AGITADOR 5 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[76] := FALSE;
+END_IF
+//Agitador da linha 6
+IF ComandoSalvar[77] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'AGITADOR 6 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[77] := FALSE;
+END_IF
+//Agitador da linha 7
+IF ComandoSalvar[78] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'AGITADOR 7 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[78] := FALSE;
+END_IF
+//Agitador da linha 8
+IF ComandoSalvar[79] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'AGITADOR 8 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[79] := FALSE;
+END_IF
+//Agitador da linha 9
+IF ComandoSalvar[80] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'AGITADOR 9 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[80] := FALSE;
+END_IF
+//Agitador da linha 10
+IF ComandoSalvar[81] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'AGITADOR 10 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[81] := FALSE;
+END_IF
+//Agitador da linha 11
+IF ComandoSalvar[82] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'AGITADOR 11 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[82] := FALSE;
+END_IF
+//Agitador da linha 12
+IF ComandoSalvar[83] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'AGITADOR 12 MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[83] := FALSE;
+END_IF
+{endregion}
+
+//-----------------------			Inicia lavagem nas linhas						-----------------------//
+{region "Inicio de lavagem"}
+//Inicio da lavagem da linha 1
+IF ComandoSalvar[84] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'INICIO LAV. L1', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[84] := FALSE;
+END_IF	
+//Inicio da lavagem da linha 2 
+IF ComandoSalvar[85] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'INICIO LAV. L2', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[85] := FALSE;
+END_IF
+//Inicio da lavagem da linha 3
+IF ComandoSalvar[86] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'INICIO LAV. L3', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[86] := FALSE;
+END_IF	 
+//Inicio da lavagem da linha 4
+IF ComandoSalvar[87] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'INICIO LAV. L4', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[87] := FALSE;
+END_IF	 
+//Inicio da lavagem da linha 5
+IF ComandoSalvar[88] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'INICIO LAV. L5', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[88] := FALSE;
+END_IF	 
+//Inicio da lavagem da linha 6
+IF ComandoSalvar[89] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'INICIO LAV. L6', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[89] := FALSE;
+END_IF	 
+//Inicio da lavagem da linha 7
+IF ComandoSalvar[90] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'INICIO LAV. L7', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[90] := FALSE;
+END_IF	 
+//Inicio da lavagem da linha 8
+IF ComandoSalvar[91] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'INICIO LAV. L8', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[91] := FALSE;
+END_IF
+//Inicio da lavagem da linha 9
+IF ComandoSalvar[92] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'INICIO LAV. L9', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[92] := FALSE;
+END_IF 
+//Inicio da lavagem da linha 10
+IF ComandoSalvar[93] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'INICIO LAV. L10', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[93] := FALSE;
+END_IF
+//Inicio da lavagem da linha 11
+IF ComandoSalvar[94] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'INICIO LAV. L11', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[94] := FALSE;
+END_IF
+//Inicio da lavagem da linha 12
+IF ComandoSalvar[95] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'INICIO LAV. L12', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[95] := FALSE;
+END_IF
+{endregion}
+
+//-----------------------			Para lavagem nas linhas							-----------------------//
+{Region "Para a lavagem"}
+//Parada da lavagem da linha 1
+IF ComandoSalvar[96] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'PARA LAV. L1', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[96] := FALSE;
+END_IF	
+//Parada da lavagem da linha 2
+IF ComandoSalvar[97] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'PARA LAV. L2', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[97] := FALSE;
+END_IF	
+//Parada da lavagem da linha 3
+IF ComandoSalvar[98] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'PARA LAV. L3', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[98] := FALSE;
+END_IF	
+//Parada da lavagem da linha 4
+IF ComandoSalvar[99] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'PARA LAV. L4', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[99] := FALSE;
+END_IF	
+//Parada da lavagem da linha 5
+IF ComandoSalvar[100] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'PARA LAV. L5', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[100] := FALSE;
+END_IF	
+//Parada da lavagem da linha 6
+IF ComandoSalvar[101] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'PARA LAV. L6', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[101] := FALSE;
+END_IF	
+//Parada da lavagem da linha 7
+IF ComandoSalvar[102] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'PARA LAV. L7', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[102] := FALSE;
+END_IF	
+//Parada da lavagem da linha 8
+IF ComandoSalvar[103] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'PARA LAV. L8', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[103] := FALSE;
+END_IF	
+//Parada da lavagem da linha 9
+IF ComandoSalvar[104] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'PARA LAV. L9', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[104] := FALSE;
+END_IF	
+//Parada da lavagem da linha 10
+IF ComandoSalvar[105] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'PARA LAV. L10', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[105] := FALSE;
+END_IF	
+//Parada da lavagem da linha 11
+IF ComandoSalvar[106] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'PARA LAV. L11', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[106] := FALSE;
+END_IF	
+//Parada da lavagem da linha 12
+IF ComandoSalvar[107] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'PARA LAV. L12', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[107] := FALSE;
+END_IF	
+{endregion}
+
+//-----------------------			Acionamento manual dos elevadores				-----------------------//
+{Region "Acionamento Elevadores"}
+//Acionamento manual do elevador 1
+IF ComandoSalvar[108] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'ACION. MANUAL ELEV1', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[108] := FALSE;
+END_IF	
+//Acionamento manual do elevador 2
+IF ComandoSalvar[109] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'ACION. MANUAL ELEV2', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[109] := FALSE;
+END_IF
+//Acionamento manual do elevador 3
+IF ComandoSalvar[110] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'ACION. MANUAL ELEV3', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[110] := FALSE;
+END_IF
+{endregion}
+	 
+
+//-----------------------			Descargas										-----------------------//
+{Region "Descargas"}
+//Caixa de recebimento
+IF ComandoSalvar[111] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'ACION. MANUAL CX. RECEB.', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[111] := FALSE;
+END_IF
+//Caixa de 30Ton
+IF ComandoSalvar[112] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'ACION. MANUAL CX. 30TON', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[112] := FALSE;
+END_IF
+//Caixa superior
+IF ComandoSalvar[113] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'ACION. MANUAL CX. SUPERIOR', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[113] := FALSE;
+END_IF
+{endregion}
+	 
+	 
+
+//-----------------------			Comandos das receitas							-----------------------//
+{Region "Comandos das receitas"}
+//Salvar
+IF ComandoSalvar[114] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'SALVAR RECEITA', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[114] := FALSE;
+END_IF
+//Carregar
+IF ComandoSalvar[115] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'CARREGAR RECEITA', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[115] := FALSE;
+END_IF
+//Excluir
+IF ComandoSalvar[116] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'EXCLUIR RECEITA', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[116] := FALSE;
+END_IF
+{endregion}
+
+//-----------------------			Confirmação dos alarmes							-----------------------//
+{Region "Comandos da balança"}
+//Confirma alarmes
+IF ComandoSalvar[117] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'CONFIRMAR ALARMES', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[117] := FALSE;
+END_IF
+
+//-----------------------			Comandos da balança			-----------------------//
+//Confirma alarmes
+IF ComandoSalvar[117] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'CORTE GROSSO', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[117] := FALSE;
+END_IF
+//Confirma alarmes
+IF ComandoSalvar[117] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'CORTE FINO', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[117] := FALSE;
+END_IF
+//Confirma alarmes
+IF ComandoSalvar[117] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'PESO PADRÃO', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[117] := FALSE;
+END_IF
+//Confirma alarmes
+IF ComandoSalvar[117] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'CONFIRMAR ALARMES', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[117] := FALSE;
+END_IF
+{endregion}
+
+//-----------------------			Misturador							-----------------------//
+{Region "Misturador"}
+//Soprador
+IF ComandoSalvar[118] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'SOPRADOR MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[118] := FALSE;
+END_IF
+	//Prato
+IF ComandoSalvar[119] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'PRATO MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[119] := FALSE;
+END_IF
+//Aspersor
+IF ComandoSalvar[120] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'ASPERSOR MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[120] := FALSE;
+END_IF
+//Descarga
+IF ComandoSalvar[121] THEN
+	InsertParada(Insert:= TRUE, NomeComando:= 'DESCARGA MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	ComandoSalvar[121] := FALSE;
+END_IF
+{endregion}]]></ST>
+    </Implementation>
+    <LineIds Name="BancoDeDados">
+      <LineId Id="1555" Count="1" />
+      <LineId Id="250" Count="0" />
+      <LineId Id="252" Count="0" />
+      <LineId Id="279" Count="0" />
+      <LineId Id="269" Count="0" />
+      <LineId Id="268" Count="0" />
+      <LineId Id="251" Count="0" />
+      <LineId Id="272" Count="0" />
+      <LineId Id="267" Count="0" />
+      <LineId Id="145" Count="10" />
+      <LineId Id="1067" Count="1" />
+      <LineId Id="1010" Count="1" />
+      <LineId Id="1014" Count="52" />
+      <LineId Id="1013" Count="0" />
+      <LineId Id="1012" Count="0" />
+      <LineId Id="1069" Count="0" />
+      <LineId Id="314" Count="0" />
+      <LineId Id="328" Count="0" />
+      <LineId Id="677" Count="0" />
+      <LineId Id="681" Count="23" />
+      <LineId Id="680" Count="0" />
+      <LineId Id="679" Count="0" />
+      <LineId Id="412" Count="0" />
+      <LineId Id="384" Count="0" />
+      <LineId Id="708" Count="23" />
+      <LineId Id="676" Count="0" />
+      <LineId Id="386" Count="1" />
+      <LineId Id="385" Count="0" />
+      <LineId Id="734" Count="23" />
+      <LineId Id="733" Count="0" />
+      <LineId Id="732" Count="0" />
+      <LineId Id="413" Count="0" />
+      <LineId Id="440" Count="0" />
+      <LineId Id="760" Count="23" />
+      <LineId Id="759" Count="0" />
+      <LineId Id="758" Count="0" />
+      <LineId Id="439" Count="0" />
+      <LineId Id="466" Count="0" />
+      <LineId Id="786" Count="23" />
+      <LineId Id="785" Count="0" />
+      <LineId Id="784" Count="0" />
+      <LineId Id="810" Count="0" />
+      <LineId Id="494" Count="0" />
+      <LineId Id="813" Count="23" />
+      <LineId Id="812" Count="0" />
+      <LineId Id="811" Count="0" />
+      <LineId Id="492" Count="0" />
+      <LineId Id="520" Count="0" />
+      <LineId Id="839" Count="17" />
+      <LineId Id="838" Count="0" />
+      <LineId Id="857" Count="0" />
+      <LineId Id="859" Count="3" />
+      <LineId Id="858" Count="0" />
+      <LineId Id="837" Count="0" />
+      <LineId Id="863" Count="0" />
+      <LineId Id="907" Count="0" />
+      <LineId Id="882" Count="23" />
+      <LineId Id="865" Count="0" />
+      <LineId Id="864" Count="0" />
+      <LineId Id="866" Count="0" />
+      <LineId Id="909" Count="0" />
+      <LineId Id="868" Count="0" />
+      <LineId Id="911" Count="23" />
+      <LineId Id="869" Count="0" />
+      <LineId Id="867" Count="0" />
+      <LineId Id="870" Count="0" />
+      <LineId Id="1009" Count="0" />
+      <LineId Id="872" Count="0" />
+      <LineId Id="935" Count="23" />
+      <LineId Id="873" Count="0" />
+      <LineId Id="871" Count="0" />
+      <LineId Id="874" Count="0" />
+      <LineId Id="1008" Count="0" />
+      <LineId Id="876" Count="0" />
+      <LineId Id="959" Count="23" />
+      <LineId Id="877" Count="0" />
+      <LineId Id="875" Count="0" />
+      <LineId Id="878" Count="0" />
+      <LineId Id="1007" Count="0" />
+      <LineId Id="880" Count="0" />
+      <LineId Id="983" Count="23" />
+      <LineId Id="881" Count="0" />
+      <LineId Id="879" Count="0" />
+      <LineId Id="1070" Count="0" />
+      <LineId Id="540" Count="0" />
+      <LineId Id="519" Count="0" />
+      <LineId Id="547" Count="0" />
+      <LineId Id="1082" Count="0" />
+      <LineId Id="1073" Count="8" />
+      <LineId Id="1072" Count="0" />
+      <LineId Id="1071" Count="0" />
+      <LineId Id="1084" Count="0" />
+      <LineId Id="1090" Count="0" />
+      <LineId Id="1089" Count="0" />
+      <LineId Id="1086" Count="0" />
+      <LineId Id="1150" Count="0" />
+      <LineId Id="1092" Count="2" />
+      <LineId Id="1088" Count="0" />
+      <LineId Id="1152" Count="0" />
+      <LineId Id="1097" Count="2" />
+      <LineId Id="1096" Count="0" />
+      <LineId Id="1153" Count="0" />
+      <LineId Id="1102" Count="2" />
+      <LineId Id="1101" Count="0" />
+      <LineId Id="1154" Count="0" />
+      <LineId Id="1107" Count="2" />
+      <LineId Id="1106" Count="0" />
+      <LineId Id="1162" Count="0" />
+      <LineId Id="1112" Count="2" />
+      <LineId Id="1111" Count="0" />
+      <LineId Id="1161" Count="0" />
+      <LineId Id="1117" Count="2" />
+      <LineId Id="1116" Count="0" />
+      <LineId Id="1160" Count="0" />
+      <LineId Id="1122" Count="2" />
+      <LineId Id="1121" Count="0" />
+      <LineId Id="1159" Count="0" />
+      <LineId Id="1127" Count="2" />
+      <LineId Id="1126" Count="0" />
+      <LineId Id="1158" Count="0" />
+      <LineId Id="1132" Count="2" />
+      <LineId Id="1131" Count="0" />
+      <LineId Id="1157" Count="0" />
+      <LineId Id="1137" Count="2" />
+      <LineId Id="1136" Count="0" />
+      <LineId Id="1156" Count="0" />
+      <LineId Id="1142" Count="2" />
+      <LineId Id="1141" Count="0" />
+      <LineId Id="1155" Count="0" />
+      <LineId Id="1147" Count="2" />
+      <LineId Id="1146" Count="0" />
+      <LineId Id="1087" Count="0" />
+      <LineId Id="573" Count="0" />
+      <LineId Id="572" Count="0" />
+      <LineId Id="598" Count="0" />
+      <LineId Id="1165" Count="58" />
+      <LineId Id="1164" Count="0" />
+      <LineId Id="1163" Count="0" />
+      <LineId Id="1340" Count="0" />
+      <LineId Id="625" Count="0" />
+      <LineId Id="624" Count="0" />
+      <LineId Id="1249" Count="0" />
+      <LineId Id="1246" Count="2" />
+      <LineId Id="1245" Count="0" />
+      <LineId Id="1307" Count="0" />
+      <LineId Id="1253" Count="2" />
+      <LineId Id="1252" Count="0" />
+      <LineId Id="1306" Count="0" />
+      <LineId Id="1256" Count="0" />
+      <LineId Id="1259" Count="1" />
+      <LineId Id="1257" Count="0" />
+      <LineId Id="1309" Count="0" />
+      <LineId Id="1263" Count="2" />
+      <LineId Id="1262" Count="0" />
+      <LineId Id="1317" Count="0" />
+      <LineId Id="1268" Count="2" />
+      <LineId Id="1267" Count="0" />
+      <LineId Id="1316" Count="0" />
+      <LineId Id="1273" Count="2" />
+      <LineId Id="1272" Count="0" />
+      <LineId Id="1315" Count="0" />
+      <LineId Id="1278" Count="2" />
+      <LineId Id="1277" Count="0" />
+      <LineId Id="1314" Count="0" />
+      <LineId Id="1283" Count="2" />
+      <LineId Id="1282" Count="0" />
+      <LineId Id="1313" Count="0" />
+      <LineId Id="1288" Count="2" />
+      <LineId Id="1287" Count="0" />
+      <LineId Id="1312" Count="0" />
+      <LineId Id="1293" Count="2" />
+      <LineId Id="1292" Count="0" />
+      <LineId Id="1311" Count="0" />
+      <LineId Id="1298" Count="2" />
+      <LineId Id="1297" Count="0" />
+      <LineId Id="1310" Count="0" />
+      <LineId Id="1303" Count="2" />
+      <LineId Id="1302" Count="0" />
+      <LineId Id="1244" Count="0" />
+      <LineId Id="651" Count="0" />
+      <LineId Id="650" Count="0" />
+      <LineId Id="1400" Count="0" />
+      <LineId Id="1341" Count="58" />
+      <LineId Id="1402" Count="0" />
+      <LineId Id="205" Count="0" />
+      <LineId Id="207" Count="2" />
+      <LineId Id="1408" Count="3" />
+      <LineId Id="1407" Count="0" />
+      <LineId Id="1413" Count="3" />
+      <LineId Id="1412" Count="0" />
+      <LineId Id="1418" Count="3" />
+      <LineId Id="1417" Count="0" />
+      <LineId Id="1406" Count="0" />
+      <LineId Id="1422" Count="1" />
+      <LineId Id="210" Count="1" />
+      <LineId Id="1426" Count="3" />
+      <LineId Id="1425" Count="0" />
+      <LineId Id="1431" Count="3" />
+      <LineId Id="1430" Count="0" />
+      <LineId Id="1436" Count="3" />
+      <LineId Id="1435" Count="0" />
+      <LineId Id="1424" Count="0" />
+      <LineId Id="1440" Count="1" />
+      <LineId Id="1512" Count="0" />
+      <LineId Id="212" Count="1" />
+      <LineId Id="1444" Count="3" />
+      <LineId Id="1443" Count="0" />
+      <LineId Id="1449" Count="3" />
+      <LineId Id="1448" Count="0" />
+      <LineId Id="1454" Count="3" />
+      <LineId Id="1453" Count="0" />
+      <LineId Id="1442" Count="0" />
+      <LineId Id="1458" Count="0" />
+      <LineId Id="214" Count="0" />
+      <LineId Id="1479" Count="0" />
+      <LineId Id="1486" Count="25" />
+      <LineId Id="1485" Count="0" />
+      <LineId Id="1484" Count="0" />
+      <LineId Id="219" Count="0" />
+      <LineId Id="203" Count="0" />
+      <LineId Id="1513" Count="0" />
+      <LineId Id="1516" Count="3" />
+      <LineId Id="1515" Count="0" />
+      <LineId Id="1521" Count="3" />
+      <LineId Id="1520" Count="0" />
+      <LineId Id="1526" Count="3" />
+      <LineId Id="1525" Count="0" />
+      <LineId Id="1531" Count="3" />
+      <LineId Id="1530" Count="0" />
+      <LineId Id="1514" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

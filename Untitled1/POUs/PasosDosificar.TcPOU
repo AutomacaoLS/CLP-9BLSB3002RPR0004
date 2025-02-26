@@ -1,0 +1,214 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <POU Name="PasosDosificar" Id="{6168d9ce-a74f-4cf5-a967-03cc8af5bcc4}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PasosDosificar
+VAR_IN_OUT
+	iStep:INT;
+END_VAR
+VAR
+	counter:INT;
+	dosificando1:BOOL;
+	FinDosificado:BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Antes de verificar a dosagem, desliga todas as bombas. É preciso para que não fique nenhuma bomba ligada caso o processo pare no meio	
+(*FOR counter := 1 TO 12 DO
+	Liquidos.InyectarLiq[counter]:=FALSE;
+END_FOR
+FOR counter := 1 TO 2 DO
+	Polvos.InyectarPolvo[counter]:=TRUE	;
+END_FOR
+*)
+CASE iStep OF
+	1: counter:=1;
+	IF NOT dosificando1 THEN
+		FOR counter:=1 TO 12 BY 1 DO
+			IF Receta_Activa.SetCircuitosLiq[counter].Paso=iStep THEN
+				Liquidos.InyectarLiq[counter]:=TRUE	;
+			END_IF
+		END_FOR	
+		FOR counter:=1 TO 2 BY 1 DO
+			IF Receta_Activa.SetCircuitosPo[counter].Paso=iStep THEN
+				Polvos.InyectarPolvo[counter]:=TRUE	;
+			END_IF
+		END_FOR		
+	END_IF
+	dosificando1:=Liquidos.InyectarLiq[1] OR Liquidos.InyectarLiq[2] OR Liquidos.InyectarLiq[3] OR Liquidos.InyectarLiq[4]OR Liquidos.InyectarLiq[5] OR Liquidos.InyectarLiq[6] OR Liquidos.InyectarLiq[7] OR Liquidos.InyectarLiq[8]OR Liquidos.InyectarLiq[9] OR Liquidos.InyectarLiq[10] OR Liquidos.InyectarLiq[11] OR Liquidos.InyectarLiq[12]OR Polvos.InyectarPolvo[1]OR Polvos.InyectarPolvo[2];
+	IF NOT dosificando1 THEN
+		iStep:=iStep+1;
+	END_IF
+	2: counter:=1;
+	IF NOT dosificando1 THEN
+	FOR counter:=1 TO 12 BY 1 DO
+		IF Receta_Activa.SetCircuitosLiq[counter].Paso=iStep THEN
+		Liquidos.InyectarLiq[counter]:=TRUE	;
+		END_IF
+	END_FOR	
+	FOR counter:=1 TO 2 BY 1 DO
+		IF Receta_Activa.SetCircuitosPo[counter].Paso=iStep THEN
+		Polvos.InyectarPolvo[counter]:=TRUE	;
+		END_IF
+	END_FOR		
+	END_IF
+	dosificando1:=Liquidos.InyectarLiq[1] OR Liquidos.InyectarLiq[2] OR Liquidos.InyectarLiq[3] OR Liquidos.InyectarLiq[4]OR Liquidos.InyectarLiq[5] OR Liquidos.InyectarLiq[6] OR Liquidos.InyectarLiq[7] OR Liquidos.InyectarLiq[8]OR Liquidos.InyectarLiq[9] OR Liquidos.InyectarLiq[10] OR Liquidos.InyectarLiq[11] OR Liquidos.InyectarLiq[12]OR Polvos.InyectarPolvo[1]OR Polvos.InyectarPolvo[2];
+	IF NOT dosificando1 THEN
+		iStep:=iStep+1;
+	END_IF
+	3: counter:=1;
+	IF NOT dosificando1 THEN
+	FOR counter:=1 TO 12 BY 1 DO
+		IF Receta_Activa.SetCircuitosLiq[counter].Paso=iStep THEN
+		Liquidos.InyectarLiq[counter]:=TRUE	;
+		END_IF
+	END_FOR
+	FOR counter:=1 TO 2 BY 1 DO
+		IF Receta_Activa.SetCircuitosPo[counter].Paso=iStep THEN
+		Polvos.InyectarPolvo[counter]:=TRUE	;
+		END_IF
+	END_FOR			
+	END_IF
+	dosificando1:=Liquidos.InyectarLiq[1] OR Liquidos.InyectarLiq[2] OR Liquidos.InyectarLiq[3] OR Liquidos.InyectarLiq[4]OR Liquidos.InyectarLiq[5] OR Liquidos.InyectarLiq[6] OR Liquidos.InyectarLiq[7] OR Liquidos.InyectarLiq[8]OR Liquidos.InyectarLiq[9] OR Liquidos.InyectarLiq[10] OR Liquidos.InyectarLiq[11] OR Liquidos.InyectarLiq[12]OR Polvos.InyectarPolvo[1]OR Polvos.InyectarPolvo[2];
+	IF NOT dosificando1 THEN
+		iStep:=iStep+1;
+	END_IF
+	4: counter:=1;
+	IF NOT dosificando1 THEN
+	FOR counter:=1 TO 12 BY 1 DO
+		IF Receta_Activa.SetCircuitosLiq[counter].Paso=iStep THEN
+		Liquidos.InyectarLiq[counter]:=TRUE	;
+		END_IF
+	END_FOR
+	FOR counter:=1 TO 2 BY 1 DO
+		IF Receta_Activa.SetCircuitosPo[counter].Paso=iStep THEN
+		Polvos.InyectarPolvo[counter]:=TRUE	;
+		END_IF
+	END_FOR			
+	END_IF
+	dosificando1:=Liquidos.InyectarLiq[1] OR Liquidos.InyectarLiq[2] OR Liquidos.InyectarLiq[3] OR Liquidos.InyectarLiq[4]OR Liquidos.InyectarLiq[5] OR Liquidos.InyectarLiq[6] OR Liquidos.InyectarLiq[7] OR Liquidos.InyectarLiq[8]OR Liquidos.InyectarLiq[9] OR Liquidos.InyectarLiq[10] OR Liquidos.InyectarLiq[11] OR Liquidos.InyectarLiq[12]OR Polvos.InyectarPolvo[1]OR Polvos.InyectarPolvo[2];
+	IF NOT dosificando1 THEN
+		iStep:=iStep+1;
+	END_IF
+	5: counter:=1;
+	IF NOT dosificando1 THEN
+	FOR counter:=1 TO 12 BY 1 DO
+		IF Receta_Activa.SetCircuitosLiq[counter].Paso=iStep THEN
+		Liquidos.InyectarLiq[counter]:=TRUE	;
+		END_IF
+	END_FOR
+	FOR counter:=1 TO 2 BY 1 DO
+		IF Receta_Activa.SetCircuitosPo[counter].Paso=iStep THEN
+		Polvos.InyectarPolvo[counter]:=TRUE	;
+		END_IF
+	END_FOR			
+	END_IF
+	dosificando1:=Liquidos.InyectarLiq[1] OR Liquidos.InyectarLiq[2] OR Liquidos.InyectarLiq[3] OR Liquidos.InyectarLiq[4]OR Liquidos.InyectarLiq[5] OR Liquidos.InyectarLiq[6] OR Liquidos.InyectarLiq[7] OR Liquidos.InyectarLiq[8]OR Liquidos.InyectarLiq[9] OR Liquidos.InyectarLiq[10] OR Liquidos.InyectarLiq[11] OR Liquidos.InyectarLiq[12]OR Polvos.InyectarPolvo[1]OR Polvos.InyectarPolvo[2];
+	IF NOT dosificando1 THEN
+		iStep:=iStep+1;
+	END_IF
+	6: counter:=1;
+	IF NOT dosificando1 THEN
+	FOR counter:=1 TO 12 BY 1 DO
+		IF Receta_Activa.SetCircuitosLiq[counter].Paso=iStep THEN
+		Liquidos.InyectarLiq[counter]:=TRUE	;
+		END_IF
+	END_FOR
+	FOR counter:=1 TO 2 BY 1 DO
+		IF Receta_Activa.SetCircuitosPo[counter].Paso=iStep THEN
+		Polvos.InyectarPolvo[counter]:=TRUE	;
+		END_IF
+	END_FOR			
+	END_IF
+	dosificando1:=Liquidos.InyectarLiq[1] OR Liquidos.InyectarLiq[2] OR Liquidos.InyectarLiq[3] OR Liquidos.InyectarLiq[4]OR Liquidos.InyectarLiq[5] OR Liquidos.InyectarLiq[6] OR Liquidos.InyectarLiq[7] OR Liquidos.InyectarLiq[8]OR Liquidos.InyectarLiq[9] OR Liquidos.InyectarLiq[10] OR Liquidos.InyectarLiq[11] OR Liquidos.InyectarLiq[12]OR Polvos.InyectarPolvo[1]OR Polvos.InyectarPolvo[2];
+	IF NOT dosificando1 THEN
+		iStep:=iStep+1;
+	END_IF
+	7: counter:=1;
+	IF NOT dosificando1 THEN
+	FOR counter:=1 TO 12 BY 1 DO
+		IF Receta_Activa.SetCircuitosLiq[counter].Paso=iStep THEN
+		Liquidos.InyectarLiq[counter]:=TRUE	;
+		END_IF
+	END_FOR
+	FOR counter:=1 TO 2 BY 1 DO
+		IF Receta_Activa.SetCircuitosPo[counter].Paso=iStep THEN
+		Polvos.InyectarPolvo[counter]:=TRUE	;
+		END_IF
+	END_FOR			
+	END_IF
+	dosificando1:=Liquidos.InyectarLiq[1] OR Liquidos.InyectarLiq[2] OR Liquidos.InyectarLiq[3] OR Liquidos.InyectarLiq[4]OR Liquidos.InyectarLiq[5] OR Liquidos.InyectarLiq[6] OR Liquidos.InyectarLiq[7] OR Liquidos.InyectarLiq[8]OR Liquidos.InyectarLiq[9] OR Liquidos.InyectarLiq[10] OR Liquidos.InyectarLiq[11] OR Liquidos.InyectarLiq[12]OR Polvos.InyectarPolvo[1]OR Polvos.InyectarPolvo[2];
+	IF NOT dosificando1 THEN
+		iStep:=iStep+1;
+	END_IF
+	8: counter:=1;
+	IF NOT dosificando1 THEN
+		FOR counter:=1 TO 12 BY 1 DO
+			IF Receta_Activa.SetCircuitosLiq[counter].Paso=iStep THEN
+			Liquidos.InyectarLiq[counter]:=TRUE	;
+			END_IF
+		END_FOR
+		FOR counter:=1 TO 2 BY 1 DO
+			IF Receta_Activa.SetCircuitosPo[counter].Paso=iStep THEN
+			Polvos.InyectarPolvo[counter]:=TRUE	;
+			END_IF
+		END_FOR			
+	END_IF
+	dosificando1:=Liquidos.InyectarLiq[1] OR Liquidos.InyectarLiq[2] OR Liquidos.InyectarLiq[3] OR Liquidos.InyectarLiq[4]OR Liquidos.InyectarLiq[5] OR Liquidos.InyectarLiq[6] OR Liquidos.InyectarLiq[7] OR Liquidos.InyectarLiq[8]OR Liquidos.InyectarLiq[9] OR Liquidos.InyectarLiq[10] OR Liquidos.InyectarLiq[11] OR Liquidos.InyectarLiq[12]OR Polvos.InyectarPolvo[1]OR Polvos.InyectarPolvo[2];
+	IF NOT dosificando1 THEN
+		iStep:=iStep+1;
+	END_IF
+	ELSE
+		FinDosificado:=TRUE;
+END_CASE]]></ST>
+    </Implementation>
+    <LineIds Name="PasosDosificar">
+      <LineId Id="179" Count="0" />
+      <LineId Id="174" Count="2" />
+      <LineId Id="181" Count="0" />
+      <LineId Id="184" Count="0" />
+      <LineId Id="180" Count="0" />
+      <LineId Id="183" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="20" Count="1" />
+      <LineId Id="173" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="87" Count="3" />
+      <LineId Id="86" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="24" Count="1" />
+      <LineId Id="27" Count="6" />
+      <LineId Id="92" Count="3" />
+      <LineId Id="91" Count="0" />
+      <LineId Id="34" Count="3" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="39" Count="6" />
+      <LineId Id="97" Count="3" />
+      <LineId Id="96" Count="0" />
+      <LineId Id="46" Count="3" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="51" Count="6" />
+      <LineId Id="102" Count="3" />
+      <LineId Id="101" Count="0" />
+      <LineId Id="58" Count="3" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="75" Count="6" />
+      <LineId Id="107" Count="3" />
+      <LineId Id="106" Count="0" />
+      <LineId Id="82" Count="3" />
+      <LineId Id="74" Count="0" />
+      <LineId Id="112" Count="15" />
+      <LineId Id="111" Count="0" />
+      <LineId Id="129" Count="15" />
+      <LineId Id="128" Count="0" />
+      <LineId Id="146" Count="15" />
+      <LineId Id="145" Count="0" />
+      <LineId Id="62" Count="1" />
+      <LineId Id="8" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

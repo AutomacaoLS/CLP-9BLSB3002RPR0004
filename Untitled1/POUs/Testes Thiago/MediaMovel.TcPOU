@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <POU Name="MediaMovel" Id="{e0e72de2-bf91-463f-a894-2302eb8bc077}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK MediaMovel
+VAR_INPUT
+	Input		:REAL;	//Valor de entrada para fazer a média
+	Amostras	:INT;	//Quantidade de amostras do valor de entrada para fazer a média móvel
+	Tempo		:DINT;	//Tempo de amostragem
+END_VAR
+VAR_OUTPUT
+	Output	:REAL;	//Valor da média móvel
+END_VAR
+VAR
+	ArrayValores	:ARRAY[0..100] OF REAL;
+	iCounter: INT;
+	Acumulador: REAL;
+	TON_TempoAmostra: TON;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Se a quantidade de amostras for menor que 1, esse valor é configurado
+IF Amostras < 1 THEN
+	Amostras := 1;
+ELSIF Amostras > 100 THEN
+	Amostras := 100;
+END_IF
+
+//Temporizador para amostragem
+TON_TempoAmostra(IN:= NOT TON_TempoAmostra.Q, PT:= DINT_TO_TIME(Tempo * 1000), Q=> , ET=> );
+
+IF TON_TempoAmostra.Q THEN
+	FOR iCounter := 1 TO (Amostras - 1) BY 1 DO
+		ArrayValores[iCounter] := ArrayValores[iCounter + 1];
+	END_FOR
+	ArrayValores[Amostras] := Input;
+END_IF
+
+//Acumula os valores do array
+Acumulador := 0;
+FOR iCounter := 1 TO Amostras BY 1 DO
+	Acumulador := Acumulador + ArrayValores[iCounter];
+END_FOR
+
+//Calcula a saída
+Output := Acumulador / Amostras;]]></ST>
+    </Implementation>
+    <LineIds Name="MediaMovel">
+      <LineId Id="17" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="46" Count="1" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="36" Count="1" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="43" Count="2" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="22" Count="1" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="27" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

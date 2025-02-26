@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="Totalizador" Id="{e0744330-1b7b-40c5-b857-f29dbff05d5b}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK Totalizador
+VAR_INPUT
+	PV:	REAL;
+	Medir: BOOL;
+END_VAR
+VAR_OUTPUT
+	Volumen: REAL;
+END_VAR
+VAR_IN_OUT
+	Reset:BOOL;
+END_VAR	
+VAR
+	fbMuestra: TON;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbMuestra(IN:=(Medir AND NOT fbMuestra.Q) ,PT:=T#100MS);
+IF fbMuestra.Q AND PV>0 THEN
+Volumen:=Volumen+(0.1*PV);
+END_IF
+IF Reset THEN
+	Volumen:=0.0;
+	Reset:=0;
+END_IF
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="Totalizador">
+      <LineId Id="31" Count="7" />
+      <LineId Id="15" Count="1" />
+      <LineId Id="14" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

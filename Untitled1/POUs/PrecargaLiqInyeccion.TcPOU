@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="PrecargaLiqInyeccion" Id="{ae542e02-1f0f-402b-9006-94a38496e16c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK PrecargaLiqInyeccion
+VAR_INPUT
+	CaudalimetroSup:REAL;
+	Precarga:BOOL;
+	VeloBombaSolicitada:REAL;
+END_VAR
+VAR_OUTPUT
+	MarchaBomba:BOOL;
+	VelocidadBomba:REAL;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF CaudalimetroSup<0 THEN
+	MarchaBomba:=TRUE;
+	ELSE
+	MarchaBomba:=FALSE;	
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="PrecargaLiqInyeccion">
+      <LineId Id="9" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="17" Count="1" />
+      <LineId Id="16" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

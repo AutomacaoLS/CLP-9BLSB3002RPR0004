@@ -1,0 +1,292 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <POU Name="AlarmesDaMaquina" Id="{2bd281a5-aaa5-4698-9aac-e32a4386fb80}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM AlarmesDaMaquina
+VAR_INPUT
+	Confirmar:BOOL;
+END_VAR
+VAR
+	
+	FaltaDeAr	:GeraAlarme;
+	Emerg		:GeraAlarme;
+	AlrLL		:BOOL;		// Alarme de nível baixo de óleo nas bombas. Se estiver em falso, alguma bomba está com nível baixo
+	
+	FalhaBomba		:ARRAY[1..12] OF GeraAlarme;	//Bombas de dosagem
+	Agitadores		:ARRAY[1..12] OF GeraAlarme;	//Agitadores
+	IntervCalibracao:ARRAY[1..12] OF GeraAlarme;	//Tempo de calibração excedido
+	IntervLavagem	:ARRAY[1..12] OF GeraAlarme;	//Tempo de lavagem excedido
+	NivelOleo		:ARRAY[1..12] OF GeraAlarme;	//nível baixo de óleo
+	
+	//Elevadores
+	FalhaElev1: GeraAlarme;
+	FalhaElev2: GeraAlarme;
+	FalhaElev3: GeraAlarme;
+	
+	
+	//Dosadores de pó
+	FalhaDosador1: GeraAlarme;
+	FalhaDosador2: GeraAlarme;
+	
+	//Homgeneizador e aspersor
+	Aspersor: GeraAlarme;
+	Homogeneizador: GeraAlarme;
+
+	//Válvulas
+	L1_Valv1: GeraAlarme;
+	L1_Valv2: GeraAlarme;
+	L1_Valv3: GeraAlarme;
+	L1_Valv4: GeraAlarme;
+	L2_Valv1: GeraAlarme;
+	L2_Valv2: GeraAlarme;
+	L2_Valv3: GeraAlarme;
+	L2_Valv4: GeraAlarme;
+	L3_Valv1: GeraAlarme;
+	L3_Valv2: GeraAlarme;
+	L3_Valv3: GeraAlarme;
+	L3_Valv4: GeraAlarme;
+	L4_Valv1: GeraAlarme;
+	L4_Valv2: GeraAlarme;
+	L4_Valv3: GeraAlarme;
+	L4_Valv4: GeraAlarme;
+	L5_Valv1: GeraAlarme;
+	L5_Valv2: GeraAlarme;
+	L5_Valv3: GeraAlarme;
+	L5_Valv4: GeraAlarme;
+	L6_Valv1: GeraAlarme;
+	L6_Valv2: GeraAlarme;
+	L6_Valv3: GeraAlarme;
+	L6_Valv4: GeraAlarme;
+	L7_Valv1: GeraAlarme;
+	L7_Valv2: GeraAlarme;
+	L7_Valv3: GeraAlarme;
+	L7_Valv4: GeraAlarme;
+	L8_Valv1: GeraAlarme;
+	L8_Valv2: GeraAlarme;
+	L8_Valv3: GeraAlarme;
+	L8_Valv4: GeraAlarme;
+	L9_Valv1: GeraAlarme;
+	L9_Valv2: GeraAlarme;
+	L9_Valv3: GeraAlarme;
+	L9_Valv4: GeraAlarme;
+	L10_Valv1: GeraAlarme;
+	L10_Valv2: GeraAlarme;
+	L10_Valv3: GeraAlarme;
+	L10_Valv4: GeraAlarme;
+	L11_Valv1: GeraAlarme;
+	L11_Valv2: GeraAlarme;
+	L11_Valv3: GeraAlarme;
+	L11_Valv4: GeraAlarme;
+	L12_Valv1: GeraAlarme;
+	L12_Valv2: GeraAlarme;
+	L12_Valv3: GeraAlarme;
+	L12_Valv4: GeraAlarme;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[FaltaDeAr(evtEntry:= TC_Events.B300_EventClass.PressaoDeAr, bEvt:= NOT entradas.TR_S_PDI, bConfirm:= Confirmar);	//Baixa pressão de ar
+Emerg(evtEntry:= TC_Events.B300_EventClass.Emergencia, bEvt:= NOT Seguridad.PB_Emergencia, bConfirm:= Confirmar);
+
+{Region "Bombas"}
+	//Bombas
+	FalhaBomba[1](evtEntry	:= TC_Events.B300_EventClass.FalhaBombaLinha1,	bEvt:= Circuito_L1.fbBomba_L1.bAlr, bConfirm:= Confirmar);
+	FalhaBomba[2](evtEntry	:= TC_Events.B300_EventClass.FalhaBombaLinha2,	bEvt:= Circuito_L2.fbBomba_L2.bAlr, bConfirm:= Confirmar);
+	FalhaBomba[3](evtEntry	:= TC_Events.B300_EventClass.FalhaBombaLinha3,	bEvt:= Circuito_L3.fbBomba_L3.bAlr, bConfirm:= Confirmar);
+	FalhaBomba[4](evtEntry	:= TC_Events.B300_EventClass.FalhaBombaLinha4,	bEvt:= Circuito_L4.fbBomba_L4.bAlr, bConfirm:= Confirmar);
+	FalhaBomba[5](evtEntry	:= TC_Events.B300_EventClass.FalhaBombaLinha5,	bEvt:= Circuito_L5.fbBomba_L5.bAlr, bConfirm:= Confirmar);
+	FalhaBomba[6](evtEntry	:= TC_Events.B300_EventClass.FalhaBombaLinha6,	bEvt:= Circuito_L6.fbBomba_L6.bAlr, bConfirm:= Confirmar);
+	FalhaBomba[7](evtEntry	:= TC_Events.B300_EventClass.FalhaBombaLinha7,	bEvt:= Circuito_L7.fbBomba_L7.bAlr, bConfirm:= Confirmar);
+	FalhaBomba[8](evtEntry	:= TC_Events.B300_EventClass.FalhaBombaLinha8,	bEvt:= Circuito_L8.fbBomba_L8.bAlr, bConfirm:= Confirmar);
+	FalhaBomba[9](evtEntry	:= TC_Events.B300_EventClass.FalhaBombaLinha9,	bEvt:= Circuito_L9.fbBomba_L9.bAlr, bConfirm:= Confirmar);
+	FalhaBomba[10](evtEntry	:= TC_Events.B300_EventClass.FalhaBombaLinha10,	bEvt:= Circuito_L10.fbBomba_L10.bAlr, bConfirm:= Confirmar);
+	FalhaBomba[11](evtEntry	:= TC_Events.B300_EventClass.FalhaBombaLinha11, bEvt:= Circuito_L11.fbBomba_L11.bAlr, bConfirm:= Confirmar);
+	FalhaBomba[12](evtEntry	:= TC_Events.B300_EventClass.FalhaBombaLinha12, bEvt:= Circuito_L12.fbBomba_L12.bAlr, bConfirm:= Confirmar);
+	
+	//Elevadores
+	FalhaElev1(evtEntry:= TC_Events.B300_EventClass.FalhaElevador1, bEvt:= Carga_semilla.fbPE_H_VF1.bAlr, bConfirm:= Confirmar);
+	FalhaElev2(evtEntry:= TC_Events.B300_EventClass.FalhaElevador2, bEvt:= Carga_semilla.fbPE_H_VF2.bAlr, bConfirm:= Confirmar);
+	FalhaElev3(evtEntry:= TC_Events.B300_EventClass.FalhaElevador3, bEvt:= Descarga_semilla.fbPE_B_VF1.bAlr, bConfirm:= Confirmar);
+	
+	//Dosadores de pó
+	FalhaDosador1(evtEntry:= TC_Events.B300_EventClass.Dosador1, bEvt:= Dosificador_Polvo_1.fbDosificador_P1.bAlr, bConfirm:= Confirmar);
+	FalhaDosador2(evtEntry:= TC_Events.B300_EventClass.Dosador2, bEvt:= Dosificador_Polvo_2.fbDosificador_P2.bAlr, bConfirm:= Confirmar);
+	
+	//Aspersor e homogeneizador
+	Aspersor(evtEntry:= TC_Events.B300_EventClass.Aspersor, bEvt:= Tratadora.fbAspersor.bAlr, bConfirm:= Confirmar);
+	Homogeneizador(evtEntry:= TC_Events.B300_EventClass.Homogeinizador, bEvt:= Tratadora.fbHomogenizador.bAlr, bConfirm:= Confirmar);
+{endregion}
+
+{Region "Nível baixo nas bombas"}
+	AlrLL :=	Entradas.bPP1_L1_BD_MangRota AND Entradas.bPP1_L2_BD_MangRota AND Entradas.bPP1_L3_BD_MangRota AND
+				Entradas.bPP1_L4_BD_MangRota AND Entradas.bPP2_L5_BD_MangRota AND Entradas.bPP2_L6_BD_MangRota AND
+				Entradas.bPP2_L7_BD_MangRota AND Entradas.bPP2_L8_BD_MangRota AND Entradas.bPP3_L9_BD_MangRota AND
+				Entradas.bPP3_L10_BD_MangRota AND Entradas.bPP3_L11_BD_MangRota AND Entradas.bPP3_L12_BD_MangRota;
+				
+	NivelOleo[1](evtEntry:= TC_Events.NivelOleo.BB01, bEvt:= NOT Entradas.bPP1_L1_BD_MangRota, bConfirm:= Confirmar);
+	NivelOleo[2](evtEntry:= TC_Events.NivelOleo.BB02, bEvt:= NOT Entradas.bPP1_L2_BD_MangRota, bConfirm:= Confirmar);
+	NivelOleo[3](evtEntry:= TC_Events.NivelOleo.BB03, bEvt:= NOT Entradas.bPP1_L3_BD_MangRota, bConfirm:= Confirmar);
+	NivelOleo[4](evtEntry:= TC_Events.NivelOleo.BB04, bEvt:= NOT Entradas.bPP1_L4_BD_MangRota, bConfirm:= Confirmar);
+	NivelOleo[5](evtEntry:= TC_Events.NivelOleo.BB05, bEvt:= NOT Entradas.bPP2_L5_BD_MangRota, bConfirm:= Confirmar);
+	NivelOleo[6](evtEntry:= TC_Events.NivelOleo.BB06, bEvt:= NOT Entradas.bPP2_L6_BD_MangRota, bConfirm:= Confirmar);
+	NivelOleo[7](evtEntry:= TC_Events.NivelOleo.BB07, bEvt:= NOT Entradas.bPP2_L7_BD_MangRota, bConfirm:= Confirmar);
+	NivelOleo[8](evtEntry:= TC_Events.NivelOleo.BB08, bEvt:= NOT Entradas.bPP2_L8_BD_MangRota, bConfirm:= Confirmar);
+	NivelOleo[9](evtEntry:= TC_Events.NivelOleo.BB09, bEvt:= NOT Entradas.bPP3_L9_BD_MangRota, bConfirm:= Confirmar);
+	NivelOleo[10](evtEntry:= TC_Events.NivelOleo.BB10, bEvt:= NOT Entradas.bPP3_L10_BD_MangRota, bConfirm:= Confirmar);
+	NivelOleo[11](evtEntry:= TC_Events.NivelOleo.BB11, bEvt:= NOT Entradas.bPP3_L11_BD_MangRota, bConfirm:= Confirmar);
+	NivelOleo[12](evtEntry:= TC_Events.NivelOleo.BB12, bEvt:= NOT Entradas.bPP3_L12_BD_MangRota, bConfirm:= Confirmar);
+{endregion}
+
+
+{Region "Válvulas"}
+	//Válvulas
+	//Linha 01
+	L1_Valv1(evtEntry:= TC_Events.Valvulas.Linha1_Valv1, bEvt:= Circuito_L1.Falla_L1_V1, bConfirm:= Confirmar OR HMI.CA1_L1_V1_RsAlr);
+	L1_Valv2(evtEntry:= TC_Events.Valvulas.Linha1_Valv2, bEvt:= Circuito_L1.Falla_L1_V2, bConfirm:= Confirmar OR HMI.CA1_L1_V2_RsAlr);
+	L1_Valv3(evtEntry:= TC_Events.Valvulas.Linha1_Valv3, bEvt:= Circuito_L1.Falla_L1_V3, bConfirm:= Confirmar OR HMI.CA1_L1_V3_RsAlr);
+	L1_Valv4(evtEntry:= TC_Events.Valvulas.Linha1_Valv4, bEvt:= Circuito_L1.Falla_L1_V4, bConfirm:= Confirmar OR HMI.CA1_L1_V4_RsAlr);
+	//Linha 02
+	L2_Valv1(evtEntry:= TC_Events.Valvulas.Linha2_Valv1, bEvt:= Circuito_L2.Falla_L2_V1, bConfirm:= Confirmar OR HMI.CA1_L2_V1_RsAlr);
+	L2_Valv2(evtEntry:= TC_Events.Valvulas.Linha2_Valv2, bEvt:= Circuito_L2.Falla_L2_V2, bConfirm:= Confirmar OR HMI.CA1_L2_V2_RsAlr);
+	L2_Valv3(evtEntry:= TC_Events.Valvulas.Linha2_Valv3, bEvt:= Circuito_L2.Falla_L2_V3, bConfirm:= Confirmar OR HMI.CA1_L2_V3_RsAlr);
+	L2_Valv4(evtEntry:= TC_Events.Valvulas.Linha2_Valv4, bEvt:= Circuito_L2.Falla_L2_V4, bConfirm:= Confirmar OR HMI.CA1_L2_V4_RsAlr);
+	//Linha 03
+	L3_Valv1(evtEntry:= TC_Events.Valvulas.Linha3_Valv1, bEvt:= Circuito_L3.Falla_L3_V1, bConfirm:= Confirmar OR HMI.CA1_L3_V1_RsAlr);
+	L3_Valv2(evtEntry:= TC_Events.Valvulas.Linha3_Valv2, bEvt:= Circuito_L3.Falla_L3_V2, bConfirm:= Confirmar OR HMI.CA1_L3_V2_RsAlr);
+	L3_Valv3(evtEntry:= TC_Events.Valvulas.Linha3_Valv3, bEvt:= Circuito_L3.Falla_L3_V3, bConfirm:= Confirmar OR HMI.CA1_L3_V3_RsAlr);
+	L3_Valv4(evtEntry:= TC_Events.Valvulas.Linha3_Valv4, bEvt:= Circuito_L3.Falla_L3_V4, bConfirm:= Confirmar OR HMI.CA1_L3_V4_RsAlr);
+	//Linha 04
+	L4_Valv1(evtEntry:= TC_Events.Valvulas.Linha4_Valv1, bEvt:= Circuito_L4.Falla_L4_V1, bConfirm:= Confirmar OR HMI.CA1_L4_V1_RsAlr);
+	L4_Valv2(evtEntry:= TC_Events.Valvulas.Linha4_Valv2, bEvt:= Circuito_L4.Falla_L4_V2, bConfirm:= Confirmar OR HMI.CA1_L4_V2_RsAlr);
+	L4_Valv3(evtEntry:= TC_Events.Valvulas.Linha4_Valv3, bEvt:= Circuito_L4.Falla_L4_V3, bConfirm:= Confirmar OR HMI.CA1_L4_V3_RsAlr);
+	L4_Valv4(evtEntry:= TC_Events.Valvulas.Linha4_Valv4, bEvt:= Circuito_L4.Falla_L4_V4, bConfirm:= Confirmar OR HMI.CA1_L4_V4_RsAlr);
+	//Linha 05
+	L5_Valv1(evtEntry:= TC_Events.Valvulas.Linha5_Valv1, bEvt:= Circuito_L5.Falla_L5_V1, bConfirm:= Confirmar OR HMI.CA2_L5_V1_RsAlr);
+	L5_Valv2(evtEntry:= TC_Events.Valvulas.Linha5_Valv2, bEvt:= Circuito_L5.Falla_L5_V2, bConfirm:= Confirmar OR HMI.CA2_L5_V2_RsAlr);
+	L5_Valv3(evtEntry:= TC_Events.Valvulas.Linha5_Valv3, bEvt:= Circuito_L5.Falla_L5_V3, bConfirm:= Confirmar OR HMI.CA2_L5_V3_RsAlr);
+	L5_Valv4(evtEntry:= TC_Events.Valvulas.Linha5_Valv4, bEvt:= Circuito_L5.Falla_L5_V4, bConfirm:= Confirmar OR HMI.CA2_L5_V4_RsAlr);
+	//Linha 06
+	L6_Valv1(evtEntry:= TC_Events.Valvulas.Linha6_Valv1, bEvt:= Circuito_L6.Falla_L6_V1, bConfirm:= Confirmar OR HMI.CA2_L6_V1_RsAlr);
+	L6_Valv2(evtEntry:= TC_Events.Valvulas.Linha6_Valv2, bEvt:= Circuito_L6.Falla_L6_V2, bConfirm:= Confirmar OR HMI.CA2_L6_V2_RsAlr);
+	L6_Valv3(evtEntry:= TC_Events.Valvulas.Linha6_Valv3, bEvt:= Circuito_L6.Falla_L6_V3, bConfirm:= Confirmar OR HMI.CA2_L6_V3_RsAlr);
+	L6_Valv4(evtEntry:= TC_Events.Valvulas.Linha6_Valv4, bEvt:= Circuito_L6.Falla_L6_V4, bConfirm:= Confirmar OR HMI.CA2_L6_V4_RsAlr);
+	//Linha 07
+	L7_Valv1(evtEntry:= TC_Events.Valvulas.Linha7_Valv1, bEvt:= Circuito_L7.Falla_L7_V1, bConfirm:= Confirmar OR HMI.CA2_L7_V1_RsAlr);
+	L7_Valv2(evtEntry:= TC_Events.Valvulas.Linha7_Valv2, bEvt:= Circuito_L7.Falla_L7_V2, bConfirm:= Confirmar OR HMI.CA2_L7_V2_RsAlr);
+	L7_Valv3(evtEntry:= TC_Events.Valvulas.Linha7_Valv3, bEvt:= Circuito_L7.Falla_L7_V3, bConfirm:= Confirmar OR HMI.CA2_L7_V3_RsAlr);
+	L7_Valv4(evtEntry:= TC_Events.Valvulas.Linha7_Valv4, bEvt:= Circuito_L7.Falla_L7_V4, bConfirm:= Confirmar OR HMI.CA2_L7_V4_RsAlr);
+	//Linha 08
+	L8_Valv1(evtEntry:= TC_Events.Valvulas.Linha8_Valv1, bEvt:= Circuito_L8.Falla_L8_V1, bConfirm:= Confirmar OR HMI.CA2_L8_V1_RsAlr);
+	L8_Valv2(evtEntry:= TC_Events.Valvulas.Linha8_Valv2, bEvt:= Circuito_L8.Falla_L8_V2, bConfirm:= Confirmar OR HMI.CA2_L8_V2_RsAlr);
+	L8_Valv3(evtEntry:= TC_Events.Valvulas.Linha8_Valv3, bEvt:= Circuito_L8.Falla_L8_V3, bConfirm:= Confirmar OR HMI.CA2_L8_V3_RsAlr);
+	L8_Valv4(evtEntry:= TC_Events.Valvulas.Linha8_Valv4, bEvt:= Circuito_L8.Falla_L8_V4, bConfirm:= Confirmar OR HMI.CA2_L8_V4_RsAlr);
+	//Linha 09
+	L9_Valv1(evtEntry:= TC_Events.Valvulas.Linha9_Valv1, bEvt:= Circuito_L9.Falla_L9_V1, bConfirm:= Confirmar OR HMI.CA3_L9_V1_RsAlr);
+	L9_Valv2(evtEntry:= TC_Events.Valvulas.Linha9_Valv2, bEvt:= Circuito_L9.Falla_L9_V2, bConfirm:= Confirmar OR HMI.CA3_L9_V2_RsAlr);
+	L9_Valv3(evtEntry:= TC_Events.Valvulas.Linha9_Valv3, bEvt:= Circuito_L9.Falla_L9_V3, bConfirm:= Confirmar OR HMI.CA3_L9_V3_RsAlr);
+	L9_Valv4(evtEntry:= TC_Events.Valvulas.Linha9_Valv4, bEvt:= Circuito_L9.Falla_L9_V4, bConfirm:= Confirmar OR HMI.CA3_L9_V4_RsAlr);
+	//Linha 10
+	L10_Valv1(evtEntry:= TC_Events.Valvulas.Linha10_Valv1, bEvt:= Circuito_L10.Falla_L10_V1, bConfirm:= Confirmar OR HMI.CA3_L10_V1_RsAlr);
+	L10_Valv2(evtEntry:= TC_Events.Valvulas.Linha10_Valv2, bEvt:= Circuito_L10.Falla_L10_V2, bConfirm:= Confirmar OR HMI.CA3_L10_V2_RsAlr);
+	L10_Valv3(evtEntry:= TC_Events.Valvulas.Linha10_Valv3, bEvt:= Circuito_L10.Falla_L10_V3, bConfirm:= Confirmar OR HMI.CA3_L10_V3_RsAlr);
+	L10_Valv4(evtEntry:= TC_Events.Valvulas.Linha10_Valv4, bEvt:= Circuito_L10.Falla_L10_V4, bConfirm:= Confirmar OR HMI.CA3_L10_V4_RsAlr);
+	//Linha 11
+	L11_Valv1(evtEntry:= TC_Events.Valvulas.Linha11_Valv1, bEvt:= Circuito_L11.Falla_L11_V1, bConfirm:= Confirmar OR HMI.CA3_L11_V1_RsAlr);
+	L11_Valv2(evtEntry:= TC_Events.Valvulas.Linha11_Valv2, bEvt:= Circuito_L11.Falla_L11_V2, bConfirm:= Confirmar OR HMI.CA3_L11_V2_RsAlr);
+	L11_Valv3(evtEntry:= TC_Events.Valvulas.Linha11_Valv3, bEvt:= Circuito_L11.Falla_L11_V3, bConfirm:= Confirmar OR HMI.CA3_L11_V3_RsAlr);
+	L11_Valv4(evtEntry:= TC_Events.Valvulas.Linha11_Valv4, bEvt:= Circuito_L11.Falla_L11_V4, bConfirm:= Confirmar OR HMI.CA3_L11_V4_RsAlr);
+	//Linha 12
+	L12_Valv1(evtEntry:= TC_Events.Valvulas.Linha12_Valv1, bEvt:= Circuito_L12.Falla_L12_V1, bConfirm:= Confirmar OR HMI.CA3_L12_V1_RsAlr);
+	L12_Valv2(evtEntry:= TC_Events.Valvulas.Linha12_Valv2, bEvt:= Circuito_L12.Falla_L12_V2, bConfirm:= Confirmar OR HMI.CA3_L12_V2_RsAlr);
+	L12_Valv3(evtEntry:= TC_Events.Valvulas.Linha12_Valv3, bEvt:= Circuito_L12.Falla_L12_V3, bConfirm:= Confirmar OR HMI.CA3_L12_V3_RsAlr);
+	L12_Valv4(evtEntry:= TC_Events.Valvulas.Linha12_Valv4, bEvt:= Circuito_L12.Falla_L12_V4, bConfirm:= Confirmar OR HMI.CA3_L12_V4_RsAlr);
+
+{endregion}
+
+{Region "Agitadores"}
+	//Agitadores
+	Agitadores[1](evtEntry:= TC_Events.Agitadores.AgitadorL1, bEvt:= HMI.PP1_L1_AG_Alr, bConfirm:= Confirmar OR HMI.bPP1_L1_AG_RstALr);
+	Agitadores[2](evtEntry:= TC_Events.Agitadores.AgitadorL2, bEvt:= HMI.PP1_L2_AG_Alr, bConfirm:= Confirmar OR HMI.bPP1_L2_AG_RstALr);
+	Agitadores[3](evtEntry:= TC_Events.Agitadores.AgitadorL3, bEvt:= HMI.PP1_L3_AG_Alr, bConfirm:= Confirmar OR HMI.bPP1_L3_AG_RstALr);
+	Agitadores[4](evtEntry:= TC_Events.Agitadores.AgitadorL4, bEvt:= HMI.PP1_L4_AG_Alr, bConfirm:= Confirmar OR HMI.bPP1_L4_AG_RstALr);
+	Agitadores[5](evtEntry:= TC_Events.Agitadores.AgitadorL5, bEvt:= HMI.PP2_L5_AG_Alr, bConfirm:= Confirmar OR HMI.bPP2_L5_AG_RstALr);
+	Agitadores[6](evtEntry:= TC_Events.Agitadores.AgitadorL6, bEvt:= HMI.PP2_L6_AG_Alr, bConfirm:= Confirmar OR HMI.bPP2_L6_AG_RstALr);
+	Agitadores[7](evtEntry:= TC_Events.Agitadores.AgitadorL7, bEvt:= HMI.PP2_L7_AG_Alr, bConfirm:= Confirmar OR HMI.bPP2_L7_AG_RstALr);
+	Agitadores[8](evtEntry:= TC_Events.Agitadores.AgitadorL8, bEvt:= HMI.PP2_L8_AG_Alr, bConfirm:= Confirmar OR HMI.bPP2_L8_AG_RstALr);
+	Agitadores[9](evtEntry:= TC_Events.Agitadores.AgitadorL9, bEvt:= HMI.PP3_L9_AG_Alr, bConfirm:= Confirmar OR HMI.bPP3_L9_AG_RstALr);
+	Agitadores[10](evtEntry:= TC_Events.Agitadores.AgitadorL10, bEvt:= HMI.PP3_L10_AG_Alr, bConfirm:= Confirmar OR HMI.bPP3_L10_AG_RstALr);
+	Agitadores[11](evtEntry:= TC_Events.Agitadores.AgitadorL11, bEvt:= HMI.PP3_L11_AG_Alr, bConfirm:= Confirmar OR HMI.bPP3_L11_AG_RstALr);
+	Agitadores[12](evtEntry:= TC_Events.Agitadores.AgitadorL12, bEvt:= HMI.PP3_L12_AG_Alr, bConfirm:= Confirmar OR HMI.bPP3_L12_AG_RstALr);
+	
+
+{endregion}
+
+{Region "Intervalo de calibração excedido"}
+	IntervCalibracao[1](evtEntry:= TC_Events.IntervaloExcedidoCalibracao.Calibracao_L1, bEvt:= DT_TO_UDINT(Main.HoraAtual) - HMI.UltimoAlrCalibr[1] > IntervaloLavCalibr.IntervaloCalibracao * 3600, bConfirm:= Confirmar);
+	IntervCalibracao[2](evtEntry:= TC_Events.IntervaloExcedidoCalibracao.Calibracao_L2, bEvt:= DT_TO_UDINT(Main.HoraAtual) - HMI.UltimoAlrCalibr[2] > IntervaloLavCalibr.IntervaloCalibracao * 3600, bConfirm:= Confirmar);
+	IntervCalibracao[3](evtEntry:= TC_Events.IntervaloExcedidoCalibracao.Calibracao_L3, bEvt:= DT_TO_UDINT(Main.HoraAtual) - HMI.UltimoAlrCalibr[3] > IntervaloLavCalibr.IntervaloCalibracao * 3600, bConfirm:= Confirmar);
+	IntervCalibracao[4](evtEntry:= TC_Events.IntervaloExcedidoCalibracao.Calibracao_L4, bEvt:= DT_TO_UDINT(Main.HoraAtual) - HMI.UltimoAlrCalibr[4] > IntervaloLavCalibr.IntervaloCalibracao * 3600, bConfirm:= Confirmar);
+	IntervCalibracao[5](evtEntry:= TC_Events.IntervaloExcedidoCalibracao.Calibracao_L5, bEvt:= DT_TO_UDINT(Main.HoraAtual) - HMI.UltimoAlrCalibr[5] > IntervaloLavCalibr.IntervaloCalibracao * 3600, bConfirm:= Confirmar);
+	IntervCalibracao[6](evtEntry:= TC_Events.IntervaloExcedidoCalibracao.Calibracao_L6, bEvt:= DT_TO_UDINT(Main.HoraAtual) - HMI.UltimoAlrCalibr[6] > IntervaloLavCalibr.IntervaloCalibracao * 3600, bConfirm:= Confirmar);
+	IntervCalibracao[7](evtEntry:= TC_Events.IntervaloExcedidoCalibracao.Calibracao_L7, bEvt:= DT_TO_UDINT(Main.HoraAtual) - HMI.UltimoAlrCalibr[7] > IntervaloLavCalibr.IntervaloCalibracao * 3600, bConfirm:= Confirmar);
+	IntervCalibracao[8](evtEntry:= TC_Events.IntervaloExcedidoCalibracao.Calibracao_L8, bEvt:= DT_TO_UDINT(Main.HoraAtual) - HMI.UltimoAlrCalibr[8] > IntervaloLavCalibr.IntervaloCalibracao * 3600, bConfirm:= Confirmar);
+	IntervCalibracao[9](evtEntry:= TC_Events.IntervaloExcedidoCalibracao.Calibracao_L9, bEvt:= DT_TO_UDINT(Main.HoraAtual) - HMI.UltimoAlrCalibr[9] > IntervaloLavCalibr.IntervaloCalibracao * 3600, bConfirm:= Confirmar);
+	IntervCalibracao[10](evtEntry:= TC_Events.IntervaloExcedidoCalibracao.Calibracao_L10, bEvt:= DT_TO_UDINT(Main.HoraAtual) - HMI.UltimoAlrCalibr[10] > IntervaloLavCalibr.IntervaloCalibracao * 3600, bConfirm:= Confirmar);
+	IntervCalibracao[11](evtEntry:= TC_Events.IntervaloExcedidoCalibracao.Calibracao_L11, bEvt:= DT_TO_UDINT(Main.HoraAtual) - HMI.UltimoAlrCalibr[11] > IntervaloLavCalibr.IntervaloCalibracao * 3600, bConfirm:= Confirmar);
+	IntervCalibracao[12](evtEntry:= TC_Events.IntervaloExcedidoCalibracao.Calibracao_L12, bEvt:= DT_TO_UDINT(Main.HoraAtual) - HMI.UltimoAlrCalibr[12] > IntervaloLavCalibr.IntervaloCalibracao * 3600, bConfirm:= Confirmar);
+{endregion}
+
+{Region "Intervalo de lavagem excedido"}
+	IntervLavagem[1](evtEntry:= TC_Events.IntervaloExcedidoLavagem.IntervaloExcedidoL1, bEvt:= (DT_TO_LINT(Main.HoraAtual) - Liquidos.UltimoAlrLavagem[1]) > IntervaloLavCalibr.IntervaloLavagem * 3600, bConfirm:= Confirmar);
+	IntervLavagem[2](evtEntry:= TC_Events.IntervaloExcedidoLavagem.IntervaloExcedidoL2, bEvt:= (DT_TO_LINT(Main.HoraAtual) - Liquidos.UltimoAlrLavagem[2]) > IntervaloLavCalibr.IntervaloLavagem * 3600, bConfirm:= Confirmar);
+	IntervLavagem[3](evtEntry:= TC_Events.IntervaloExcedidoLavagem.IntervaloExcedidoL3, bEvt:= (DT_TO_LINT(Main.HoraAtual) - Liquidos.UltimoAlrLavagem[3]) > IntervaloLavCalibr.IntervaloLavagem * 3600, bConfirm:= Confirmar);
+	IntervLavagem[4](evtEntry:= TC_Events.IntervaloExcedidoLavagem.IntervaloExcedidoL4, bEvt:= (DT_TO_LINT(Main.HoraAtual) - Liquidos.UltimoAlrLavagem[4]) > IntervaloLavCalibr.IntervaloLavagem * 3600, bConfirm:= Confirmar);
+	IntervLavagem[5](evtEntry:= TC_Events.IntervaloExcedidoLavagem.IntervaloExcedidoL5, bEvt:= (DT_TO_LINT(Main.HoraAtual) - Liquidos.UltimoAlrLavagem[5]) > IntervaloLavCalibr.IntervaloLavagem * 3600, bConfirm:= Confirmar);
+	IntervLavagem[6](evtEntry:= TC_Events.IntervaloExcedidoLavagem.IntervaloExcedidoL6, bEvt:= (DT_TO_LINT(Main.HoraAtual) - Liquidos.UltimoAlrLavagem[6]) > IntervaloLavCalibr.IntervaloLavagem * 3600, bConfirm:= Confirmar);
+	IntervLavagem[7](evtEntry:= TC_Events.IntervaloExcedidoLavagem.IntervaloExcedidoL7, bEvt:= (DT_TO_LINT(Main.HoraAtual) - Liquidos.UltimoAlrLavagem[7]) > IntervaloLavCalibr.IntervaloLavagem * 3600, bConfirm:= Confirmar);
+	IntervLavagem[8](evtEntry:= TC_Events.IntervaloExcedidoLavagem.IntervaloExcedidoL8, bEvt:= (DT_TO_LINT(Main.HoraAtual) - Liquidos.UltimoAlrLavagem[8]) > IntervaloLavCalibr.IntervaloLavagem * 3600, bConfirm:= Confirmar);
+	IntervLavagem[9](evtEntry:= TC_Events.IntervaloExcedidoLavagem.IntervaloExcedidoL9, bEvt:= (DT_TO_LINT(Main.HoraAtual) - Liquidos.UltimoAlrLavagem[9]) > IntervaloLavCalibr.IntervaloLavagem * 3600, bConfirm:= Confirmar);
+	IntervLavagem[10](evtEntry:= TC_Events.IntervaloExcedidoLavagem.IntervaloExcedidoL10, bEvt:= (DT_TO_LINT(Main.HoraAtual) - Liquidos.UltimoAlrLavagem[10]) > IntervaloLavCalibr.IntervaloLavagem * 3600, bConfirm:= Confirmar);
+	IntervLavagem[11](evtEntry:= TC_Events.IntervaloExcedidoLavagem.IntervaloExcedidoL11, bEvt:= (DT_TO_LINT(Main.HoraAtual) - Liquidos.UltimoAlrLavagem[11]) > IntervaloLavCalibr.IntervaloLavagem * 3600, bConfirm:= Confirmar);
+	IntervLavagem[12](evtEntry:= TC_Events.IntervaloExcedidoLavagem.IntervaloExcedidoL12, bEvt:= (DT_TO_LINT(Main.HoraAtual) - Liquidos.UltimoAlrLavagem[12]) > IntervaloLavCalibr.IntervaloLavagem * 3600, bConfirm:= Confirmar);
+
+{endregion}
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="AlarmesDaMaquina">
+      <LineId Id="5" Count="0" />
+      <LineId Id="499" Count="0" />
+      <LineId Id="601" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="604" Count="25" />
+      <LineId Id="602" Count="0" />
+      <LineId Id="955" Count="0" />
+      <LineId Id="954" Count="0" />
+      <LineId Id="958" Count="0" />
+      <LineId Id="961" Count="3" />
+      <LineId Id="968" Count="11" />
+      <LineId Id="957" Count="0" />
+      <LineId Id="956" Count="0" />
+      <LineId Id="630" Count="0" />
+      <LineId Id="74" Count="0" />
+      <LineId Id="633" Count="60" />
+      <LineId Id="632" Count="0" />
+      <LineId Id="631" Count="0" />
+      <LineId Id="694" Count="0" />
+      <LineId Id="363" Count="0" />
+      <LineId Id="697" Count="13" />
+      <LineId Id="696" Count="0" />
+      <LineId Id="695" Count="0" />
+      <LineId Id="362" Count="0" />
+      <LineId Id="83" Count="0" />
+      <LineId Id="818" Count="11" />
+      <LineId Id="711" Count="0" />
+      <LineId Id="831" Count="0" />
+      <LineId Id="830" Count="0" />
+      <LineId Id="837" Count="11" />
+      <LineId Id="836" Count="0" />
+      <LineId Id="832" Count="0" />
+      <LineId Id="84" Count="0" />
+      <LineId Id="77" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
