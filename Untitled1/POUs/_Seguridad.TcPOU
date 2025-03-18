@@ -23,7 +23,7 @@ IF NOT Seguridad.PB_Emergencia THEN
 	Liquidos.InyectarLiq[5] := FALSE;
 	Liquidos.InyectarLiq[6] := FALSE;
 	Liquidos.InyectarLiq[7] := FALSE;
-	Liquidos.InyectarLiq[8] := FALSE; //a
+	Liquidos.InyectarLiq[8] := FALSE;
 	Liquidos.InyectarLiq[9] := FALSE;
 	Liquidos.InyectarLiq[10] := FALSE;
 	Liquidos.InyectarLiq[11] := FALSE;

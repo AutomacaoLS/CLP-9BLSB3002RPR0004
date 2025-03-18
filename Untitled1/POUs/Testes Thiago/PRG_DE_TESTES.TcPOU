@@ -25,6 +25,9 @@ VAR
 	SDO_READ_1: SDO_READ;
 	Calibracao_V03_0: Calibracao_V03;
 	DiagInfo:STRING;
+	TesteApex:INT;
+	FB_IPCDiag_ReadParameter_0: FB_IPCDiag_ReadParameter;
+	fbRegister: FB_IPCDiag_Register;
 END_VAR
 ]]></Declaration>
     <Implementation>

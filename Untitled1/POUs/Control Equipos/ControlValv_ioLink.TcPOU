@@ -9,10 +9,13 @@ VAR_INPUT
 	Inverter:BOOL;
 	PosicaoIN:INT;		//Posição da válvula. Valor vindo do IOLink
 END_VAR
+
 VAR_OUTPUT
 	Estado:INT;
 	Falla:BOOL;
-	END_VAR
+	Range:REAL;		//Range de abertura da válvula;
+END_VAR
+
 VAR_IN_OUT
 	Actuar:BYTE;
 END_VAR
@@ -56,9 +59,9 @@ IF NOT Teste THEN
 	END_IF
 ELSE
 	IF TON_Teste.Q THEN
-		Estado := 1;
-	ELSE
 		Estado := 2;
+	ELSE
+		Estado := 1;
 	END_IF
 END_IF
 
@@ -116,7 +119,7 @@ IF IniciarCfg THEN
 END_IF
 
 PosicaoOUT := SEL((cfgPosicao.Aberta - cfgPosicao.Fechada) <> 0,0,(100/(TO_REAL(cfgPosicao.Aberta - cfgPosicao.Fechada))) * (PosicaoIN - cfgPosicao.Fechada));
-
+Range := UltimasPosicoes[1] - UltimasPosicoes[2];		//Calcula o range de abertura da válvula
 
 ]]></ST>
     </Implementation>

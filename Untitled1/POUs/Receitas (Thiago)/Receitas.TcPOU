@@ -3,30 +3,27 @@
   <POU Name="Receitas" Id="{a811645b-e664-4b28-b8de-1aab1d692da5}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM Receitas
 VAR
-	AUX_FS: BOOL := FALSE;	//Auxiliar do First Scan
-	FS: BOOL;			//First Scan
-	iCounter: INT;		//Contador para o FOR
-	IndiceReceita:INT;							//Índice da receita que está na interface
-	NomeReceita:STRING:='SELECIONAR RECEITA';
-	IndiceReceitaAtiva:INT;						//Índice da receita ativa
+	AUX_FS				:BOOL := FALSE;	//Auxiliar do First Scan
+	FS					:BOOL;			//First Scan
+	iCounter			:INT;			//Contador para o FOR
+	IndiceReceita		:INT;			//Índice da receita que está na interface
+	NomeReceita			:STRING:='SELECIONAR RECEITA';	//Nome da receita selecionada
+	IndiceReceitaAtiva	:INT;			//Índice da receita ativa
 	
 	Teste:INT;/////////////////////////////////////////
+	
 	//Comandos
-	Salvar:BOOL;
-	Carregar:BOOL;
-	Excluir:BOOL;
-	Atualizar: BOOL;
-	CarregarReceita: BOOL;
-	ResetReceitas: BOOL;
-	NomeExistente: BOOL;
-	ReceitaOK: BOOL;
-	// Variável para iteração do FOR
-	i: INT;
-	// Variável para verificar a sequencia de passos
-	ii: INT;
-	TempoAux: REAL;
-	TempoDosPassos	:ARRAY[1..12] OF DINT;	//Esse array salva, no índice dos passos, o tempo do mesmo. No final, tudo é somado para retornar o tempo da batelada
-	TempoTotal		:DINT;
+	Salvar				:BOOL;	//Salva a receita na memória
+	Excluir				:BOOL;	//Exclui a receita selecionada
+	Atualizar			:BOOL;	//É executado quando a receita do ComboBox é trocada. Ele atualiza os dados da tela com a receita selecionada
+	CarregarReceita		:BOOL;	//Envia a receita de interface para a máquina
+	NomeExistente		:BOOL;	//Se verdadeiro, o nome escolhido já está em uso
+	ReceitaOK			:BOOL;	//Receita com todos os parâmetros preenchidos corretamente
+	ReceitaCarregada	:BOOL;	//Carrega para a interface a receita que está carregada na máquina
+	i					:INT;	// Variável para iteração do FOR
+	TempoAux			:REAL;	//Variável auxiliar para cálculo de tempo da receita
+	TempoDosPassos		:ARRAY[1..12] OF DINT;	//Esse array salva, no índice dos passos, o tempo do mesmo. No final, tudo é somado para retornar o tempo da batelada
+	TempoTotal			:DINT;	//Tempo total da receita
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -67,7 +64,7 @@ IF Salvar THEN
 		RecetasGestion.BibliotecaRecetas[IndiceReceita].SetVelocHomogenizado := Receta_Activa.interfaceSetVelocHomogenizado;
 		RecetasGestion.BibliotecaRecetas[IndiceReceita].SetCircuitosLiq		:= Receta_Activa.interfaceSetCircuitosLiq;
 		RecetasGestion.BibliotecaRecetas[IndiceReceita].SetCircuitosPo		:= Receta_Activa.interfaceSetCircuitosPo;
-		RecetasGestion.BibliotecaRecetas[IndiceReceita].SetTiempoTotal		:= Receta_Activa.interfaceSetTiempoTotal;
+		RecetasGestion.BibliotecaRecetas[IndiceReceita].Aspiracao			:= Receta_Activa.interfaceSetAspiracao;
 		
 		NomeReceita := Receta_Activa.interfaceSetNombreRecetaActiva;
 	END_IF;
@@ -89,6 +86,7 @@ IF Atualizar THEN
 	Receta_Activa.interfaceSetVelocHomogenizado	:= RecetasGestion.BibliotecaRecetas[IndiceReceita].SetVelocHomogenizado;
 	Receta_Activa.interfaceSetCircuitosLiq		:= RecetasGestion.BibliotecaRecetas[IndiceReceita].SetCircuitosLiq;
 	Receta_Activa.interfaceSetCircuitosPo		:= RecetasGestion.BibliotecaRecetas[IndiceReceita].SetCircuitosPo;
+	Receta_Activa.interfaceSetAspiracao			:= RecetasGestion.BibliotecaRecetas[IndiceReceita].Aspiracao;
 	//Receta_Activa.interfaceSetTiempoTotal		:= RecetasGestion.BibliotecaRecetas[IndiceReceita].SetTiempoTotal;
 	Atualizar := FALSE;
 END_IF
@@ -101,7 +99,9 @@ IF Excluir THEN
 		RecetasGestion.BibliotecaRecetas[IndiceReceita].SetTmrHomogenizado := 0;
 		RecetasGestion.BibliotecaRecetas[IndiceReceita].SetVelocDescarga := 0;
 		RecetasGestion.BibliotecaRecetas[IndiceReceita].SetVelocHomogenizado := 0;
+		RecetasGestion.BibliotecaRecetas[IndiceReceita].Aspiracao := FALSE;
 		Receta_Activa.SetNombreRecetaActiva := '';
+		Receta_Activa.interfaceSetAspiracao := FALSE;
 		
 		FOR iCounter := 1 TO 12 BY 1 DO
 			RecetasGestion.BibliotecaRecetas[IndiceReceita].SetCircuitosLiq[iCounter].Demora	:= 0;
@@ -128,6 +128,7 @@ IF CarregarReceita THEN
 	Receta_Activa.SetCircuitosLiq		:= Receta_Activa.interfaceSetCircuitosLiq;
 	Receta_Activa.SetCircuitosPo		:= Receta_Activa.interfaceSetCircuitosPo;
 	Receta_Activa.SetTiempoTotal		:= Receta_Activa.interfaceSetTiempoTotal;
+	Receta_Activa.SetAspiracao		:= Receta_Activa.interfaceSetAspiracao;
 	CarregarReceita := FALSE;
 	LiqNaReceita();
 END_IF
@@ -211,6 +212,27 @@ END_FOR
 TempoTotal := TempoTotal + Receta_Activa.interfaceSetTmrDescarga + Receta_Activa.interfaceSetTmrHomogenizado;
 Receta_Activa.interfaceSetTiempoTotal := TO_REAL(TempoTotal);
 
+
+//Lógica do botão "CARREGADA". Serve para que o operador carregue para a interface a receita que está na máquina.
+IF ReceitaCarregada THEN
+	FOR i := 1 TO 100 DO
+		IF RecetasGestion.aComboboxRecipes[i].text = Receta_Activa.SetNombreRecetaActiva THEN
+			IndiceReceita := RecetasGestion.aComboboxRecipes[i].id;
+			EXIT;
+		END_IF
+	END_FOR
+	//Receta_Activa.interfaceSetNombreRecetaActiva := CONCAT(Receta_Activa.interfaceSetNombreRecetaActiva, TO_STRING(" - EM PROCESSO"));
+	Receta_Activa.interfaceSetCircuitosLiq		:= Receta_Activa.SetCircuitosLiq;
+	Receta_Activa.interfaceSetCircuitosPo		:= Receta_Activa.SetCircuitosPo;
+	Receta_Activa.interfaceSetNombreRecetaActiva	:= Receta_Activa.SetNombreRecetaActiva;
+	Receta_Activa.interfaceSetTiempoTotal		:= Receta_Activa.SetTiempoTotal;
+	Receta_Activa.interfaceSetTmrDescarga		:= Receta_Activa.SetTmrDescarga;
+	Receta_Activa.interfaceSetTmrHomogenizado	:= Receta_Activa.SetTmrHomogenizado;
+	Receta_Activa.interfaceSetVelocDescarga		:= Receta_Activa.SetVelocDescarga;
+	Receta_Activa.interfaceSetVelocHomogenizado	:= Receta_Activa.SetVelocDescarga;
+	Receta_Activa.interfaceSetAspiracao			:= Receta_Activa.SetAspiracao;
+	ReceitaCarregada := FALSE;
+END_IF
 ]]></ST>
     </Implementation>
     <LineIds Name="Receitas">
@@ -246,7 +268,8 @@ Receta_Activa.interfaceSetTiempoTotal := TO_REAL(TempoTotal);
       <LineId Id="72" Count="0" />
       <LineId Id="69" Count="0" />
       <LineId Id="74" Count="0" />
-      <LineId Id="672" Count="1" />
+      <LineId Id="775" Count="0" />
+      <LineId Id="777" Count="0" />
       <LineId Id="524" Count="0" />
       <LineId Id="548" Count="0" />
       <LineId Id="73" Count="0" />
@@ -260,15 +283,18 @@ Receta_Activa.interfaceSetTiempoTotal := TO_REAL(TempoTotal);
       <LineId Id="303" Count="0" />
       <LineId Id="249" Count="0" />
       <LineId Id="96" Count="0" />
-      <LineId Id="99" Count="5" />
+      <LineId Id="99" Count="4" />
+      <LineId Id="778" Count="1" />
       <LineId Id="180" Count="0" />
       <LineId Id="105" Count="0" />
       <LineId Id="97" Count="0" />
       <LineId Id="130" Count="0" />
       <LineId Id="107" Count="0" />
       <LineId Id="106" Count="0" />
-      <LineId Id="110" Count="5" />
+      <LineId Id="110" Count="4" />
+      <LineId Id="781" Count="1" />
       <LineId Id="143" Count="0" />
+      <LineId Id="780" Count="0" />
       <LineId Id="250" Count="0" />
       <LineId Id="117" Count="0" />
       <LineId Id="116" Count="0" />
@@ -284,7 +310,7 @@ Receta_Activa.interfaceSetTiempoTotal := TO_REAL(TempoTotal);
       <LineId Id="142" Count="0" />
       <LineId Id="136" Count="4" />
       <LineId Id="133" Count="0" />
-      <LineId Id="477" Count="0" />
+      <LineId Id="783" Count="1" />
       <LineId Id="141" Count="0" />
       <LineId Id="305" Count="0" />
       <LineId Id="134" Count="0" />
@@ -346,7 +372,21 @@ Receta_Activa.interfaceSetTiempoTotal := TO_REAL(TempoTotal);
       <LineId Id="655" Count="0" />
       <LineId Id="654" Count="0" />
       <LineId Id="671" Count="0" />
+      <LineId Id="701" Count="1" />
       <LineId Id="499" Count="0" />
+      <LineId Id="703" Count="0" />
+      <LineId Id="717" Count="1" />
+      <LineId Id="720" Count="0" />
+      <LineId Id="749" Count="0" />
+      <LineId Id="721" Count="0" />
+      <LineId Id="719" Count="0" />
+      <LineId Id="724" Count="0" />
+      <LineId Id="706" Count="0" />
+      <LineId Id="708" Count="2" />
+      <LineId Id="712" Count="2" />
+      <LineId Id="785" Count="1" />
+      <LineId Id="711" Count="0" />
+      <LineId Id="707" Count="0" />
       <LineId Id="54" Count="0" />
     </LineIds>
   </POU>

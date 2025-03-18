@@ -18,6 +18,8 @@ VAR
 	InicioCal_ref: BOOL;
 
 	UltimaCalibracao: UDINT;
+	VazaoMax: REAL;
+	VazaoMaxExcedida: BOOL;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -104,20 +106,33 @@ CASE HMI.iCircuito_a_calibrar OF
 	5:	Liquidos.Circuito_Offset[5]:=Offset_ref;//Offset_ref
 		circuito_L5.Modo_Calibrar_L5:=Inyectar_ref;//Inyectar_ref
 		HMICA2.Inicio_calibracion:=InicioCal_ref;
+		VazaoMax := HMI.CaudalNom_PC2_L5_BD;
 	6:	Liquidos.Circuito_Offset[6]:=Offset_ref;//Offset_ref
 		circuito_L6.Modo_Calibrar_L6:=Inyectar_ref;//Inyectar_ref
 		HMICA2.Inicio_calibracion:=InicioCal_ref;
+		VazaoMax := HMI.CaudalNom_PC2_L6_BD;
 	7:	Liquidos.Circuito_Offset[7]:=Offset_ref;//Offset_ref
 		circuito_L7.Modo_Calibrar_L7:=Inyectar_ref;//Inyectar_ref
 		HMICA2.Inicio_calibracion:=InicioCal_ref;
+		VazaoMax := HMI.CaudalNom_PC2_L7_BD;
 	8:	Liquidos.Circuito_Offset[8]:=Offset_ref;//Offset_ref
 		circuito_L8.Modo_Calibrar_L8:=Inyectar_ref;//Inyectar_ref
 		HMICA2.Inicio_calibracion:=InicioCal_ref;
+		VazaoMax := HMI.CaudalNom_PC2_L8_BD;
 		
 		ELSE
 	;		
 END_CASE	
 END_IF	
+
+IF HMICA2.TInyeccion_calibracion > 0 THEN
+	IF (HMICA2.Dosis_calibracion*HMICA2.Peso_calibracion/100)/TO_REAL(HMICA2.TInyeccion_calibracion) > VazaoMax THEN
+		VazaoMaxExcedida := TRUE;
+	ELSE
+		VazaoMaxExcedida := FALSE;
+	END_IF
+END_IF
+
 	]]></ST>
     </Implementation>
     <LineIds Name="Puesto_CA2">
@@ -156,9 +171,19 @@ END_IF
       <LineId Id="158" Count="0" />
       <LineId Id="157" Count="0" />
       <LineId Id="61" Count="0" />
-      <LineId Id="139" Count="16" />
+      <LineId Id="139" Count="4" />
+      <LineId Id="215" Count="0" />
+      <LineId Id="144" Count="2" />
+      <LineId Id="216" Count="0" />
+      <LineId Id="147" Count="2" />
+      <LineId Id="217" Count="0" />
+      <LineId Id="150" Count="2" />
+      <LineId Id="218" Count="0" />
+      <LineId Id="153" Count="2" />
       <LineId Id="138" Count="0" />
       <LineId Id="58" Count="0" />
+      <LineId Id="205" Count="7" />
+      <LineId Id="204" Count="0" />
       <LineId Id="24" Count="0" />
     </LineIds>
   </POU>

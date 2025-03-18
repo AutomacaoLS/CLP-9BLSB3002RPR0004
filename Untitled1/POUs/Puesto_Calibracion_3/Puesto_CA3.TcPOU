@@ -18,6 +18,8 @@ VAR
 	InicioCal_ref: BOOL;
 
 	UltimaCalibracao: UDINT;
+	VazaoMax: REAL;
+	VazaoMaxExcedida: BOOL;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -104,20 +106,32 @@ CASE HMI.iCircuito_a_calibrar OF
 	9:	Liquidos.Circuito_Offset[9]:=Offset_ref;//Offset_ref
 		circuito_L9.Modo_Calibrar_L9:=Inyectar_ref;//Inyectar_ref
 		HMICA3.Inicio_calibracion:=InicioCal_ref;
+		VazaoMax := HMI.CaudalNom_PC3_L9_BD;
 	10:	Liquidos.Circuito_Offset[10]:=Offset_ref;//Offset_ref
 		circuito_L10.Modo_Calibrar_L10:=Inyectar_ref;//Inyectar_ref
 		HMICA3.Inicio_calibracion:=InicioCal_ref;
+		VazaoMax := HMI.CaudalNom_PC3_L10_BD;
 	11:	Liquidos.Circuito_Offset[11]:=Offset_ref;//Offset_ref
 		circuito_L11.Modo_Calibrar_L11:=Inyectar_ref;//Inyectar_ref
 		HMICA3.Inicio_calibracion:=InicioCal_ref;
+		VazaoMax := HMI.CaudalNom_PC3_L11_BD;
 	12:	Liquidos.Circuito_Offset[12]:=Offset_ref;//Offset_ref
 		circuito_L12.Modo_Calibrar_L12:=Inyectar_ref;//Inyectar_ref
 		HMICA3.Inicio_calibracion:=InicioCal_ref;
+		VazaoMax := HMI.CaudalNom_PC3_L12_BD;
 		
 		ELSE
 	;		
 END_CASE	
 END_IF	
+
+IF HMICA3.TInyeccion_calibracion > 0 THEN
+	IF (HMICA3.Dosis_calibracion*HMICA3.Peso_calibracion/100)/TO_REAL(HMICA3.TInyeccion_calibracion) > VazaoMax THEN
+		VazaoMaxExcedida := TRUE;
+	ELSE
+		VazaoMaxExcedida := FALSE;
+	END_IF
+END_IF
 	]]></ST>
     </Implementation>
     <LineIds Name="Puesto_CA3">
@@ -141,7 +155,17 @@ END_IF
       <LineId Id="130" Count="0" />
       <LineId Id="78" Count="2" />
       <LineId Id="131" Count="0" />
-      <LineId Id="81" Count="45" />
+      <LineId Id="81" Count="31" />
+      <LineId Id="181" Count="0" />
+      <LineId Id="113" Count="2" />
+      <LineId Id="182" Count="0" />
+      <LineId Id="116" Count="2" />
+      <LineId Id="183" Count="0" />
+      <LineId Id="119" Count="2" />
+      <LineId Id="184" Count="0" />
+      <LineId Id="122" Count="4" />
+      <LineId Id="172" Count="6" />
+      <LineId Id="171" Count="0" />
       <LineId Id="41" Count="0" />
     </LineIds>
   </POU>

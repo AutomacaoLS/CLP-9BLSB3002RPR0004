@@ -3,22 +3,22 @@
   <POU Name="Equipo_Valvula_5_2" Id="{06626da1-143b-442d-b3fe-2afb301794fa}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK Equipo_Valvula_5_2
 VAR_INPUT
-	PE 	  					  : BOOL;	//Parada de emergência
-	Modo_Automatico           : BOOL;	//Modo automático
-	Cmd_Auto         		  : BOOL;	//Comando automático
-	Valv_Abierta		   	  : BOOL;	//Válvula aberta
-	Valv_Cerrada			  : BOOL;	//Válvula fechada
-	T_Discrepancia            : TIME;	//Tempo para erro de abertura
+	PE				: BOOL;	//Parada de emergência
+	Modo_Automatico	: BOOL;	//Modo automático
+	Cmd_Auto		: BOOL;	//Comando automático
+	Valv_Abierta	: BOOL;	//Válvula aberta
+	Valv_Cerrada	: BOOL;	//Válvula fechada
+	T_Discrepancia	: TIME;	//Tempo para erro de abertura
 END_VAR
 VAR_OUTPUT
-	Activa_Equipo	 	      : BOOL;	//Aciona equipamento
-	Estado					  : INT;	//Status da válvula
-	Alr_Discrepancia		  : BOOL;	//Alarme de falha no acionamento
+	Activa_Equipo		: BOOL;	//Aciona equipamento
+	Estado				: INT;	//Status da válvula
+	Alr_Discrepancia	: BOOL;	//Alarme de falha no acionamento
 END_VAR
 VAR_IN_OUT
-	Cmd_Man 				  : BOOL;	//Comando manual
-	Alarma				      : BOOL;	//Alarme
-	Reset_Alarma		      : BOOL;	//Reset alarmes
+	Cmd_Man			: BOOL;	//Comando manual
+	Alarma			: BOOL;	//Alarme
+	Reset_Alarma	: BOOL;	//Reset alarmes
 END_VAR
 VAR_STAT
 	FP_Reset				  : R_TRIG;
@@ -37,7 +37,10 @@ VAR PERSISTENT
 	Eventos_Totales			  : DINT;
 END_VAR
 
-]]></Declaration>
+
+VAR
+	TON_ResetAlarme: TON;
+END_VAR]]></Declaration>
     <Implementation>
       <NWL>
         <XmlArchive>
@@ -733,22 +736,6 @@ END_VAR
                             <v n="IsInstance">false</v>
                             <v n="Id">373L</v>
                           </o>
-                          <o>
-                            <v n="Operand">"Reset_Alarma"</v>
-                            <v n="Type">"BOOL"</v>
-                            <v n="Comment">""</v>
-                            <v n="SymbolComment">""</v>
-                            <v n="Address">""</v>
-                            <o n="Flags" t="Flags">
-                              <v n="Flags">3</v>
-                              <v n="Fixed">true</v>
-                              <v n="Extensible">false</v>
-                            </o>
-                            <v n="LValue">true</v>
-                            <v n="Boolean">true</v>
-                            <v n="IsInstance">false</v>
-                            <v n="Id">358L</v>
-                          </o>
                         </l2>
                       </o>
                       <o n="Flags" t="Flags">
@@ -780,6 +767,161 @@ END_VAR
                   </l2>
                   <l2 n="Connectors" />
                   <v n="Id">354L</v>
+                </o>
+                <o>
+                  <v n="ILActive">false</v>
+                  <v n="FBDValid">false</v>
+                  <v n="ILValid">false</v>
+                  <l2 n="ILLines" />
+                  <v n="Comment">""</v>
+                  <v n="Title">""</v>
+                  <v n="Label">""</v>
+                  <v n="OutCommented">false</v>
+                  <l2 n="NetworkItems" cet="BoxTreeAssign">
+                    <o>
+                      <o n="OutputItems" t="OutputItemList">
+                        <l2 n="OutputItems" cet="Operand">
+                          <o>
+                            <v n="Operand">"Reset_Alarma"</v>
+                            <v n="Type">"BOOL"</v>
+                            <v n="Comment">""</v>
+                            <v n="SymbolComment">""</v>
+                            <v n="Address">""</v>
+                            <o n="Flags" t="Flags">
+                              <v n="Flags">3</v>
+                              <v n="Fixed">true</v>
+                              <v n="Extensible">false</v>
+                            </o>
+                            <v n="LValue">true</v>
+                            <v n="Boolean">true</v>
+                            <v n="IsInstance">false</v>
+                            <v n="Id">629L</v>
+                          </o>
+                        </l2>
+                      </o>
+                      <o n="Flags" t="Flags">
+                        <v n="Flags">0</v>
+                        <v n="Fixed">false</v>
+                        <v n="Extensible">false</v>
+                      </o>
+                      <o n="RValue" t="BoxTreeBox">
+                        <v n="BoxType">"TON"</v>
+                        <o n="Instance" t="Operand">
+                          <v n="Operand">"TON_ResetAlarme"</v>
+                          <v n="Type">"TON"</v>
+                          <v n="Comment">""</v>
+                          <v n="SymbolComment">""</v>
+                          <v n="Address">""</v>
+                          <o n="Flags" t="Flags">
+                            <v n="Flags">0</v>
+                            <v n="Fixed">false</v>
+                            <v n="Extensible">false</v>
+                          </o>
+                          <v n="LValue">false</v>
+                          <v n="Boolean">false</v>
+                          <v n="IsInstance">true</v>
+                          <v n="Id">615L</v>
+                        </o>
+                        <o n="OutputItems" t="OutputItemList">
+                          <l2 n="OutputItems" cet="Operand">
+                            <n />
+                            <o>
+                              <v n="Operand">""</v>
+                              <v n="Type">"TIME"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">true</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">617L</v>
+                            </o>
+                          </l2>
+                        </o>
+                        <o n="Flags" t="Flags">
+                          <v n="Flags">0</v>
+                          <v n="Fixed">false</v>
+                          <v n="Extensible">false</v>
+                        </o>
+                        <n n="InputFlags" />
+                        <l2 n="InputItems" cet="BoxTreeOperand">
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"Reset_Alarma"</v>
+                              <v n="Type">"BOOL"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">true</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">true</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">628L</v>
+                            </o>
+                            <v n="Id">627L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"t#1s"</v>
+                              <v n="Type">"TIME"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">621L</v>
+                            </o>
+                            <v n="Id">620L</v>
+                          </o>
+                        </l2>
+                        <o n="InputParam" t="ParamList">
+                          <l2 n="Names" cet="String">
+                            <v>IN</v>
+                            <v>PT</v>
+                          </l2>
+                          <l2 n="Types" cet="String">
+                            <v>BOOL</v>
+                            <v>TIME</v>
+                          </l2>
+                        </o>
+                        <o n="OutputParam" t="ParamList">
+                          <l2 n="Names" cet="String">
+                            <v>Q</v>
+                            <v>ET</v>
+                          </l2>
+                          <l2 n="Types" cet="String">
+                            <v>BOOL</v>
+                            <v>TIME</v>
+                          </l2>
+                        </o>
+                        <v n="CallType" t="Operator">FunctionBlock</v>
+                        <v n="EN">false</v>
+                        <v n="ENO">false</v>
+                        <n n="STSnippet" />
+                        <v n="ContainsExtensibleInputs">false</v>
+                        <v n="ProvidesSTSnippet">false</v>
+                        <v n="Id">616L</v>
+                      </o>
+                      <v n="Id">630L</v>
+                    </o>
+                  </l2>
+                  <l2 n="Connectors" />
+                  <v n="Id">610L</v>
                 </o>
                 <o>
                   <v n="ILActive">false</v>

@@ -16,8 +16,17 @@
     <Implicit_KindOfTask>{2fab7bdf-8944-40ae-9bb1-d054a79d6fb7}</Implicit_KindOfTask>
     <Implicit_Jitter_Distribution>{5882ae54-be6e-4516-8a82-01b72ef4d91c}</Implicit_Jitter_Distribution>
     <LibraryReferences>{6b1e22bc-fbb3-46d7-8c9d-726c37c445f6}</LibraryReferences>
+    <Company>LS do Brasil</Company>
+    <Released>false</Released>
+    <Title>B300S</Title>
+    <ProjectVersion>1.1</ProjectVersion>
+    <Author>Thiago Carlos</Author>
+    <Description>Programa da máquina B300S, 12 liquidos e dois pós</Description>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DUTs\DUT_cfgBombas.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\DUT_cfgPosicValvula.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -294,7 +303,13 @@
     <Compile Include="POUs\Testes Thiago\Calibracao_V03.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\Testes Thiago\ConfigBombas.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\Testes Thiago\ConsumoIBCs.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Testes Thiago\E_State.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\Testes Thiago\Filtro.TcPOU">
@@ -322,6 +337,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\Testes Thiago\IntervaloLavCalibr.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Testes Thiago\iPC_Diagnostic.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\Testes Thiago\Lavagem.TcPOU">
@@ -387,6 +405,9 @@
     <Folder Include="POUs" />
   </ItemGroup>
   <ItemGroup>
+    <PlaceholderReference Include="Tc2_ControllerToolbox">
+      <DefaultResolution>Tc2_ControllerToolbox, * (Beckhoff Automation GmbH)</DefaultResolution>
+    </PlaceholderReference>
     <PlaceholderReference Include="Tc2_Database">
       <DefaultResolution>Tc2_Database, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc2_Database</Namespace>
@@ -402,75 +423,22 @@
     <PlaceholderReference Include="Tc2_System">
       <DefaultResolution>Tc2_System, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc2_System</Namespace>
-      <Parameters>
-        <Parameter ListName="PARAM" xmlns="">
-          <Key>TABLE_UPPER_BOUND</Key>
-          <Value>15</Value>
-        </Parameter>
-        <Parameter ListName="PARAM" xmlns="">
-          <Key>STRING_LENGTH_EXP</Key>
-          <Value>255</Value>
-        </Parameter>
-        <Parameter ListName="PARAM" xmlns="">
-          <Key>STRING_LENGTH_ADDRESS</Key>
-          <Value>20</Value>
-        </Parameter>
-        <Parameter ListName="PARAM" xmlns="">
-          <Key>STRING_LENGTH_COMMENT</Key>
-          <Value>255</Value>
-        </Parameter>
-        <Parameter ListName="PARAM" xmlns="">
-          <Key>STRING_LENGTH_OUTSTRING</Key>
-          <Value>255</Value>
-        </Parameter>
-        <Parameter ListName="PARAM" xmlns="">
-          <Key>TABLE_SHOW_VALID_ITEMS</Key>
-          <Value>FALSE</Value>
-        </Parameter>
-      </Parameters>
     </PlaceholderReference>
     <PlaceholderReference Include="Tc2_Utilities">
       <DefaultResolution>Tc2_Utilities, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc2_Utilities</Namespace>
-      <Parameters>
-        <Parameter ListName="PARAMETERLIST" xmlns="">
-          <Key>NMAXLICENSES</Key>
-          <Value>50</Value>
-        </Parameter>
-        <Parameter ListName="PARAMETERLIST" xmlns="">
-          <Key>NMAXLICENSEDEVICES</Key>
-          <Value>16</Value>
-        </Parameter>
-        <Parameter ListName="PARAMETERLIST" xmlns="">
-          <Key>NMAXCPUCOUNT</Key>
-          <Value>64</Value>
-        </Parameter>
-        <Parameter ListName="PARAMETERLIST" xmlns="">
-          <Key>CMAXCHARACTERS</Key>
-          <Value>16#FFFFFFF0</Value>
-        </Parameter>
-        <Parameter ListName="PARAMETERLIST" xmlns="">
-          <Key>NMAXFILESONDONGLE</Key>
-          <Value>20</Value>
-        </Parameter>
-        <Parameter ListName="PARAMETERLIST" xmlns="">
-          <Key>CMAXCSVFIELDVALUESIZE</Key>
-          <Value>255</Value>
-        </Parameter>
-      </Parameters>
     </PlaceholderReference>
     <PlaceholderReference Include="Tc3_Database">
       <DefaultResolution>Tc3_Database, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc3_Database</Namespace>
     </PlaceholderReference>
     <PlaceholderReference Include="Tc3_EventLogger">
       <DefaultResolution>Tc3_EventLogger, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc3_EventLogger</Namespace>
-      <Parameters>
-        <Parameter ListName="PARAMETERLIST" xmlns="">
-          <Key>CSOURCENAMESIZE</Key>
-          <Value>256</Value>
-        </Parameter>
-      </Parameters>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc3_IPCDiag">
+      <DefaultResolution>Tc3_IPCDiag, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc3_IPCDiag</Namespace>
     </PlaceholderReference>
     <PlaceholderReference Include="Tc3_Module">
       <DefaultResolution>Tc3_Module, * (Beckhoff Automation GmbH)</DefaultResolution>

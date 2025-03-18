@@ -829,7 +829,7 @@ IF ComandoSalvar[120] THEN
 END_IF
 //Descarga
 IF ComandoSalvar[121] THEN
-	InsertParada(Insert:= TRUE, NomeComando:= 'DESCARGA MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
+	InsertParada(Insert:= TRUE, NomeComando:= 'DESCARGA TRAT. MANUAL', InsertOut=> bExecuteInsert, Comando=> sCmdInsert);
 	ComandoSalvar[121] := FALSE;
 END_IF
 {endregion}]]></ST>

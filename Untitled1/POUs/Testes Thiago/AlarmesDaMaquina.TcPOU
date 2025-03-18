@@ -6,7 +6,7 @@ VAR_INPUT
 	Confirmar:BOOL;
 END_VAR
 VAR
-	
+	RangeMinimo:REAL := 40;	//Range de abertura mínimo para que as válvulas gerem falha. Em %
 	FaltaDeAr	:GeraAlarme;
 	Emerg		:GeraAlarme;
 	AlrLL		:BOOL;		// Alarme de nível baixo de óleo nas bombas. Se estiver em falso, alguma bomba está com nível baixo
@@ -16,6 +16,10 @@ VAR
 	IntervCalibracao:ARRAY[1..12] OF GeraAlarme;	//Tempo de calibração excedido
 	IntervLavagem	:ARRAY[1..12] OF GeraAlarme;	//Tempo de lavagem excedido
 	NivelOleo		:ARRAY[1..12] OF GeraAlarme;	//nível baixo de óleo
+	AnguloValv		:ARRAY[1..48] OF GeraAlarme;	//Falha no angulo de abertura das válvulas
+	FalhaValv		:ARRAY[1..48] OF GeraAlarme;	//Falha nas válvulas
+	iPC_Diag		:ARRAY[1..5] OF GeraAlarme;		//Alarmes de diagnóstico do iPC
+	NivelProd		:ARRAY[1..14] OF GeraAlarme;	//Baixo nível de liquidos e pós
 	
 	//Elevadores
 	FalhaElev1: GeraAlarme;
@@ -31,55 +35,6 @@ VAR
 	Aspersor: GeraAlarme;
 	Homogeneizador: GeraAlarme;
 
-	//Válvulas
-	L1_Valv1: GeraAlarme;
-	L1_Valv2: GeraAlarme;
-	L1_Valv3: GeraAlarme;
-	L1_Valv4: GeraAlarme;
-	L2_Valv1: GeraAlarme;
-	L2_Valv2: GeraAlarme;
-	L2_Valv3: GeraAlarme;
-	L2_Valv4: GeraAlarme;
-	L3_Valv1: GeraAlarme;
-	L3_Valv2: GeraAlarme;
-	L3_Valv3: GeraAlarme;
-	L3_Valv4: GeraAlarme;
-	L4_Valv1: GeraAlarme;
-	L4_Valv2: GeraAlarme;
-	L4_Valv3: GeraAlarme;
-	L4_Valv4: GeraAlarme;
-	L5_Valv1: GeraAlarme;
-	L5_Valv2: GeraAlarme;
-	L5_Valv3: GeraAlarme;
-	L5_Valv4: GeraAlarme;
-	L6_Valv1: GeraAlarme;
-	L6_Valv2: GeraAlarme;
-	L6_Valv3: GeraAlarme;
-	L6_Valv4: GeraAlarme;
-	L7_Valv1: GeraAlarme;
-	L7_Valv2: GeraAlarme;
-	L7_Valv3: GeraAlarme;
-	L7_Valv4: GeraAlarme;
-	L8_Valv1: GeraAlarme;
-	L8_Valv2: GeraAlarme;
-	L8_Valv3: GeraAlarme;
-	L8_Valv4: GeraAlarme;
-	L9_Valv1: GeraAlarme;
-	L9_Valv2: GeraAlarme;
-	L9_Valv3: GeraAlarme;
-	L9_Valv4: GeraAlarme;
-	L10_Valv1: GeraAlarme;
-	L10_Valv2: GeraAlarme;
-	L10_Valv3: GeraAlarme;
-	L10_Valv4: GeraAlarme;
-	L11_Valv1: GeraAlarme;
-	L11_Valv2: GeraAlarme;
-	L11_Valv3: GeraAlarme;
-	L11_Valv4: GeraAlarme;
-	L12_Valv1: GeraAlarme;
-	L12_Valv2: GeraAlarme;
-	L12_Valv3: GeraAlarme;
-	L12_Valv4: GeraAlarme;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -139,65 +94,65 @@ Emerg(evtEntry:= TC_Events.B300_EventClass.Emergencia, bEvt:= NOT Seguridad.PB_E
 {Region "Válvulas"}
 	//Válvulas
 	//Linha 01
-	L1_Valv1(evtEntry:= TC_Events.Valvulas.Linha1_Valv1, bEvt:= Circuito_L1.Falla_L1_V1, bConfirm:= Confirmar OR HMI.CA1_L1_V1_RsAlr);
-	L1_Valv2(evtEntry:= TC_Events.Valvulas.Linha1_Valv2, bEvt:= Circuito_L1.Falla_L1_V2, bConfirm:= Confirmar OR HMI.CA1_L1_V2_RsAlr);
-	L1_Valv3(evtEntry:= TC_Events.Valvulas.Linha1_Valv3, bEvt:= Circuito_L1.Falla_L1_V3, bConfirm:= Confirmar OR HMI.CA1_L1_V3_RsAlr);
-	L1_Valv4(evtEntry:= TC_Events.Valvulas.Linha1_Valv4, bEvt:= Circuito_L1.Falla_L1_V4, bConfirm:= Confirmar OR HMI.CA1_L1_V4_RsAlr);
+	FalhaValv[1](evtEntry:= TC_Events.Valvulas.Linha1_Valv1, bEvt:= Circuito_L1.Falla_L1_V1, bConfirm:= Confirmar OR HMI.CA1_L1_V1_RsAlr);
+	FalhaValv[2](evtEntry:= TC_Events.Valvulas.Linha1_Valv2, bEvt:= Circuito_L1.Falla_L1_V2, bConfirm:= Confirmar OR HMI.CA1_L1_V2_RsAlr);
+	FalhaValv[3](evtEntry:= TC_Events.Valvulas.Linha1_Valv3, bEvt:= Circuito_L1.Falla_L1_V3, bConfirm:= Confirmar OR HMI.CA1_L1_V3_RsAlr);
+	FalhaValv[4](evtEntry:= TC_Events.Valvulas.Linha1_Valv4, bEvt:= Circuito_L1.Falla_L1_V4, bConfirm:= Confirmar OR HMI.CA1_L1_V4_RsAlr);
 	//Linha 02
-	L2_Valv1(evtEntry:= TC_Events.Valvulas.Linha2_Valv1, bEvt:= Circuito_L2.Falla_L2_V1, bConfirm:= Confirmar OR HMI.CA1_L2_V1_RsAlr);
-	L2_Valv2(evtEntry:= TC_Events.Valvulas.Linha2_Valv2, bEvt:= Circuito_L2.Falla_L2_V2, bConfirm:= Confirmar OR HMI.CA1_L2_V2_RsAlr);
-	L2_Valv3(evtEntry:= TC_Events.Valvulas.Linha2_Valv3, bEvt:= Circuito_L2.Falla_L2_V3, bConfirm:= Confirmar OR HMI.CA1_L2_V3_RsAlr);
-	L2_Valv4(evtEntry:= TC_Events.Valvulas.Linha2_Valv4, bEvt:= Circuito_L2.Falla_L2_V4, bConfirm:= Confirmar OR HMI.CA1_L2_V4_RsAlr);
+	FalhaValv[5](evtEntry:= TC_Events.Valvulas.Linha2_Valv1, bEvt:= Circuito_L2.Falla_L2_V1, bConfirm:= Confirmar OR HMI.CA1_L2_V1_RsAlr);
+	FalhaValv[6](evtEntry:= TC_Events.Valvulas.Linha2_Valv2, bEvt:= Circuito_L2.Falla_L2_V2, bConfirm:= Confirmar OR HMI.CA1_L2_V2_RsAlr);
+	FalhaValv[7](evtEntry:= TC_Events.Valvulas.Linha2_Valv3, bEvt:= Circuito_L2.Falla_L2_V3, bConfirm:= Confirmar OR HMI.CA1_L2_V3_RsAlr);
+	FalhaValv[8](evtEntry:= TC_Events.Valvulas.Linha2_Valv4, bEvt:= Circuito_L2.Falla_L2_V4, bConfirm:= Confirmar OR HMI.CA1_L2_V4_RsAlr);
 	//Linha 03
-	L3_Valv1(evtEntry:= TC_Events.Valvulas.Linha3_Valv1, bEvt:= Circuito_L3.Falla_L3_V1, bConfirm:= Confirmar OR HMI.CA1_L3_V1_RsAlr);
-	L3_Valv2(evtEntry:= TC_Events.Valvulas.Linha3_Valv2, bEvt:= Circuito_L3.Falla_L3_V2, bConfirm:= Confirmar OR HMI.CA1_L3_V2_RsAlr);
-	L3_Valv3(evtEntry:= TC_Events.Valvulas.Linha3_Valv3, bEvt:= Circuito_L3.Falla_L3_V3, bConfirm:= Confirmar OR HMI.CA1_L3_V3_RsAlr);
-	L3_Valv4(evtEntry:= TC_Events.Valvulas.Linha3_Valv4, bEvt:= Circuito_L3.Falla_L3_V4, bConfirm:= Confirmar OR HMI.CA1_L3_V4_RsAlr);
+	FalhaValv[9](evtEntry:= TC_Events.Valvulas.Linha3_Valv1, bEvt:= Circuito_L3.Falla_L3_V1, bConfirm:= Confirmar OR HMI.CA1_L3_V1_RsAlr);
+	FalhaValv[10](evtEntry:= TC_Events.Valvulas.Linha3_Valv2, bEvt:= Circuito_L3.Falla_L3_V2, bConfirm:= Confirmar OR HMI.CA1_L3_V2_RsAlr);
+	FalhaValv[11](evtEntry:= TC_Events.Valvulas.Linha3_Valv3, bEvt:= Circuito_L3.Falla_L3_V3, bConfirm:= Confirmar OR HMI.CA1_L3_V3_RsAlr);
+	FalhaValv[12](evtEntry:= TC_Events.Valvulas.Linha3_Valv4, bEvt:= Circuito_L3.Falla_L3_V4, bConfirm:= Confirmar OR HMI.CA1_L3_V4_RsAlr);
 	//Linha 04
-	L4_Valv1(evtEntry:= TC_Events.Valvulas.Linha4_Valv1, bEvt:= Circuito_L4.Falla_L4_V1, bConfirm:= Confirmar OR HMI.CA1_L4_V1_RsAlr);
-	L4_Valv2(evtEntry:= TC_Events.Valvulas.Linha4_Valv2, bEvt:= Circuito_L4.Falla_L4_V2, bConfirm:= Confirmar OR HMI.CA1_L4_V2_RsAlr);
-	L4_Valv3(evtEntry:= TC_Events.Valvulas.Linha4_Valv3, bEvt:= Circuito_L4.Falla_L4_V3, bConfirm:= Confirmar OR HMI.CA1_L4_V3_RsAlr);
-	L4_Valv4(evtEntry:= TC_Events.Valvulas.Linha4_Valv4, bEvt:= Circuito_L4.Falla_L4_V4, bConfirm:= Confirmar OR HMI.CA1_L4_V4_RsAlr);
+	FalhaValv[13](evtEntry:= TC_Events.Valvulas.Linha4_Valv1, bEvt:= Circuito_L4.Falla_L4_V1, bConfirm:= Confirmar OR HMI.CA1_L4_V1_RsAlr);
+	FalhaValv[14](evtEntry:= TC_Events.Valvulas.Linha4_Valv2, bEvt:= Circuito_L4.Falla_L4_V2, bConfirm:= Confirmar OR HMI.CA1_L4_V2_RsAlr);
+	FalhaValv[15](evtEntry:= TC_Events.Valvulas.Linha4_Valv3, bEvt:= Circuito_L4.Falla_L4_V3, bConfirm:= Confirmar OR HMI.CA1_L4_V3_RsAlr);
+	FalhaValv[16](evtEntry:= TC_Events.Valvulas.Linha4_Valv4, bEvt:= Circuito_L4.Falla_L4_V4, bConfirm:= Confirmar OR HMI.CA1_L4_V4_RsAlr);
 	//Linha 05
-	L5_Valv1(evtEntry:= TC_Events.Valvulas.Linha5_Valv1, bEvt:= Circuito_L5.Falla_L5_V1, bConfirm:= Confirmar OR HMI.CA2_L5_V1_RsAlr);
-	L5_Valv2(evtEntry:= TC_Events.Valvulas.Linha5_Valv2, bEvt:= Circuito_L5.Falla_L5_V2, bConfirm:= Confirmar OR HMI.CA2_L5_V2_RsAlr);
-	L5_Valv3(evtEntry:= TC_Events.Valvulas.Linha5_Valv3, bEvt:= Circuito_L5.Falla_L5_V3, bConfirm:= Confirmar OR HMI.CA2_L5_V3_RsAlr);
-	L5_Valv4(evtEntry:= TC_Events.Valvulas.Linha5_Valv4, bEvt:= Circuito_L5.Falla_L5_V4, bConfirm:= Confirmar OR HMI.CA2_L5_V4_RsAlr);
+	FalhaValv[17](evtEntry:= TC_Events.Valvulas.Linha5_Valv1, bEvt:= Circuito_L5.Falla_L5_V1, bConfirm:= Confirmar OR HMI.CA2_L5_V1_RsAlr);
+	FalhaValv[18](evtEntry:= TC_Events.Valvulas.Linha5_Valv2, bEvt:= Circuito_L5.Falla_L5_V2, bConfirm:= Confirmar OR HMI.CA2_L5_V2_RsAlr);
+	FalhaValv[19](evtEntry:= TC_Events.Valvulas.Linha5_Valv3, bEvt:= Circuito_L5.Falla_L5_V3, bConfirm:= Confirmar OR HMI.CA2_L5_V3_RsAlr);
+	FalhaValv[20](evtEntry:= TC_Events.Valvulas.Linha5_Valv4, bEvt:= Circuito_L5.Falla_L5_V4, bConfirm:= Confirmar OR HMI.CA2_L5_V4_RsAlr);
 	//Linha 06
-	L6_Valv1(evtEntry:= TC_Events.Valvulas.Linha6_Valv1, bEvt:= Circuito_L6.Falla_L6_V1, bConfirm:= Confirmar OR HMI.CA2_L6_V1_RsAlr);
-	L6_Valv2(evtEntry:= TC_Events.Valvulas.Linha6_Valv2, bEvt:= Circuito_L6.Falla_L6_V2, bConfirm:= Confirmar OR HMI.CA2_L6_V2_RsAlr);
-	L6_Valv3(evtEntry:= TC_Events.Valvulas.Linha6_Valv3, bEvt:= Circuito_L6.Falla_L6_V3, bConfirm:= Confirmar OR HMI.CA2_L6_V3_RsAlr);
-	L6_Valv4(evtEntry:= TC_Events.Valvulas.Linha6_Valv4, bEvt:= Circuito_L6.Falla_L6_V4, bConfirm:= Confirmar OR HMI.CA2_L6_V4_RsAlr);
+	FalhaValv[21](evtEntry:= TC_Events.Valvulas.Linha6_Valv1, bEvt:= Circuito_L6.Falla_L6_V1, bConfirm:= Confirmar OR HMI.CA2_L6_V1_RsAlr);
+	FalhaValv[22](evtEntry:= TC_Events.Valvulas.Linha6_Valv2, bEvt:= Circuito_L6.Falla_L6_V2, bConfirm:= Confirmar OR HMI.CA2_L6_V2_RsAlr);
+	FalhaValv[23](evtEntry:= TC_Events.Valvulas.Linha6_Valv3, bEvt:= Circuito_L6.Falla_L6_V3, bConfirm:= Confirmar OR HMI.CA2_L6_V3_RsAlr);
+	FalhaValv[24](evtEntry:= TC_Events.Valvulas.Linha6_Valv4, bEvt:= Circuito_L6.Falla_L6_V4, bConfirm:= Confirmar OR HMI.CA2_L6_V4_RsAlr);
 	//Linha 07
-	L7_Valv1(evtEntry:= TC_Events.Valvulas.Linha7_Valv1, bEvt:= Circuito_L7.Falla_L7_V1, bConfirm:= Confirmar OR HMI.CA2_L7_V1_RsAlr);
-	L7_Valv2(evtEntry:= TC_Events.Valvulas.Linha7_Valv2, bEvt:= Circuito_L7.Falla_L7_V2, bConfirm:= Confirmar OR HMI.CA2_L7_V2_RsAlr);
-	L7_Valv3(evtEntry:= TC_Events.Valvulas.Linha7_Valv3, bEvt:= Circuito_L7.Falla_L7_V3, bConfirm:= Confirmar OR HMI.CA2_L7_V3_RsAlr);
-	L7_Valv4(evtEntry:= TC_Events.Valvulas.Linha7_Valv4, bEvt:= Circuito_L7.Falla_L7_V4, bConfirm:= Confirmar OR HMI.CA2_L7_V4_RsAlr);
+	FalhaValv[25](evtEntry:= TC_Events.Valvulas.Linha7_Valv1, bEvt:= Circuito_L7.Falla_L7_V1, bConfirm:= Confirmar OR HMI.CA2_L7_V1_RsAlr);
+	FalhaValv[26](evtEntry:= TC_Events.Valvulas.Linha7_Valv2, bEvt:= Circuito_L7.Falla_L7_V2, bConfirm:= Confirmar OR HMI.CA2_L7_V2_RsAlr);
+	FalhaValv[27](evtEntry:= TC_Events.Valvulas.Linha7_Valv3, bEvt:= Circuito_L7.Falla_L7_V3, bConfirm:= Confirmar OR HMI.CA2_L7_V3_RsAlr);
+	FalhaValv[28](evtEntry:= TC_Events.Valvulas.Linha7_Valv4, bEvt:= Circuito_L7.Falla_L7_V4, bConfirm:= Confirmar OR HMI.CA2_L7_V4_RsAlr);
 	//Linha 08
-	L8_Valv1(evtEntry:= TC_Events.Valvulas.Linha8_Valv1, bEvt:= Circuito_L8.Falla_L8_V1, bConfirm:= Confirmar OR HMI.CA2_L8_V1_RsAlr);
-	L8_Valv2(evtEntry:= TC_Events.Valvulas.Linha8_Valv2, bEvt:= Circuito_L8.Falla_L8_V2, bConfirm:= Confirmar OR HMI.CA2_L8_V2_RsAlr);
-	L8_Valv3(evtEntry:= TC_Events.Valvulas.Linha8_Valv3, bEvt:= Circuito_L8.Falla_L8_V3, bConfirm:= Confirmar OR HMI.CA2_L8_V3_RsAlr);
-	L8_Valv4(evtEntry:= TC_Events.Valvulas.Linha8_Valv4, bEvt:= Circuito_L8.Falla_L8_V4, bConfirm:= Confirmar OR HMI.CA2_L8_V4_RsAlr);
+	FalhaValv[29](evtEntry:= TC_Events.Valvulas.Linha8_Valv1, bEvt:= Circuito_L8.Falla_L8_V1, bConfirm:= Confirmar OR HMI.CA2_L8_V1_RsAlr);
+	FalhaValv[30](evtEntry:= TC_Events.Valvulas.Linha8_Valv2, bEvt:= Circuito_L8.Falla_L8_V2, bConfirm:= Confirmar OR HMI.CA2_L8_V2_RsAlr);
+	FalhaValv[31](evtEntry:= TC_Events.Valvulas.Linha8_Valv3, bEvt:= Circuito_L8.Falla_L8_V3, bConfirm:= Confirmar OR HMI.CA2_L8_V3_RsAlr);
+	FalhaValv[32](evtEntry:= TC_Events.Valvulas.Linha8_Valv4, bEvt:= Circuito_L8.Falla_L8_V4, bConfirm:= Confirmar OR HMI.CA2_L8_V4_RsAlr);
 	//Linha 09
-	L9_Valv1(evtEntry:= TC_Events.Valvulas.Linha9_Valv1, bEvt:= Circuito_L9.Falla_L9_V1, bConfirm:= Confirmar OR HMI.CA3_L9_V1_RsAlr);
-	L9_Valv2(evtEntry:= TC_Events.Valvulas.Linha9_Valv2, bEvt:= Circuito_L9.Falla_L9_V2, bConfirm:= Confirmar OR HMI.CA3_L9_V2_RsAlr);
-	L9_Valv3(evtEntry:= TC_Events.Valvulas.Linha9_Valv3, bEvt:= Circuito_L9.Falla_L9_V3, bConfirm:= Confirmar OR HMI.CA3_L9_V3_RsAlr);
-	L9_Valv4(evtEntry:= TC_Events.Valvulas.Linha9_Valv4, bEvt:= Circuito_L9.Falla_L9_V4, bConfirm:= Confirmar OR HMI.CA3_L9_V4_RsAlr);
+	FalhaValv[33](evtEntry:= TC_Events.Valvulas.Linha9_Valv1, bEvt:= Circuito_L9.Falla_L9_V1, bConfirm:= Confirmar OR HMI.CA3_L9_V1_RsAlr);
+	FalhaValv[34](evtEntry:= TC_Events.Valvulas.Linha9_Valv2, bEvt:= Circuito_L9.Falla_L9_V2, bConfirm:= Confirmar OR HMI.CA3_L9_V2_RsAlr);
+	FalhaValv[35](evtEntry:= TC_Events.Valvulas.Linha9_Valv3, bEvt:= Circuito_L9.Falla_L9_V3, bConfirm:= Confirmar OR HMI.CA3_L9_V3_RsAlr);
+	FalhaValv[36](evtEntry:= TC_Events.Valvulas.Linha9_Valv4, bEvt:= Circuito_L9.Falla_L9_V4, bConfirm:= Confirmar OR HMI.CA3_L9_V4_RsAlr);
 	//Linha 10
-	L10_Valv1(evtEntry:= TC_Events.Valvulas.Linha10_Valv1, bEvt:= Circuito_L10.Falla_L10_V1, bConfirm:= Confirmar OR HMI.CA3_L10_V1_RsAlr);
-	L10_Valv2(evtEntry:= TC_Events.Valvulas.Linha10_Valv2, bEvt:= Circuito_L10.Falla_L10_V2, bConfirm:= Confirmar OR HMI.CA3_L10_V2_RsAlr);
-	L10_Valv3(evtEntry:= TC_Events.Valvulas.Linha10_Valv3, bEvt:= Circuito_L10.Falla_L10_V3, bConfirm:= Confirmar OR HMI.CA3_L10_V3_RsAlr);
-	L10_Valv4(evtEntry:= TC_Events.Valvulas.Linha10_Valv4, bEvt:= Circuito_L10.Falla_L10_V4, bConfirm:= Confirmar OR HMI.CA3_L10_V4_RsAlr);
+	FalhaValv[37](evtEntry:= TC_Events.Valvulas.Linha10_Valv1, bEvt:= Circuito_L10.Falla_L10_V1, bConfirm:= Confirmar OR HMI.CA3_L10_V1_RsAlr);
+	FalhaValv[38](evtEntry:= TC_Events.Valvulas.Linha10_Valv2, bEvt:= Circuito_L10.Falla_L10_V2, bConfirm:= Confirmar OR HMI.CA3_L10_V2_RsAlr);
+	FalhaValv[39](evtEntry:= TC_Events.Valvulas.Linha10_Valv3, bEvt:= Circuito_L10.Falla_L10_V3, bConfirm:= Confirmar OR HMI.CA3_L10_V3_RsAlr);
+	FalhaValv[40](evtEntry:= TC_Events.Valvulas.Linha10_Valv4, bEvt:= Circuito_L10.Falla_L10_V4, bConfirm:= Confirmar OR HMI.CA3_L10_V4_RsAlr);
 	//Linha 11
-	L11_Valv1(evtEntry:= TC_Events.Valvulas.Linha11_Valv1, bEvt:= Circuito_L11.Falla_L11_V1, bConfirm:= Confirmar OR HMI.CA3_L11_V1_RsAlr);
-	L11_Valv2(evtEntry:= TC_Events.Valvulas.Linha11_Valv2, bEvt:= Circuito_L11.Falla_L11_V2, bConfirm:= Confirmar OR HMI.CA3_L11_V2_RsAlr);
-	L11_Valv3(evtEntry:= TC_Events.Valvulas.Linha11_Valv3, bEvt:= Circuito_L11.Falla_L11_V3, bConfirm:= Confirmar OR HMI.CA3_L11_V3_RsAlr);
-	L11_Valv4(evtEntry:= TC_Events.Valvulas.Linha11_Valv4, bEvt:= Circuito_L11.Falla_L11_V4, bConfirm:= Confirmar OR HMI.CA3_L11_V4_RsAlr);
+	FalhaValv[41](evtEntry:= TC_Events.Valvulas.Linha11_Valv1, bEvt:= Circuito_L11.Falla_L11_V1, bConfirm:= Confirmar OR HMI.CA3_L11_V1_RsAlr);
+	FalhaValv[42](evtEntry:= TC_Events.Valvulas.Linha11_Valv2, bEvt:= Circuito_L11.Falla_L11_V2, bConfirm:= Confirmar OR HMI.CA3_L11_V2_RsAlr);
+	FalhaValv[43](evtEntry:= TC_Events.Valvulas.Linha11_Valv3, bEvt:= Circuito_L11.Falla_L11_V3, bConfirm:= Confirmar OR HMI.CA3_L11_V3_RsAlr);
+	FalhaValv[44](evtEntry:= TC_Events.Valvulas.Linha11_Valv4, bEvt:= Circuito_L11.Falla_L11_V4, bConfirm:= Confirmar OR HMI.CA3_L11_V4_RsAlr);
 	//Linha 12
-	L12_Valv1(evtEntry:= TC_Events.Valvulas.Linha12_Valv1, bEvt:= Circuito_L12.Falla_L12_V1, bConfirm:= Confirmar OR HMI.CA3_L12_V1_RsAlr);
-	L12_Valv2(evtEntry:= TC_Events.Valvulas.Linha12_Valv2, bEvt:= Circuito_L12.Falla_L12_V2, bConfirm:= Confirmar OR HMI.CA3_L12_V2_RsAlr);
-	L12_Valv3(evtEntry:= TC_Events.Valvulas.Linha12_Valv3, bEvt:= Circuito_L12.Falla_L12_V3, bConfirm:= Confirmar OR HMI.CA3_L12_V3_RsAlr);
-	L12_Valv4(evtEntry:= TC_Events.Valvulas.Linha12_Valv4, bEvt:= Circuito_L12.Falla_L12_V4, bConfirm:= Confirmar OR HMI.CA3_L12_V4_RsAlr);
+	FalhaValv[45](evtEntry:= TC_Events.Valvulas.Linha12_Valv1, bEvt:= Circuito_L12.Falla_L12_V1, bConfirm:= Confirmar OR HMI.CA3_L12_V1_RsAlr);
+	FalhaValv[46](evtEntry:= TC_Events.Valvulas.Linha12_Valv2, bEvt:= Circuito_L12.Falla_L12_V2, bConfirm:= Confirmar OR HMI.CA3_L12_V2_RsAlr);
+	FalhaValv[47](evtEntry:= TC_Events.Valvulas.Linha12_Valv3, bEvt:= Circuito_L12.Falla_L12_V3, bConfirm:= Confirmar OR HMI.CA3_L12_V3_RsAlr);
+	FalhaValv[48](evtEntry:= TC_Events.Valvulas.Linha12_Valv4, bEvt:= Circuito_L12.Falla_L12_V4, bConfirm:= Confirmar OR HMI.CA3_L12_V4_RsAlr);
 
 {endregion}
 
@@ -250,7 +205,88 @@ Emerg(evtEntry:= TC_Events.B300_EventClass.Emergencia, bEvt:= NOT Seguridad.PB_E
 
 {endregion}
 
-]]></ST>
+{Region "Ângulo de abertura das válvulas IOLink"}
+	//Válvula 1
+	AnguloValv[1](evtEntry:= TC_Events.AnguloValvulas.AnguloV1L1, bEvt:= Circuito_L1.ControlValv_ioLink_V1.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[2](evtEntry:= TC_Events.AnguloValvulas.AnguloV1L2, bEvt:= Circuito_L2.ControlValv_ioLink_V1.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[3](evtEntry:= TC_Events.AnguloValvulas.AnguloV1L3, bEvt:= Circuito_L3.ControlValv_ioLink_V1.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[4](evtEntry:= TC_Events.AnguloValvulas.AnguloV1L4, bEvt:= Circuito_L4.ControlValv_ioLink_V1.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[5](evtEntry:= TC_Events.AnguloValvulas.AnguloV1L5, bEvt:= Circuito_L5.ControlValv_ioLink_V1.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[6](evtEntry:= TC_Events.AnguloValvulas.AnguloV1L6, bEvt:= Circuito_L6.ControlValv_ioLink_V1.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[7](evtEntry:= TC_Events.AnguloValvulas.AnguloV1L7, bEvt:= Circuito_L7.ControlValv_ioLink_V1.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[8](evtEntry:= TC_Events.AnguloValvulas.AnguloV1L8, bEvt:= Circuito_L8.ControlValv_ioLink_V1.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[9](evtEntry:= TC_Events.AnguloValvulas.AnguloV1L9, bEvt:= Circuito_L9.ControlValv_ioLink_V1.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[10](evtEntry:= TC_Events.AnguloValvulas.AnguloV1L10, bEvt:= Circuito_L10.ControlValv_ioLink_V1.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[11](evtEntry:= TC_Events.AnguloValvulas.AnguloV1L11, bEvt:= Circuito_L11.ControlValv_ioLink_V1.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[12](evtEntry:= TC_Events.AnguloValvulas.AnguloV1L12, bEvt:= Circuito_L12.ControlValv_ioLink_V1.Range < RangeMinimo, bConfirm:= Confirmar);
+	
+	//Válvula 2
+	AnguloValv[13](evtEntry:= TC_Events.AnguloValvulas.AnguloV2L1, bEvt:= Circuito_L1.ControlValv_ioLink_V2.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[14](evtEntry:= TC_Events.AnguloValvulas.AnguloV2L2, bEvt:= Circuito_L2.ControlValv_ioLink_V2.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[15](evtEntry:= TC_Events.AnguloValvulas.AnguloV2L3, bEvt:= Circuito_L3.ControlValv_ioLink_V2.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[16](evtEntry:= TC_Events.AnguloValvulas.AnguloV2L4, bEvt:= Circuito_L4.ControlValv_ioLink_V2.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[17](evtEntry:= TC_Events.AnguloValvulas.AnguloV2L5, bEvt:= Circuito_L5.ControlValv_ioLink_V2.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[18](evtEntry:= TC_Events.AnguloValvulas.AnguloV2L6, bEvt:= Circuito_L6.ControlValv_ioLink_V2.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[19](evtEntry:= TC_Events.AnguloValvulas.AnguloV2L7, bEvt:= Circuito_L7.ControlValv_ioLink_V2.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[20](evtEntry:= TC_Events.AnguloValvulas.AnguloV2L8, bEvt:= Circuito_L8.ControlValv_ioLink_V2.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[21](evtEntry:= TC_Events.AnguloValvulas.AnguloV2L9, bEvt:= Circuito_L9.ControlValv_ioLink_V2.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[22](evtEntry:= TC_Events.AnguloValvulas.AnguloV2L10, bEvt:= Circuito_L10.ControlValv_ioLink_V2.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[23](evtEntry:= TC_Events.AnguloValvulas.AnguloV2L11, bEvt:= Circuito_L11.ControlValv_ioLink_V2.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[24](evtEntry:= TC_Events.AnguloValvulas.AnguloV2L12, bEvt:= Circuito_L12.ControlValv_ioLink_V2.Range < RangeMinimo, bConfirm:= Confirmar);
+	
+	//Válvula 3
+	AnguloValv[25](evtEntry:= TC_Events.AnguloValvulas.AnguloV3L1, bEvt:= Circuito_L1.ControlValv_ioLink_V3.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[26](evtEntry:= TC_Events.AnguloValvulas.AnguloV3L2, bEvt:= Circuito_L2.ControlValv_ioLink_V3.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[27](evtEntry:= TC_Events.AnguloValvulas.AnguloV3L3, bEvt:= Circuito_L3.ControlValv_ioLink_V3.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[28](evtEntry:= TC_Events.AnguloValvulas.AnguloV3L4, bEvt:= Circuito_L4.ControlValv_ioLink_V3.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[29](evtEntry:= TC_Events.AnguloValvulas.AnguloV3L5, bEvt:= Circuito_L5.ControlValv_ioLink_V3.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[30](evtEntry:= TC_Events.AnguloValvulas.AnguloV3L6, bEvt:= Circuito_L6.ControlValv_ioLink_V3.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[31](evtEntry:= TC_Events.AnguloValvulas.AnguloV3L7, bEvt:= Circuito_L7.ControlValv_ioLink_V3.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[32](evtEntry:= TC_Events.AnguloValvulas.AnguloV3L8, bEvt:= Circuito_L8.ControlValv_ioLink_V3.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[33](evtEntry:= TC_Events.AnguloValvulas.AnguloV3L9, bEvt:= Circuito_L9.ControlValv_ioLink_V3.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[34](evtEntry:= TC_Events.AnguloValvulas.AnguloV3L10, bEvt:= Circuito_L10.ControlValv_ioLink_V3.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[35](evtEntry:= TC_Events.AnguloValvulas.AnguloV3L11, bEvt:= Circuito_L11.ControlValv_ioLink_V3.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[36](evtEntry:= TC_Events.AnguloValvulas.AnguloV3L12, bEvt:= Circuito_L12.ControlValv_ioLink_V3.Range < RangeMinimo, bConfirm:= Confirmar);
+	
+	//Válvula 4
+	AnguloValv[37](evtEntry:= TC_Events.AnguloValvulas.AnguloV4L1, bEvt:= Circuito_L1.ControlValv_ioLink_V4.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[38](evtEntry:= TC_Events.AnguloValvulas.AnguloV4L2, bEvt:= Circuito_L2.ControlValv_ioLink_V4.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[39](evtEntry:= TC_Events.AnguloValvulas.AnguloV4L3, bEvt:= Circuito_L3.ControlValv_ioLink_V4.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[40](evtEntry:= TC_Events.AnguloValvulas.AnguloV4L4, bEvt:= Circuito_L4.ControlValv_ioLink_V4.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[41](evtEntry:= TC_Events.AnguloValvulas.AnguloV4L5, bEvt:= Circuito_L5.ControlValv_ioLink_V4.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[42](evtEntry:= TC_Events.AnguloValvulas.AnguloV4L6, bEvt:= Circuito_L6.ControlValv_ioLink_V4.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[43](evtEntry:= TC_Events.AnguloValvulas.AnguloV4L7, bEvt:= Circuito_L7.ControlValv_ioLink_V4.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[44](evtEntry:= TC_Events.AnguloValvulas.AnguloV4L8, bEvt:= Circuito_L8.ControlValv_ioLink_V4.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[45](evtEntry:= TC_Events.AnguloValvulas.AnguloV4L9, bEvt:= Circuito_L9.ControlValv_ioLink_V4.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[46](evtEntry:= TC_Events.AnguloValvulas.AnguloV4L10, bEvt:= Circuito_L10.ControlValv_ioLink_V4.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[47](evtEntry:= TC_Events.AnguloValvulas.AnguloV4L11, bEvt:= Circuito_L11.ControlValv_ioLink_V4.Range < RangeMinimo, bConfirm:= Confirmar);
+	AnguloValv[48](evtEntry:= TC_Events.AnguloValvulas.AnguloV4L12, bEvt:= Circuito_L12.ControlValv_ioLink_V4.Range < RangeMinimo, bConfirm:= Confirmar);
+{endregion}
+
+{Region "Diagnósticos do iPC"}
+	iPC_Diag[1](evtEntry:= TC_Events.iPC_Diagnostic.UsoCPU, bEvt:= Ipc_Diagnostic.CpuUsage > 90, bConfirm:= Confirmar);
+	iPC_Diag[2](evtEntry:= TC_Events.iPC_Diagnostic.DiscoRigido, bEvt:= (Ipc_Diagnostic.rDiskTotalSize-iPC_Diagnostic.rFreeDisk)/(Ipc_Diagnostic.rDiskTotalSize+0.01) > 90, bConfirm:= Confirmar);
+	iPC_Diag[3](evtEntry:= TC_Events.iPC_Diagnostic.MemoriaRAM, bEvt:= (Ipc_Diagnostic.rTotalRAM-iPC_Diagnostic.rFreeRAM)/(Ipc_Diagnostic.rTotalRAM+0.01) > 90, bConfirm:= Confirmar);
+	iPC_Diag[4](evtEntry:= TC_Events.iPC_Diagnostic.TemperaturaCPU, bEvt:= Ipc_Diagnostic.CpuTemp > (0.9*TO_REAL(iPC_Diagnostic.MB_MaxTemperature)), bConfirm:= Confirmar);
+	iPC_Diag[5](evtEntry:= TC_Events.iPC_Diagnostic.TemperaturaPlacaMae, bEvt:= Ipc_Diagnostic.MB_Temperature > (0.9*TO_REAL(iPC_Diagnostic.MB_MaxTemperature)), bConfirm:= Confirmar);
+{endregion}
+
+{Region "Nível baixo dos produtos"}
+	NivelProd[1](evtEntry:= TC_Events.BaixoNivelPoLiq.BaixoNivelLIQ1, bEvt:= Entradas.PU1_WT1_rValue_REAL < 50, bConfirm:= Confirmar);
+	NivelProd[2](evtEntry:= TC_Events.BaixoNivelPoLiq.BaixoNivelLIQ2, bEvt:= Entradas.PU1_WT2_rValue_REAL < 50, bConfirm:= Confirmar);
+	NivelProd[3](evtEntry:= TC_Events.BaixoNivelPoLiq.BaixoNivelLIQ3, bEvt:= Entradas.PU1_WT3_rValue_REAL < 50, bConfirm:= Confirmar);
+	NivelProd[4](evtEntry:= TC_Events.BaixoNivelPoLiq.BaixoNivelLIQ4, bEvt:= Entradas.PU1_WT4_rValue_REAL < 50, bConfirm:= Confirmar);
+	NivelProd[5](evtEntry:= TC_Events.BaixoNivelPoLiq.BaixoNivelLIQ5, bEvt:= Entradas.PU2_WT5_rValue_REAL < 50, bConfirm:= Confirmar);
+	NivelProd[6](evtEntry:= TC_Events.BaixoNivelPoLiq.BaixoNivelLIQ6, bEvt:= Entradas.PU2_WT6_rValue_REAL < 50, bConfirm:= Confirmar);
+	NivelProd[7](evtEntry:= TC_Events.BaixoNivelPoLiq.BaixoNivelLIQ7, bEvt:= Entradas.PU2_WT7_rValue_REAL < 50, bConfirm:= Confirmar);
+	NivelProd[8](evtEntry:= TC_Events.BaixoNivelPoLiq.BaixoNivelLIQ8, bEvt:= Entradas.PU2_WT8_rValue_REAL < 50, bConfirm:= Confirmar);
+	NivelProd[9](evtEntry:= TC_Events.BaixoNivelPoLiq.BaixoNivelLIQ9, bEvt:= Entradas.PU3_WT9_rValue_REAL < 50, bConfirm:= Confirmar);
+	NivelProd[10](evtEntry:= TC_Events.BaixoNivelPoLiq.BaixoNivelLIQ10, bEvt:= Entradas.PU3_WT10_rValue_REAL < 50, bConfirm:= Confirmar);
+	NivelProd[11](evtEntry:= TC_Events.BaixoNivelPoLiq.BaixoNivelLIQ11, bEvt:= Entradas.PU3_WT11_rValue_REAL < 50, bConfirm:= Confirmar);
+	NivelProd[12](evtEntry:= TC_Events.BaixoNivelPoLiq.BaixoNivelLIQ12, bEvt:= Entradas.PU3_WT12_rValue_REAL < 50, bConfirm:= Confirmar);
+	NivelProd[13](evtEntry:= TC_Events.BaixoNivelPoLiq.BaixoNivelPO1, bEvt:= entradas.TR_P1_LLS, bConfirm:= Confirmar);
+	NivelProd[14](evtEntry:= TC_Events.BaixoNivelPoLiq.BaixoNivelPO2, bEvt:= entradas.TR_P2_LLS, bConfirm:= Confirmar);
+{endregion}]]></ST>
     </Implementation>
     <LineIds Name="AlarmesDaMaquina">
       <LineId Id="5" Count="0" />
@@ -287,6 +323,23 @@ Emerg(evtEntry:= TC_Events.B300_EventClass.Emergencia, bEvt:= NOT Seguridad.PB_E
       <LineId Id="832" Count="0" />
       <LineId Id="84" Count="0" />
       <LineId Id="77" Count="0" />
+      <LineId Id="1156" Count="0" />
+      <LineId Id="1144" Count="11" />
+      <LineId Id="1061" Count="0" />
+      <LineId Id="1158" Count="0" />
+      <LineId Id="1160" Count="13" />
+      <LineId Id="1175" Count="11" />
+      <LineId Id="1188" Count="12" />
+      <LineId Id="1187" Count="0" />
+      <LineId Id="1060" Count="0" />
+      <LineId Id="1236" Count="0" />
+      <LineId Id="1235" Count="0" />
+      <LineId Id="1240" Count="4" />
+      <LineId Id="1237" Count="0" />
+      <LineId Id="1280" Count="0" />
+      <LineId Id="1279" Count="0" />
+      <LineId Id="1286" Count="13" />
+      <LineId Id="1281" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

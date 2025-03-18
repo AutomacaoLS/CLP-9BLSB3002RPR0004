@@ -166,6 +166,8 @@ IntervaloLavCalibr();
 CalculoConsumo();
 ConsumoIBCs();
 AquecimentoValvulas();
+ConfigBombas();
+iPC_Diagnostic();
 ]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
@@ -243,6 +245,8 @@ AquecimentoValvulas();
       <LineId Id="668" Count="0" />
       <LineId Id="727" Count="0" />
       <LineId Id="185" Count="0" />
+      <LineId Id="849" Count="0" />
+      <LineId Id="881" Count="0" />
       <LineId Id="817" Count="0" />
     </LineIds>
   </POU>

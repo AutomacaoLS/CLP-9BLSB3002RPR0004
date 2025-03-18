@@ -60,7 +60,7 @@ IF TON_CalculoConsumo.Q THEN
 	
 END_IF
 
-RTRIG_Reset(CLK:=DatosProceso.CargarLote);
+RTRIG_Reset(CLK:=DatosProceso.LoteCargado);
 
 IF ResetConsumo OR RTRIG_Reset.Q THEN
 	DatosProceso.ConsumoCircuito_1 := 0;
@@ -105,7 +105,7 @@ END_IF
 
 
 //Cálculo do tempo restante para tratar todo o lote. 
-DatosProceso.TempoRestante := SEL(DatosProceso.KgLote_Procesados > 0 AND (HMI.bRun OR Teste), 0,(DatosProceso.Kg_a_Procesar/DatosProceso.KgLote_Procesados) * (DT_TO_UDINT(MAIN.HoraAtual) - DatosProceso.InicioTratamento));
+DatosProceso.TempoRestante := SEL(DatosProceso.KgLote_Procesados > 0 AND (HMI.bRun OR Teste) AND DatosProceso.Kg_a_Procesar > DatosProceso.KgLote_Procesados, 0,(DatosProceso.Kg_a_Procesar/DatosProceso.KgLote_Procesados) * (DT_TO_UDINT(MAIN.HoraAtual) - DatosProceso.InicioTratamento));
 
 //Cálculo do tempo decorrido no tratamento atual
 DatosProceso.TempoTratamento := SEL(HMI.bRun OR Teste, 0, (DT_TO_UDINT(MAIN.HoraAtual) - DatosProceso.InicioTratamento));

@@ -6,49 +6,49 @@ VAR_INPUT
 	Modo_Calibrar_L12: BOOL;
 END_VAR
 VAR
-		fbBomba_L12 :Equipo_Motor_ATV320;
-		ControlValv_ioLink_V1:ControlValv_ioLink;
-		ControlValv_ioLink_V2: ControlValv_ioLink;
-		ControlValv_ioLink_V3: ControlValv_ioLink;
-		ControlValv_ioLink_V4: ControlValv_ioLink;
-		Falla_L12_V1:BOOL;
-		Falla_L12_V2:BOOL;
-		Falla_L12_V3:BOOL;
-		Falla_L12_V4:BOOL;
+	fbBomba_L12 :Equipo_Motor_ATV320;
+	ControlValv_ioLink_V1:ControlValv_ioLink;
+	ControlValv_ioLink_V2: ControlValv_ioLink;
+	ControlValv_ioLink_V3: ControlValv_ioLink;
+	ControlValv_ioLink_V4: ControlValv_ioLink;
+	Falla_L12_V1:BOOL;
+	Falla_L12_V2:BOOL;
+	Falla_L12_V3:BOOL;
+	Falla_L12_V4:BOOL;
 	Balanza_PU3_WT12: Balanza;
-		dHS:DINT;
-		TOF_calibradoIBC: TOF;
-		PID_L12_SP:REAL;
-		PID_L12_auto:BOOL;
-		PID_L12_reset:BOOL;
-		PID_L12_manual:REAL;
-		PID_L12_bMuerta:REAL := 5;
-		PID_L12_Kp:REAL := 0.1;
-		PID_L12_Ti:REAL := 100;
-		PID_L12_PV:REAL;
-		Dosis_L12:REAL;
-		TiempoInyeccion_L12	:DINT;
-		Peso	:REAL;
-		Offset_L12:REAL;
-		Inyeccion_L12:BOOL;
+	dHS:DINT;
+	TOF_calibradoIBC: TOF;
+	PID_L12_SP:REAL;
+	PID_L12_auto:BOOL;
+	PID_L12_reset:BOOL;
+	PID_L12_manual:REAL;
+	PID_L12_bMuerta:REAL := 5;
+	PID_L12_Kp:REAL := 0.1;
+	PID_L12_Ti:REAL := 100;
+	PID_L12_PV:REAL;
+	Dosis_L12:REAL;
+	TiempoInyeccion_L12	:DINT;
+	Peso	:REAL;
+	Offset_L12:REAL;
+	Inyeccion_L12:BOOL;
 
-		Volumen_L12:REAL;
-		Calculo_caudal_L12: Calculo_caudal;
-		CorrecionCaudalxOffset_L12: CorrecionCaudalxOffset;
-		tInyeccion: TON;
-		Total :REAL;
-		Totalant	:REAL;
-		auxIniCal:BOOL;
-		AuxVol12:REAL;
-		TDemoraInyectar: TON;
-		SetDemoraInyeccion: REAL;
-		Tiempo_seg_to_TIME_DemoraInyec: Tiempo_seg_to_TIME;
-		AuxTDemoraInyec: TIME;
-		PID_L12: FB_PID;
-		Tiempo_TIME_to_seg_InyCal: Tiempo_TIME_to_seg;
-		AuxInyCal:TIME;
-		IniTotalFT2:REAL;
-		Auxconsumo:REAL;
+	Volumen_L12:REAL;
+	Calculo_caudal_L12: Calculo_caudal;
+	CorrecionCaudalxOffset_L12: CorrecionCaudalxOffset;
+	tInyeccion: TON;
+	Total :REAL;
+	Totalant	:REAL;
+	auxIniCal:BOOL;
+	AuxVol12:REAL;
+	TDemoraInyectar: TON;
+	SetDemoraInyeccion: REAL;
+	Tiempo_seg_to_TIME_DemoraInyec: Tiempo_seg_to_TIME;
+	AuxTDemoraInyec: TIME;
+	PID_L12: FB_PID;
+	Tiempo_TIME_to_seg_InyCal: Tiempo_TIME_to_seg;
+	AuxInyCal:TIME;
+	IniTotalFT2:REAL;
+	Auxconsumo:REAL;
 	ProductoAsociado: STRING;
 	Lavagem_Circuito12: Lavagem;
 END_VAR
@@ -4820,7 +4820,7 @@ END_VAR
                             <v n="Id">331L</v>
                           </o>
                           <o t="BoxTreeBox">
-                            <v n="BoxType">"OR"</v>
+                            <v n="BoxType">"AND"</v>
                             <o n="Instance" t="Operand">
                               <n n="Operand" />
                               <v n="Type">""</v>
@@ -4835,7 +4835,7 @@ END_VAR
                               <v n="LValue">false</v>
                               <v n="Boolean">false</v>
                               <v n="IsInstance">true</v>
-                              <v n="Id">1080L</v>
+                              <v n="Id">1498L</v>
                             </o>
                             <o n="OutputItems" t="OutputItemList">
                               <l2 n="OutputItems" />
@@ -4846,11 +4846,31 @@ END_VAR
                               <v n="Extensible">false</v>
                             </o>
                             <n n="InputFlags" />
-                            <l2 n="InputItems" cet="BoxTreeOperand">
-                              <o>
+                            <l2 n="InputItems">
+                              <o t="BoxTreeOperand">
                                 <o n="Operand" t="Operand">
-                                  <v n="Operand">"HMI.CmdR_PC3_L12_BD"</v>
+                                  <v n="Operand">"Modo_Calibrar_L12"</v>
                                   <v n="Type">"BOOL"</v>
+                                  <v n="Comment">""</v>
+                                  <v n="SymbolComment">""</v>
+                                  <v n="Address">""</v>
+                                  <o n="Flags" t="Flags">
+                                    <v n="Flags">1</v>
+                                    <v n="Fixed">true</v>
+                                    <v n="Extensible">false</v>
+                                  </o>
+                                  <v n="LValue">false</v>
+                                  <v n="Boolean">true</v>
+                                  <v n="IsInstance">false</v>
+                                  <v n="Id">1501L</v>
+                                </o>
+                                <v n="Id">1500L</v>
+                              </o>
+                              <o t="BoxTreeBox">
+                                <v n="BoxType">"OR"</v>
+                                <o n="Instance" t="Operand">
+                                  <n n="Operand" />
+                                  <v n="Type">""</v>
                                   <v n="Comment">""</v>
                                   <v n="SymbolComment">""</v>
                                   <v n="Address">""</v>
@@ -4860,30 +4880,74 @@ END_VAR
                                     <v n="Extensible">false</v>
                                   </o>
                                   <v n="LValue">false</v>
-                                  <v n="Boolean">true</v>
-                                  <v n="IsInstance">false</v>
-                                  <v n="Id">25L</v>
+                                  <v n="Boolean">false</v>
+                                  <v n="IsInstance">true</v>
+                                  <v n="Id">1080L</v>
                                 </o>
-                                <v n="Id">24L</v>
-                              </o>
-                              <o>
-                                <o n="Operand" t="Operand">
-                                  <v n="Operand">"Lavagem_Circuito12.LigaBombaCCW"</v>
-                                  <v n="Type">"BOOL"</v>
-                                  <v n="Comment">""</v>
-                                  <v n="SymbolComment">""</v>
-                                  <v n="Address">""</v>
-                                  <o n="Flags" t="Flags">
-                                    <v n="Flags">0</v>
-                                    <v n="Fixed">true</v>
-                                    <v n="Extensible">false</v>
+                                <o n="OutputItems" t="OutputItemList">
+                                  <l2 n="OutputItems" />
+                                </o>
+                                <o n="Flags" t="Flags">
+                                  <v n="Flags">0</v>
+                                  <v n="Fixed">false</v>
+                                  <v n="Extensible">false</v>
+                                </o>
+                                <n n="InputFlags" />
+                                <l2 n="InputItems" cet="BoxTreeOperand">
+                                  <o>
+                                    <o n="Operand" t="Operand">
+                                      <v n="Operand">"HMI.CmdR_PC3_L12_BD"</v>
+                                      <v n="Type">"BOOL"</v>
+                                      <v n="Comment">""</v>
+                                      <v n="SymbolComment">""</v>
+                                      <v n="Address">""</v>
+                                      <o n="Flags" t="Flags">
+                                        <v n="Flags">0</v>
+                                        <v n="Fixed">false</v>
+                                        <v n="Extensible">false</v>
+                                      </o>
+                                      <v n="LValue">false</v>
+                                      <v n="Boolean">true</v>
+                                      <v n="IsInstance">false</v>
+                                      <v n="Id">25L</v>
+                                    </o>
+                                    <v n="Id">24L</v>
                                   </o>
-                                  <v n="LValue">false</v>
-                                  <v n="Boolean">true</v>
-                                  <v n="IsInstance">false</v>
-                                  <v n="Id">1083L</v>
+                                  <o>
+                                    <o n="Operand" t="Operand">
+                                      <v n="Operand">"Lavagem_Circuito12.LigaBombaCCW"</v>
+                                      <v n="Type">"BOOL"</v>
+                                      <v n="Comment">""</v>
+                                      <v n="SymbolComment">""</v>
+                                      <v n="Address">""</v>
+                                      <o n="Flags" t="Flags">
+                                        <v n="Flags">0</v>
+                                        <v n="Fixed">true</v>
+                                        <v n="Extensible">false</v>
+                                      </o>
+                                      <v n="LValue">false</v>
+                                      <v n="Boolean">true</v>
+                                      <v n="IsInstance">false</v>
+                                      <v n="Id">1083L</v>
+                                    </o>
+                                    <v n="Id">1082L</v>
+                                  </o>
+                                </l2>
+                                <o n="InputParam" t="ParamList">
+                                  <l2 n="Names" />
+                                  <l2 n="Types" />
                                 </o>
-                                <v n="Id">1082L</v>
+                                <o n="OutputParam" t="ParamList">
+                                  <l2 n="Names" />
+                                  <l2 n="Types" />
+                                </o>
+                                <v n="CallType" t="Operator">Or</v>
+                                <n n="EN" />
+                                <n n="ENO" />
+                                <n n="STSnippet" />
+                                <v n="ContainsExtensibleInputs">false</v>
+                                <v n="ProvidesSTSnippet">false</v>
+                                <v n="Id">1081L</v>
                               </o>
                             </l2>
                             <o n="InputParam" t="ParamList">
@@ -4894,13 +4958,13 @@ END_VAR
                               <l2 n="Names" />
                               <l2 n="Types" />
                             </o>
-                            <v n="CallType" t="Operator">Or</v>
+                            <v n="CallType" t="Operator">And</v>
                             <n n="EN" />
                             <n n="ENO" />
                             <n n="STSnippet" />
                             <v n="ContainsExtensibleInputs">false</v>
                             <v n="ProvidesSTSnippet">false</v>
-                            <v n="Id">1081L</v>
+                            <v n="Id">1499L</v>
                           </o>
                           <o t="BoxTreeOperand">
                             <o n="Operand" t="Operand">

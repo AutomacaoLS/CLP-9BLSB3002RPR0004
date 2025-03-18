@@ -14,6 +14,7 @@ VAR_GLOBAL PERSISTENT
 	SetCircuitosLiq			:ARRAY [1..12] OF stReceta_Circuito;
 	SetCircuitosPo			:ARRAY [1..4] OF stReceta_Polvo;
 	SetTiempoTotal			:REAL;
+	SetAspiracao			:BOOL;
 
 	//Interface da receita. Esses variáveis são interligadas com a tela de edição
 	//Quando o operador aperta para carregar a receita, as variáveis de interface
@@ -26,6 +27,7 @@ VAR_GLOBAL PERSISTENT
 	interfaceSetCircuitosLiq		:ARRAY [1..12] OF stReceta_Circuito;
 	interfaceSetCircuitosPo			:ARRAY [1..4] OF stReceta_Polvo;
 	interfaceSetTiempoTotal			:REAL;
+	interfaceSetAspiracao			:BOOL;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

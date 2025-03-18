@@ -30,6 +30,8 @@ VAR
 	TON_Horimetro: TON;
 	RTRIG_Funcionamento: R_TRIG;
 	ResetContadores: BOOL;
+	TONR_Horimetro: TONR;
+	ResetFalhas		:BOOL;	//Reset das falhas do inversor
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -84,6 +86,11 @@ IF (Aux_Status=16#0008 OR Aux_Status=16#0028 OR Aux_Status=16#000F OR Aux_Status
 	END_IF
 	
 (*Reset Falla*)
+IF bAlr AND ResetFalhas THEN
+	wControl := 128;		//Aciona o bit 7 da palavra de controle
+	ResetFalhas := FALSE;
+END_IF
+
 (*Estado*)
 IF (Aux_Status=16#0037) THEN
 	bEnMarcha:=1;
@@ -93,9 +100,19 @@ ELSE
 END_IF
 
 //Motor rodando
-TON_Horimetro(IN:= bEnMarcha AND NOT TON_Horimetro.Q, PT:=T#1M);
-IF TON_Horimetro.Q THEN
+//Motor rodando
+
+TONR_Horimetro(
+	EN:= bEnMarcha, 
+	PRE:= T#1M, 
+	RES:= TONR_Horimetro.DN, 
+	DN=> , 
+	ACC=> , 
+	TT=> );
+
+IF TONR_Horimetro.DN THEN
 	TempoFuncionando := TempoFuncionando + 1;
+	TempoFuncionando := TempoFuncionando/2;	//Essa divisão foi necessária pois o TONR não reseta corretamente
 END_IF
 
 //Quantidade de acionamentos
@@ -152,14 +169,18 @@ END_IF
       <LineId Id="84" Count="3" />
       <LineId Id="83" Count="0" />
       <LineId Id="88" Count="0" />
-      <LineId Id="19" Count="1" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="292" Count="2" />
+      <LineId Id="291" Count="0" />
+      <LineId Id="295" Count="0" />
+      <LineId Id="20" Count="0" />
       <LineId Id="32" Count="1" />
       <LineId Id="220" Count="0" />
       <LineId Id="35" Count="2" />
       <LineId Id="222" Count="0" />
       <LineId Id="221" Count="0" />
-      <LineId Id="223" Count="0" />
-      <LineId Id="227" Count="2" />
+      <LineId Id="278" Count="12" />
+      <LineId Id="229" Count="0" />
       <LineId Id="231" Count="0" />
       <LineId Id="230" Count="0" />
       <LineId Id="232" Count="0" />

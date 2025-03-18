@@ -99,47 +99,42 @@ IF NOT Seguridad.PB_Emergencia THEN
 	AlarmesMaquina := 1;	//Em emergência
 ELSIF NOT Entradas.TR_S_PDI THEN
 	AlarmesMaquina := 2;	//Sem pressão pneumática
-	
-	(*
-ELSIF NOT SafetyInputs.TR2_E1_CH01 OR NOT SafetyInputs.TR2_E1_CH01 THEN
-	AlarmesMaquina := 51;	//Tampa frontal da balança
-ELSIF NOT SafetyInputs.TR2_E2_CH01 OR NOT SafetyInputs.TR2_E2_CH01 THEN
-	AlarmesMaquina := 52;	//Tampa traseira da balança
-ELSIF NOT SafetyInputs.TR2_E3_CH01 OR NOT SafetyInputs.TR2_E3_CH01 THEN
-	AlarmesMaquina := 53;	//Tampa esquerda da balança
-ELSIF NOT SafetyInputs.TR2_E4_CH01 OR NOT SafetyInputs.TR2_E4_CH01 THEN
-	AlarmesMaquina := 54;	//Tampa direita da balança
-ELSIF NOT SafetyInputs.TR3_E1_CH01 OR NOT SafetyInputs.TR3_E1_CH01 THEN
-	AlarmesMaquina := 55;	//Tampa frontal inferior da balança
-ELSIF NOT SafetyInputs.TR3_E2_CH01 OR NOT SafetyInputs.TR3_E2_CH01 THEN
-	AlarmesMaquina := 56;	//Tampa trazeira inferior da balança
-ELSIF NOT SafetyInputs.TR3_E3_CH01 OR NOT SafetyInputs.TR3_E3_CH01 THEN
-	AlarmesMaquina := 57;	//Tampas do homogeneizador
-ELSIF NOT SafetyInputs.TR3_E4_CH01 OR NOT SafetyInputs.TR3_E4_CH01 THEN
-	AlarmesMaquina := 58;	//Tampa da porta de inspeção da balança
-	
-	
+ELSIF NOT SafetyInputs.TR2_E1_CH01 OR NOT SafetyInputs.TR2_E1_CH02 THEN
+	AlarmesMaquina := 3;	//Tampa frontal da balança
+ELSIF NOT SafetyInputs.TR2_E2_CH01 OR NOT SafetyInputs.TR2_E2_CH02 THEN
+	AlarmesMaquina := 4;	//Tampa traseira da balança
+ELSIF NOT SafetyInputs.TR2_E3_CH01 OR NOT SafetyInputs.TR2_E3_CH02 THEN
+	AlarmesMaquina := 5;	//Tampa esquerda da balança
+ELSIF NOT SafetyInputs.TR2_E4_CH01 OR NOT SafetyInputs.TR2_E4_CH02 THEN
+	AlarmesMaquina := 6;	//Tampa direita da balança
+ELSIF NOT SafetyInputs.TR3_E1_CH01 OR NOT SafetyInputs.TR3_E1_CH02 THEN
+	AlarmesMaquina := 7;	//Tampa frontal inferior da balança
+ELSIF NOT SafetyInputs.TR3_E2_CH01 OR NOT SafetyInputs.TR3_E2_CH02 THEN
+	AlarmesMaquina := 8;	//Tampa traSeira inferior da balança
+ELSIF NOT SafetyInputs.TR3_E3_CH01 OR NOT SafetyInputs.TR3_E3_CH02 THEN
+	AlarmesMaquina := 9;	//Tampas do homogeneizador
+ELSIF NOT SafetyInputs.TR3_E4_CH01 OR NOT SafetyInputs.TR3_E4_CH02 THEN
+	AlarmesMaquina := 10;	//Tampa da porta de inspeção da balança
 ELSIF NOT Seguridad.ParadaDePorta THEN
-	AlarmesMaquina := 3;	//Parada de porta. Falta RESET
-	*)
+	AlarmesMaquina := 11;	//Parada de porta. Falta RESET
 ELSIF HMI.bModo_Auto THEN
 	IF Tratadora.fbHomogenizador.wEstado = 0 THEN
-		AlarmesMaquina := 9;	//Inversor do homogeneizador desligado
+		AlarmesMaquina := 12;	//Inversor do homogeneizador desligado
 	ELSIF Tratadora.fbAspersor.wEstado = 0 THEN
-		AlarmesMaquina := 10;	//Inversor do aspersor desligado
+		AlarmesMaquina := 13;	//Inversor do aspersor desligado
 	END_IF;
 ELSIF HMI.bRun AND (Receta_activa.SetCircuitosPo[1].Paso > 0 AND (NOT Entradas.TR_P1_ZC OR NOT entradas.TR_P1_LLS)) THEN
-	AlarmesMaquina := 4;	//Pó 1 com nivel baixo ou fora de posição
+	AlarmesMaquina := 14;	//Pó 1 com nivel baixo ou fora de posição
 ELSIF HMI.bRun AND (Receta_activa.SetCircuitosPo[2].Paso > 0 AND (NOT Entradas.TR_P2_ZC OR NOT entradas.TR_P2_LLS)) THEN
-	AlarmesMaquina := 5;	//Pó 2 com nivel baixo ou fora de posição
+	AlarmesMaquina := 15;	//Pó 2 com nivel baixo ou fora de posição
 ELSIF NOT Entradas.TR_S_LLS AND HMI.bRun THEN
-	AlarmesMaquina := 6;	//Caixa superior sem sementes
+	AlarmesMaquina := 16;	//Caixa superior sem sementes
 ELSIF HMI.bRun AND Entradas.PE_B1_V1_ZO AND Entradas.PE_B2_V1_ZO AND Entradas.PE_B3_V1_ZO THEN
-	AlarmesMaquina := 7;	//Nenhuma descarga das caixas de ensaque está ativa
+	AlarmesMaquina := 17;	//Nenhuma descarga das caixas de ensaque está ativa
 ELSIF Resumen_alarmas_BombasLiquidos THEN
-	AlarmesMaquina := 8;	//Falha nos agitadores
+	AlarmesMaquina := 18;	//Falha nos agitadores
 ELSIF (HMI.bModo_Pausa OR Descarga_Semilla.PausaEnsaque) AND HMI.bModo_Auto THEN
-	AlarmesMaquina := 9;	//Máquina pausada
+	AlarmesMaquina := 19;	//Máquina pausada
 ELSE
 	AlarmesMaquina := 0;	//Tudo OK
 END_IF
@@ -202,15 +197,10 @@ END_IF
       <LineId Id="166" Count="0" />
       <LineId Id="211" Count="1" />
       <LineId Id="214" Count="1" />
-      <LineId Id="252" Count="0" />
-      <LineId Id="287" Count="0" />
       <LineId Id="253" Count="14" />
       <LineId Id="250" Count="0" />
-      <LineId Id="249" Count="0" />
-      <LineId Id="288" Count="0" />
       <LineId Id="216" Count="0" />
       <LineId Id="220" Count="0" />
-      <LineId Id="289" Count="0" />
       <LineId Id="322" Count="0" />
       <LineId Id="324" Count="0" />
       <LineId Id="323" Count="0" />

@@ -8,15 +8,21 @@ VAR
 	Cmd_Full: R_TRIG;
 	TmrLabelFinalizado: TON;
 	CA1_Calibracion: Calibracion_Liq_calc;
-	Tarar_balanza :BOOL;
-	Offset_ref:REAL;
-	Inyectar_ref:BOOL;
-	InicioCal_ref:BOOL;
-	PesoEspec:REAL;
-	UltimaCalibracao:UDINT;
+	Tarar_balanza		:BOOL;
+	Offset_ref			:REAL;
+	Inyectar_ref		:BOOL;
+	InicioCal_ref		:BOOL;
+	PesoEspec			:REAL;
+	UltimaCalibracao	:UDINT;
+	VazaoMax			:REAL;
 
+	Teste: BOOL;
 END_VAR
-]]></Declaration>
+
+VAR_INPUT
+	// Vazão máxima da bomba excedida com esses parâmetros
+	VazaoMaxExcedida: BOOL;
+END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[//Indica a ultima calibração da linha selecionada
 UltimaCalibracao := HMI.UltimasCalibracoes[HMI.iCircuito_a_calibrar];
@@ -100,19 +106,34 @@ CASE HMI.iCircuito_a_calibrar OF
 	1:	Liquidos.Circuito_Offset[1]:=Offset_ref;//Offset_ref
 		circuito_L1.Modo_Calibrar_L1:=Inyectar_ref;//Inyectar_ref
 		HMICA1.Inicio_calibracion:=InicioCal_ref;
+		VazaoMax := HMI.CaudalNom_PC1_L1_BD;
 	2:	Liquidos.Circuito_Offset[2]:=Offset_ref;//Offset_ref
 		circuito_L2.Modo_Calibrar_L2:=Inyectar_ref;//Inyectar_ref
 		HMICA1.Inicio_calibracion:=InicioCal_ref;
+		VazaoMax := HMI.CaudalNom_PC1_L2_BD;
 	3:	Liquidos.Circuito_Offset[3]:=Offset_ref;//Offset_refA
 		circuito_L3.Modo_Calibrar_L3:=Inyectar_ref;//Inyectar_ref
 		HMICA1.Inicio_calibracion:=InicioCal_ref;
+		VazaoMax := HMI.CaudalNom_PC1_L3_BD;
 	4:	Liquidos.Circuito_Offset[4]:=Offset_ref;//Offset_ref
 		circuito_L4.Modo_Calibrar_L4:=Inyectar_ref;//Inyectar_ref
 		HMICA1.Inicio_calibracion:=InicioCal_ref;
+		VazaoMax := HMI.CaudalNom_PC1_L4_BD;
 		
 		ELSE
 	;		
 END_CASE
+
+//Verifica se a vazão máxima suportada pela bomba foi excedida
+IF HMICA1.TInyeccion_calibracion > 0 THEN
+	IF (HMICA1.Dosis_calibracion*HMICA1.Peso_calibracion/100)/TO_REAL(HMICA1.TInyeccion_calibracion) > VazaoMax THEN
+		VazaoMaxExcedida := TRUE;
+	ELSE
+		VazaoMaxExcedida := FALSE;
+	END_IF
+END_IF
+
+
 	
 	]]></ST>
     </Implementation>
@@ -166,13 +187,29 @@ END_CASE
       <LineId Id="110" Count="0" />
       <LineId Id="162" Count="0" />
       <LineId Id="146" Count="3" />
+      <LineId Id="265" Count="0" />
       <LineId Id="167" Count="1" />
       <LineId Id="152" Count="0" />
+      <LineId Id="271" Count="0" />
       <LineId Id="165" Count="1" />
       <LineId Id="155" Count="0" />
+      <LineId Id="272" Count="0" />
       <LineId Id="163" Count="1" />
-      <LineId Id="158" Count="3" />
+      <LineId Id="158" Count="0" />
+      <LineId Id="273" Count="0" />
+      <LineId Id="159" Count="2" />
       <LineId Id="61" Count="0" />
+      <LineId Id="302" Count="0" />
+      <LineId Id="301" Count="0" />
+      <LineId Id="267" Count="0" />
+      <LineId Id="277" Count="0" />
+      <LineId Id="268" Count="0" />
+      <LineId Id="274" Count="0" />
+      <LineId Id="276" Count="0" />
+      <LineId Id="269" Count="0" />
+      <LineId Id="279" Count="0" />
+      <LineId Id="264" Count="0" />
+      <LineId Id="263" Count="0" />
       <LineId Id="58" Count="0" />
       <LineId Id="24" Count="0" />
     </LineIds>

@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
 <TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.64">
+	<Translations>
+		<Text TxtId="ÂNGULO DE ABERTURA NA VÁLVULA 1 DA LINHA 1 ABAIXO DO DEFINIDO"/>
+	</Translations>
 	<DataTypes>
 		<DataType>
 			<Name GUID="{18071995-0000-0000-0000-000000000041}" TcBaseType="true" HideSubItems="true" CName="AmsNetId">AMSNETID</Name>
@@ -1101,6 +1104,758 @@
 				<Hide GUID="{88D45F04-CE8B-4DF7-976B-CDD858636AAB}"/>
 			</Hides>
 		</DataType>
+		<DataType>
+			<Name GUID="{BB5EF50E-7B63-487C-A16E-EE3EAAE780D1}" PersistentType="true">AnguloValvulas</Name>
+			<DisplayName TxtId=""><![CDATA[FALHA NO ANGULO DE ABERTURA DAS VÁLULAS]]></DisplayName>
+			<EventId>
+				<Name Id="1">AnguloV1L1</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 1 DA LINHA 1 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 1 DA LINHA 1 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="2">AnguloV1L2</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 1 DA LINHA 1 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 1 DA LINHA 2 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="3">AnguloV1L3</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 1 DA LINHA 1 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 1 DA LINHA 3 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="4">AnguloV1L4</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 1 DA LINHA 1 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 1 DA LINHA 4 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="5">AnguloV1L5</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 1 DA LINHA 1 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 1 DA LINHA 5 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="6">AnguloV1L6</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 1 DA LINHA 1 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 1 DA LINHA 6 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="7">AnguloV1L7</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 1 DA LINHA 1 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 1 DA LINHA 7 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="8">AnguloV1L8</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 1 DA LINHA 1 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 1 DA LINHA 8 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="9">AnguloV1L9</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 1 DA LINHA 1 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 1 DA LINHA 9 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="10">AnguloV1L10</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 1 DA LINHA 1 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 1 DA LINHA 10 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="11">AnguloV1L11</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 1 DA LINHA 1 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 1 DA LINHA 11 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="12">AnguloV1L12</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 1 DA LINHA 1 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 1 DA LINHA 12 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="13">AnguloV2L1</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 2 DA LINHA 1 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 1 DA LINHA 1 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="14">AnguloV2L3</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 2 DA LINHA 3 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 2 DA LINHA 3 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="15">AnguloV2L4</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 2 DA LINHA 4 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 2 DA LINHA 4 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="16">AnguloV2L5</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 2 DA LINHA 5 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 2 DA LINHA 5 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="17">AnguloV2L6</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 2 DA LINHA 6 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 2 DA LINHA 6 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="18">AnguloV2L7</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 2 DA LINHA 7 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 2 DA LINHA 7 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="19">AnguloV2L8</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 2 DA LINHA 8 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 2 DA LINHA 8 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="20">AnguloV2L9</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 2 DA LINHA 9 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 2 DA LINHA 9 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="21">AnguloV2L10</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 2 DA LINHA 10 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 2 DA LINHA 10 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="22">AnguloV2L11</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 2 DA LINHA 11 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 2 DA LINHA 11 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="23">AnguloV2L12</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 2 DA LINHA 12 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 2 DA LINHA 12 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="24">AnguloV2L2</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 2 DA LINHA 2 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 2 DA LINHA 2 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="25">AnguloV3L1</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 3 DA LINHA 1 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 3 DA LINHA 1 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="26">AnguloV3L2</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 3 DA LINHA 2 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 3 DA LINHA 2 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="27">AnguloV3L3</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 3 DA LINHA 3 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 3 DA LINHA 3 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="28">AnguloV3L4</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 3 DA LINHA 4 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 3 DA LINHA 4 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="29">AnguloV3L5</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 3 DA LINHA 5 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 3 DA LINHA 5 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="30">AnguloV3L6</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 3 DA LINHA 6 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 3 DA LINHA 6 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="31">AnguloV3L7</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 3 DA LINHA 7 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 3 DA LINHA 7 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="32">AnguloV3L8</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 3 DA LINHA 8 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 3 DA LINHA 8 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="33">AnguloV3L9</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 3 DA LINHA 9 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 3 DA LINHA 9 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="34">AnguloV3L10</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 3 DA LINHA 10 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 3 DA LINHA 10 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="35">AnguloV3L11</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 3 DA LINHA 11 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 3 DA LINHA 11 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="36">AnguloV3L12</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 3 DA LINHA 12 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 3 DA LINHA 12 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="38">AnguloV4L1</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 4 DA LINHA 1 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 4 DA LINHA 1 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="39">AnguloV4L2</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 4 DA LINHA 2 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 4 DA LINHA 2 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="40">AnguloV4L3</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 4 DA LINHA 3 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 4 DA LINHA 3 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="41">AnguloV4L4</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 4 DA LINHA 4 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 4 DA LINHA 4 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="42">AnguloV4L5</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 4 DA LINHA 5 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 4 DA LINHA 5 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="43">AnguloV4L6</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 4 DA LINHA 6 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 4 DA LINHA 6 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="44">AnguloV4L7</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 4 DA LINHA 7 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 4 DA LINHA 7 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="45">AnguloV4L8</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 4 DA LINHA 8 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 4 DA LINHA 8 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="46">AnguloV4L9</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 4 DA LINHA 9 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 4 DA LINHA 9 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="47">AnguloV4L10</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 4 DA LINHA 10 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 4 DA LINHA 10 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="48">AnguloV4L11</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 4 DA LINHA 11 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 4 DA LINHA 11 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="49">AnguloV4L12</Name>
+				<DisplayName TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 4 DA LINHA 12 ABAIXO DO DEFINIDO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[ÂNGULO DE ABERTURA NA VÁLVULA 4 DA LINHA 12 ABAIXO DO DEFINIDO]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Angulo de abertura abaixo do esperado]]></Cause>
+					<Remedy TxtId=""><![CDATA[Efetuar limpeza da linha]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<Hides>
+				<Hide GUID="{5B1B641A-77F4-4B4B-B03D-25867D22D594}"/>
+				<Hide GUID="{F85EE939-9383-46DE-B6FA-BA9670888F0D}"/>
+			</Hides>
+		</DataType>
+		<DataType>
+			<Name GUID="{9FF3B2AB-FEA8-413D-A3B6-23DE11CB271E}" PersistentType="true">iPC_Diagnostic</Name>
+			<DisplayName TxtId=""><![CDATA[Evento no iPC]]></DisplayName>
+			<Comment TxtId=""><![CDATA[Mau funcionamento no PC industrial]]></Comment>
+			<EventId>
+				<Name Id="1">UsoCPU</Name>
+				<DisplayName TxtId=""><![CDATA[Alto uso da CPU]]></DisplayName>
+				<Comment TxtId=""><![CDATA[Alto uso da CPU]]></Comment>
+				<Severity>Critical</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Muitas tasks sendo executadas]]></Cause>
+					<Remedy TxtId=""><![CDATA[Entre em contato com a assistência técnica]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="2">TemperaturaCPU</Name>
+				<DisplayName TxtId=""><![CDATA[CPU com temperatura elevada]]></DisplayName>
+				<Comment TxtId=""><![CDATA[CPU com temperatura elevada]]></Comment>
+				<Severity>Critical</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Obstrução da ventilação]]></Cause>
+					<Remedy TxtId=""><![CDATA[Observe se as entradas de ventilação do painel elétrico estão desobstruídas]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="2">
+					<Cause TxtId=""><![CDATA[Ventilação desativada]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique se os ventiladores do painel elétrico estão acionados]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="3">TemperaturaPlacaMae</Name>
+				<DisplayName TxtId=""><![CDATA[Placa mãe com temperatura elevada]]></DisplayName>
+				<Comment TxtId=""><![CDATA[Placa mãe com temperatura elevada]]></Comment>
+				<Severity>Critical</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Obstrução da ventilação]]></Cause>
+					<Remedy TxtId=""><![CDATA[Observe se as entradas de ventilação do painel elétrico estão desobstruídas]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="2">
+					<Cause TxtId=""><![CDATA[Ventilação desativada]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique se os ventiladores do painel elétrico estão acionados]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="4">DiscoRigido</Name>
+				<DisplayName TxtId=""><![CDATA[Disco rígido com pouco espaço livre]]></DisplayName>
+				<Comment TxtId=""><![CDATA[Disco rígido com pouco espaço livre]]></Comment>
+				<Severity>Critical</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Pouco espaço no armazenamento interno]]></Cause>
+					<Remedy TxtId=""><![CDATA[Entre em contato com a assistência técnica]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="5">MemoriaRAM</Name>
+				<DisplayName TxtId=""><![CDATA[Alto uso da memória RAM]]></DisplayName>
+				<Comment TxtId=""><![CDATA[Alto uso da memória RAM]]></Comment>
+				<Severity>Critical</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Muitas tasks sendo executadas simultaneamente]]></Cause>
+					<Remedy TxtId=""><![CDATA[Entre em contato com a assistência técnica]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<Hides>
+				<Hide GUID="{440F4B1B-D11F-40A7-A7B7-83293E4955D1}"/>
+				<Hide GUID="{3572220E-9BC3-4A6E-82CD-0A8F2E94DD50}"/>
+			</Hides>
+		</DataType>
+		<DataType>
+			<Name GUID="{C6D6E265-62C1-43CF-8C33-BEB2D465DB08}" PersistentType="true">BaixoNivelPoLiq</Name>
+			<DisplayName TxtId=""><![CDATA[NewEventClass_DisplayText]]></DisplayName>
+			<Comment TxtId=""><![CDATA[Alarmes para baixo nível de pó e liquido]]></Comment>
+			<EventId>
+				<Name Id="1">BaixoNivelLIQ1</Name>
+				<DisplayName TxtId=""><![CDATA[Baixo nível de produto na linha 1]]></DisplayName>
+				<Comment TxtId=""><![CDATA[Baixo nível de produto na linha 1]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Baixo nível de produto]]></Cause>
+					<Remedy TxtId=""><![CDATA[Reabasteça ou troque o IBC]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="2">
+					<Cause TxtId=""><![CDATA[IBC ainda tem boa quantidade de produto]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique a célula de carga e/ou entre em contato com o suporte]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="2">BaixoNivelLIQ2</Name>
+				<DisplayName TxtId=""><![CDATA[Baixo nível de produto na linha 2]]></DisplayName>
+				<Comment TxtId=""><![CDATA[Baixo nível de produto na linha 2]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Baixo nível de produto]]></Cause>
+					<Remedy TxtId=""><![CDATA[Reabasteça ou troque o IBC]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="2">
+					<Cause TxtId=""><![CDATA[IBC ainda tem boa quantidade de produto]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique a célula de carga e/ou entre em contato com o suporte]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="3">BaixoNivelLIQ3</Name>
+				<DisplayName TxtId=""><![CDATA[Baixo nível de produto na linha 3]]></DisplayName>
+				<Comment TxtId=""><![CDATA[Baixo nível de produto na linha 3]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Baixo nível de produto]]></Cause>
+					<Remedy TxtId=""><![CDATA[Reabasteça ou troque o IBC]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="2">
+					<Cause TxtId=""><![CDATA[IBC ainda tem boa quantidade de produto]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique a célula de carga e/ou entre em contato com o suporte]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="4">BaixoNivelLIQ4</Name>
+				<DisplayName TxtId=""><![CDATA[Baixo nível de produto na linha 4]]></DisplayName>
+				<Comment TxtId=""><![CDATA[Baixo nível de produto na linha 4]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Baixo nível de produto]]></Cause>
+					<Remedy TxtId=""><![CDATA[Reabasteça ou troque o IBC]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="2">
+					<Cause TxtId=""><![CDATA[IBC ainda tem boa quantidade de produto]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique a célula de carga e/ou entre em contato com o suporte]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="5">BaixoNivelLIQ5</Name>
+				<DisplayName TxtId=""><![CDATA[Baixo nível de produto na linha 5]]></DisplayName>
+				<Comment TxtId=""><![CDATA[Baixo nível de produto na linha 5]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Baixo nível de produto]]></Cause>
+					<Remedy TxtId=""><![CDATA[Reabasteça ou troque o IBC]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="2">
+					<Cause TxtId=""><![CDATA[IBC ainda tem boa quantidade de produto]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique a célula de carga e/ou entre em contato com o suporte]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="6">BaixoNivelLIQ6</Name>
+				<DisplayName TxtId=""><![CDATA[Baixo nível de produto na linha 6]]></DisplayName>
+				<Comment TxtId=""><![CDATA[Baixo nível de produto na linha 6]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Baixo nível de produto]]></Cause>
+					<Remedy TxtId=""><![CDATA[Reabasteça ou troque o IBC]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="2">
+					<Cause TxtId=""><![CDATA[IBC ainda tem boa quantidade de produto]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique a célula de carga e/ou entre em contato com o suporte]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="7">BaixoNivelLIQ7</Name>
+				<DisplayName TxtId=""><![CDATA[Baixo nível de produto na linha 7]]></DisplayName>
+				<Comment TxtId=""><![CDATA[Baixo nível de produto na linha 7]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Baixo nível de produto]]></Cause>
+					<Remedy TxtId=""><![CDATA[Reabasteça ou troque o IBC]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="2">
+					<Cause TxtId=""><![CDATA[IBC ainda tem boa quantidade de produto]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique a célula de carga e/ou entre em contato com o suporte]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="8">BaixoNivelLIQ8</Name>
+				<DisplayName TxtId=""><![CDATA[Baixo nível de produto na linha 8]]></DisplayName>
+				<Comment TxtId=""><![CDATA[Baixo nível de produto na linha 8]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Baixo nível de produto]]></Cause>
+					<Remedy TxtId=""><![CDATA[Reabasteça ou troque o IBC]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="2">
+					<Cause TxtId=""><![CDATA[IBC ainda tem boa quantidade de produto]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique a célula de carga e/ou entre em contato com o suporte]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="9">BaixoNivelLIQ9</Name>
+				<DisplayName TxtId=""><![CDATA[Baixo nível de produto na linha 9]]></DisplayName>
+				<Comment TxtId=""><![CDATA[Baixo nível de produto na linha 9]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Baixo nível de produto]]></Cause>
+					<Remedy TxtId=""><![CDATA[Reabasteça ou troque o IBC]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="2">
+					<Cause TxtId=""><![CDATA[IBC ainda tem boa quantidade de produto]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique a célula de carga e/ou entre em contato com o suporte]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="10">BaixoNivelLIQ10</Name>
+				<DisplayName TxtId=""><![CDATA[Baixo nível de produto na linha 10]]></DisplayName>
+				<Comment TxtId=""><![CDATA[Baixo nível de produto na linha 10]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Baixo nível de produto]]></Cause>
+					<Remedy TxtId=""><![CDATA[Reabasteça ou troque o IBC]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="2">
+					<Cause TxtId=""><![CDATA[IBC ainda tem boa quantidade de produto]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique a célula de carga e/ou entre em contato com o suporte]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="11">BaixoNivelLIQ11</Name>
+				<DisplayName TxtId=""><![CDATA[Baixo nível de produto na linha 11]]></DisplayName>
+				<Comment TxtId=""><![CDATA[Baixo nível de produto na linha 11]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Baixo nível de produto]]></Cause>
+					<Remedy TxtId=""><![CDATA[Reabasteça ou troque o IBC]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="2">
+					<Cause TxtId=""><![CDATA[IBC ainda tem boa quantidade de produto]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique a célula de carga e/ou entre em contato com o suporte]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="12">BaixoNivelLIQ12</Name>
+				<DisplayName TxtId=""><![CDATA[Baixo nível de produto na linha 12]]></DisplayName>
+				<Comment TxtId=""><![CDATA[Baixo nível de produto na linha 12]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Baixo nível de produto]]></Cause>
+					<Remedy TxtId=""><![CDATA[Reabasteça ou troque o IBC]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="2">
+					<Cause TxtId=""><![CDATA[IBC ainda tem boa quantidade de produto]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique a célula de carga e/ou entre em contato com o suporte]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="13">BaixoNivelPO1</Name>
+				<DisplayName TxtId=""><![CDATA[Baixo nível de pó secante no recipiente 1]]></DisplayName>
+				<Comment TxtId=""><![CDATA[Baixo nível de pó no recipiente 1]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Baixo nível de pó secante]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique se o transferidor de pó está em modo automático]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="14">BaixoNivelPO2</Name>
+				<DisplayName TxtId=""><![CDATA[Baixo nível de pó secante no recipiente 2]]></DisplayName>
+				<Comment TxtId=""><![CDATA[Baixo nível de pó no recipiente 2]]></Comment>
+				<Severity>Warning</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Baixo nível de pó secante]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique se o transferidor de pó está em modo automático]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<Hides>
+				<Hide GUID="{D84C0F26-F8D6-433F-ABAF-8810486B7A16}"/>
+				<Hide GUID="{FB8D4718-735C-4301-A3A5-1C57C29C81F5}"/>
+			</Hides>
+		</DataType>
 	</DataTypes>
 	<ImageDatas>
 		<ImageData Id="1000">424dd6020000000000003600000028000000100000000e0000000100180000000000a0020000c40e0000c40e00000000000000000000ff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080808080808080808080808080808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c000ffffc0c0c000ffff808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0ff0000c0c0c0ff0000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c00000ffc0c0c00000ff808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0008000c0c0c0008000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff</ImageData>
@@ -1124,10 +1879,11 @@
 			<Licenses CacheOrCheckLicensesOnStartup="true">
 				<Target BkhfOrder="01320224" CustomOrder="01320224">
 					<ManualSelect>{648F394E-7DD1-499C-8112-7C38E161A94C}</ManualSelect>
+					<ManualSelect>{777F1598-583B-4503-99BB-7C02E0ABD97E}</ManualSelect>
 					<TargetSelect TargetId="2">{648F394E-7DD1-499C-8112-7C38E161A94C}</TargetSelect>
 					<TargetSelect TargetId="2">{796D380F-D49E-4C0C-A05F-500052FAC883}</TargetSelect>
 					<TargetSelect TargetId="2">{66689887-CCBD-452C-AC9A-039D997C6E66}</TargetSelect>
-					<LicenseDevice Disabled="true" DongleHardwareId="2" DongleDevice="#x03020007" DongleLevel="50" DongleSystemId="{62783630-7B01-B274-A083-50A0A240935D}" DongleSerialNumber="000br40o"/>
+					<LicenseDevice Disabled="true" DongleHardwareId="2" DongleDevice="#x03020007" DongleLevel="92" DongleSerialNumber="000br40o"/>
 				</Target>
 			</Licenses>
 			<Tasks>
@@ -1138,7 +1894,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{389A3C8F-A70E-42C4-8525-5577814438CA}" Name="Untitled1" PrjFilePath="Untitled1\Untitled1.plcproj" TmcFilePath="Untitled1\Untitled1.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Untitled1\Untitled1.tmc" TmcHash="{A24C0E89-878B-DEAA-9CB1-1893CF41430F}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Untitled1\Untitled1.tmc" TmcHash="{754EDED7-E535-ACD7-C96F-72DAF57CBD2A}">
 					<Name>Untitled1 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
@@ -3357,11 +4113,6 @@
 					<Vars VarGrpType="2" AreaNo="1">
 						<Name>PlcTask Outputs</Name>
 						<Var>
-							<Name>Salidas.TravaHomog</Name>
-							<Comment><![CDATA[Trava magnética da tampa do homogeneizador]]></Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
 							<Name>ioLink.b0Cmd_CA1_L1_V1</Name>
 							<Type>BYTE</Type>
 						</Var>
@@ -3652,6 +4403,11 @@
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
+							<Name>Salidas.PE_P1_HC</Name>
+							<Comment><![CDATA[ habilita carga de polvo 1]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
 							<Name>Salidas.TR_S_WT1_wControl</Name>
 							<Comment><![CDATA[TR_S_WT1 semilla]]></Comment>
 							<Type>WORD</Type>
@@ -3859,16 +4615,6 @@
 							<Type>WORD</Type>
 						</Var>
 						<Var>
-							<Name>Salidas.PE_P1_HC</Name>
-							<Comment><![CDATA[ habilita carga de polvo 1]]></Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>Salidas.PE_P2_HC</Name>
-							<Comment><![CDATA[ habilita carga de polvo 2]]></Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
 							<Name>Salidas.TR_P2_VF_Cmd</Name>
 							<Comment><![CDATA[Dosificador Polvo 2]]></Comment>
 							<Type>WORD</Type>
@@ -3876,6 +4622,16 @@
 						<Var>
 							<Name>Salidas.TR_P2_VF_Set</Name>
 							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>Salidas.PE_P2_HC</Name>
+							<Comment><![CDATA[ habilita carga de polvo 2]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>Salidas.PE_B1_V1_Pos1</Name>
+							<Comment><![CDATA[descargando intermedia 1]]></Comment>
+							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>Salidas.TR_P1_VI_Cmd</Name>
@@ -3943,11 +4699,6 @@
 							<Type>WORD</Type>
 						</Var>
 						<Var>
-							<Name>Salidas.PE_B1_V1_Pos1</Name>
-							<Comment><![CDATA[descargando intermedia 1]]></Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
 							<Name>Salidas.PE_B1_V1_Pos2</Name>
 							<Comment><![CDATA[no descarga intermedia 1]]></Comment>
 							<Type>BOOL</Type>
@@ -4005,6 +4756,11 @@
 						<Var>
 							<Name>Salidas.TR_S_V8</Name>
 							<Comment><![CDATA[registro tolva recepción	]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>Salidas.TravaHomog</Name>
+							<Comment><![CDATA[Trava magnética da tampa do homogeneizador]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
@@ -17775,7 +18531,8 @@
 						<DcMode>53796e6368726f6e0000000000000000534d2d53796e6368726f6e000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</DcMode>
 						<DcMode>4443000000000000000000000000000044432d53796e6368726f6e000000000000000000000000000000000000000000000000000000000000000000000020030100000000000000000000000000000000000000000000000000000000000000</DcMode>
 						<DcMode>4443494e00000000000000000000000044432d53796e6368726f6e2028696e7075742062617365642900000000000000000000000000000000000000000020030100000000000000000001000000000000000000000000000000000000000000</DcMode>
-						<MBoxUserCmdData>020003000a000000150000000300000000000000000000000000000000000000200080120200000001004d6f6465312066696c7465722073657474696e677300</MBoxUserCmdData>
+						<MBoxUserCmdData>020003000a000000150000000300000000000000000000000000000000000000200080120200000008004d6f6465312066696c7465722073657474696e677300</MBoxUserCmdData>
+						<MBoxUserCmdData>020003000a000000150000000300000000000000000000000000000000000000200080110200000008004d6f6465302066696c7465722073657474696e677300</MBoxUserCmdData>
 						<Pdo Name="RMB Status" Index="#x1a00" Flags="#x0010" SyncMan="3">
 							<ExcludePdo>#x1a04</ExcludePdo>
 							<ExcludePdo>#x1a05</ExcludePdo>
@@ -22364,7 +23121,7 @@ Slave-Mode:
 					<Vars VarGrpType="2">
 						<Name>Outputs</Name>
 					</Vars>
-					<CanOpen NodeId="12" BaudSupport="511" FixedSdos="6" GenerateFixedSdos="true" DvFlag_Active="true" AddTypeInfo="65" DevProfNum="402" CobIDEmcy="140" CobIDGuard="1804" GuardTime="100" LifeTime="3" VendorId="33554522" ProductCode="320" SdoTimeout="0">
+					<CanOpen NodeId="12" BaudSupport="511" FixedSdos="6" GenerateFixedSdos="true" DvFlag_Active="true" AddTypeInfo="65" DevProfNum="402" CobIDEmcy="140" CobIDGuard="1804" GuardTime="100" LifeTime="3" VendorId="33554522" ProductCode="320">
 						<Sdo Index="6144" SubIndex="1" Length="4" Value="396"/>
 						<Sdo Index="6144" SubIndex="2" Length="1" Value="255"/>
 						<Sdo Index="6144" SubIndex="3" Length="2" Value="300"/>
