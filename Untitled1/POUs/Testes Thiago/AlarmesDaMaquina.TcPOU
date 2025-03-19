@@ -11,15 +11,16 @@ VAR
 	Emerg		:GeraAlarme;
 	AlrLL		:BOOL;		// Alarme de nível baixo de óleo nas bombas. Se estiver em falso, alguma bomba está com nível baixo
 	
-	FalhaBomba		:ARRAY[1..12] OF GeraAlarme;	//Bombas de dosagem
-	Agitadores		:ARRAY[1..12] OF GeraAlarme;	//Agitadores
-	IntervCalibracao:ARRAY[1..12] OF GeraAlarme;	//Tempo de calibração excedido
-	IntervLavagem	:ARRAY[1..12] OF GeraAlarme;	//Tempo de lavagem excedido
-	NivelOleo		:ARRAY[1..12] OF GeraAlarme;	//nível baixo de óleo
-	AnguloValv		:ARRAY[1..48] OF GeraAlarme;	//Falha no angulo de abertura das válvulas
-	FalhaValv		:ARRAY[1..48] OF GeraAlarme;	//Falha nas válvulas
-	iPC_Diag		:ARRAY[1..5] OF GeraAlarme;		//Alarmes de diagnóstico do iPC
-	NivelProd		:ARRAY[1..14] OF GeraAlarme;	//Baixo nível de liquidos e pós
+	FalhaBomba		:ARRAY[1..12]	OF GeraAlarme;	//Bombas de dosagem
+	Agitadores		:ARRAY[1..12]	OF GeraAlarme;	//Agitadores
+	IntervCalibracao:ARRAY[1..12]	OF GeraAlarme;	//Tempo de calibração excedido
+	IntervLavagem	:ARRAY[1..12]	OF GeraAlarme;	//Tempo de lavagem excedido
+	NivelOleo		:ARRAY[1..12]	OF GeraAlarme;	//nível baixo de óleo
+	AnguloValv		:ARRAY[1..48]	OF GeraAlarme;	//Falha no angulo de abertura das válvulas
+	FalhaValv		:ARRAY[1..48]	OF GeraAlarme;	//Falha nas válvulas
+	iPC_Diag		:ARRAY[1..5]	OF GeraAlarme;		//Alarmes de diagnóstico do iPC
+	NivelProd		:ARRAY[1..14]	OF GeraAlarme;	//Baixo nível de liquidos e pós
+	Valv_5_2_Vias	:ARRAY[1..7]	OF GeraAlarme;	//Alarmes das válvulas 5/2 vias
 	
 	//Elevadores
 	FalhaElev1: GeraAlarme;
@@ -91,7 +92,7 @@ Emerg(evtEntry:= TC_Events.B300_EventClass.Emergencia, bEvt:= NOT Seguridad.PB_E
 {endregion}
 
 
-{Region "Válvulas"}
+{Region "Válvulas IOLink"}
 	//Válvulas
 	//Linha 01
 	FalhaValv[1](evtEntry:= TC_Events.Valvulas.Linha1_Valv1, bEvt:= Circuito_L1.Falla_L1_V1, bConfirm:= Confirmar OR HMI.CA1_L1_V1_RsAlr);
@@ -153,6 +154,16 @@ Emerg(evtEntry:= TC_Events.B300_EventClass.Emergencia, bEvt:= NOT Seguridad.PB_E
 	FalhaValv[46](evtEntry:= TC_Events.Valvulas.Linha12_Valv2, bEvt:= Circuito_L12.Falla_L12_V2, bConfirm:= Confirmar OR HMI.CA3_L12_V2_RsAlr);
 	FalhaValv[47](evtEntry:= TC_Events.Valvulas.Linha12_Valv3, bEvt:= Circuito_L12.Falla_L12_V3, bConfirm:= Confirmar OR HMI.CA3_L12_V3_RsAlr);
 	FalhaValv[48](evtEntry:= TC_Events.Valvulas.Linha12_Valv4, bEvt:= Circuito_L12.Falla_L12_V4, bConfirm:= Confirmar OR HMI.CA3_L12_V4_RsAlr);
+
+{endregion}
+	Valv_5_2_Vias[1](evtEntry:= TC_Events.Valv_5_2Vias.CorteFino, bEvt:= Balanza_Semilla.TR_S_V3.Alr_Discrepancia, bConfirm:= Confirmar OR HMI.TR_S_V3_Alr);
+	Valv_5_2_Vias[2](evtEntry:= TC_Events.Valv_5_2Vias.CorteGrosso, bEvt:= Balanza_Semilla.TR_S_V2.Alr_Discrepancia, bConfirm:= Confirmar OR HMI.TR_S_V2_Alr);
+	Valv_5_2_Vias[3](evtEntry:= TC_Events.Valv_5_2Vias.DescargaBalanca, bEvt:= Balanza_Semilla.TR_S_V4.Alr_Discrepancia, bConfirm:= Confirmar OR HMI.TR_S_V4_Alr);
+	Valv_5_2_Vias[4](evtEntry:= TC_Events.Valv_5_2Vias.DescargaBB1, bEvt:= Balanza_Semilla.TR_S_V3.Alr_Discrepancia, bConfirm:= Confirmar OR HMI.TR_S_V4_Alr);
+	Valv_5_2_Vias[5](evtEntry:= TC_Events.Valv_5_2Vias.DescargaBB2, bEvt:= HMI.PE_B3_V1_Alr_discr, bConfirm:= Confirmar OR HMI.PE_B3_V1_Alr);
+	Valv_5_2_Vias[6](evtEntry:= TC_Events.Valv_5_2Vias.DescargaSacaria, bEvt:= HMI.PE_B1_V1_Alr_discr, bConfirm:= Confirmar OR HMI.PE_B1_V1_Alr);
+	Valv_5_2_Vias[7](evtEntry:= TC_Events.Valv_5_2Vias.DescargaTratadora, bEvt:= Tratadora.TR_S_V1.Alr_Discrepancia, bConfirm:= Confirmar OR HMI.TR_S_V1_Alr);
+{Region "Válvulas 5/2 vias"}
 
 {endregion}
 
@@ -307,6 +318,11 @@ Emerg(evtEntry:= TC_Events.B300_EventClass.Emergencia, bEvt:= NOT Seguridad.PB_E
       <LineId Id="633" Count="60" />
       <LineId Id="632" Count="0" />
       <LineId Id="631" Count="0" />
+      <LineId Id="1336" Count="0" />
+      <LineId Id="1341" Count="5" />
+      <LineId Id="1335" Count="0" />
+      <LineId Id="1338" Count="0" />
+      <LineId Id="1337" Count="0" />
       <LineId Id="694" Count="0" />
       <LineId Id="363" Count="0" />
       <LineId Id="697" Count="13" />

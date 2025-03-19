@@ -1856,6 +1856,167 @@
 				<Hide GUID="{FB8D4718-735C-4301-A3A5-1C57C29C81F5}"/>
 			</Hides>
 		</DataType>
+		<DataType>
+			<Name GUID="{B2F92B0F-63AE-4B2C-BB1C-5B49197F5314}" PersistentType="true">Valv_5_2Vias</Name>
+			<DisplayName TxtId=""><![CDATA[NewEventClass_DisplayText]]></DisplayName>
+			<EventId>
+				<Name Id="1">DescargaBalanca</Name>
+				<DisplayName TxtId=""><![CDATA[FALHA NA VÁLVULA DE DESCARGA DA BALANÇA]]></DisplayName>
+				<Comment TxtId=""><![CDATA[Falha na válvula de descarga da balança]]></Comment>
+				<Severity>Verbose</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Mau posicionamento dos sensores]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique se os sensores de recuo e avanço estão bem posicionados]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="2">
+					<Cause TxtId=""><![CDATA[Falta de pressão no sistema pneumático]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique a pressão do sistema pneumático]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="3">
+					<Cause TxtId=""><![CDATA[Sujeira no atuador]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique se o atuador está bem limpo e lubrificado]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="4">
+					<Cause TxtId=""><![CDATA[Tempo útil atingido]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique a quantidade de acionamentos da válvula na tela pertinente]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="2">CorteGrosso</Name>
+				<DisplayName TxtId=""><![CDATA[FALHA NA VÁLVULA DE CORTE GROSSO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[Falha na válvula de corte grosso]]></Comment>
+				<Severity>Verbose</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Mau posicionamento dos sensores]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique se os sensores de recuo e avanço estão bem posicionados]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="2">
+					<Cause TxtId=""><![CDATA[Falta de pressão no sistema pneumático]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique a pressão do sistema pneumático]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="3">
+					<Cause TxtId=""><![CDATA[Sujeira no atuador]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique se o atuador está bem limpo e lubrificado]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="4">
+					<Cause TxtId=""><![CDATA[Tempo útil atingido]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique a quantidade de acionamentos da válvula na tela pertinente]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="3">CorteFino</Name>
+				<DisplayName TxtId=""><![CDATA[FALHA NA VÁLVULA DE CORTE FINO]]></DisplayName>
+				<Comment TxtId=""><![CDATA[Falha na válvula de corte fino]]></Comment>
+				<Severity>Verbose</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Mau posicionamento dos sensores]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique se os sensores de recuo e avanço estão bem posicionados]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="2">
+					<Cause TxtId=""><![CDATA[Falta de pressão no sistema pneumático]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique a pressão do sistema pneumático]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="3">
+					<Cause TxtId=""><![CDATA[Sujeira no atuador]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique se o atuador está bem limpo e lubrificado]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="4">
+					<Cause TxtId=""><![CDATA[Tempo útil atingido]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique a quantidade de acionamentos da válvula na tela pertinente]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="4">DescargaTratadora</Name>
+				<DisplayName TxtId=""><![CDATA[FALHA NA VÁLVULA DE DESCARGA DA TRATADORA]]></DisplayName>
+				<Comment TxtId=""><![CDATA[Falha na válvula de descarga da tratadora]]></Comment>
+				<Severity>Verbose</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Mau posicionamento dos sensores]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique se os sensores de recuo e avanço estão bem posicionados]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="2">
+					<Cause TxtId=""><![CDATA[Falta de pressão no sistema pneumático]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique a pressão do sistema pneumático]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="3">
+					<Cause TxtId=""><![CDATA[Sujeira no atuador]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique se o atuador está bem limpo e lubrificado]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="4">
+					<Cause TxtId=""><![CDATA[Tempo útil atingido]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique a quantidade de acionamentos da válvula na tela pertinente]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="#x5">DescargaSacaria</Name>
+				<DisplayName TxtId=""><![CDATA[FALHA NO PISTÃO DE DESCARGA NA SACARIA]]></DisplayName>
+				<Comment TxtId=""><![CDATA[Falha no pistão de descarga na sacaria]]></Comment>
+				<Severity>Verbose</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Mau posicionamento dos sensores]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique se os sensores de recuo e avanço estão bem posicionados]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="2">
+					<Cause TxtId=""><![CDATA[Falta de pressão no sistema pneumático]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique a pressão do sistema pneumático]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="3">
+					<Cause TxtId=""><![CDATA[Sujeira no atuador]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique se o atuador está bem limpo e lubrificado]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="4">
+					<Cause TxtId=""><![CDATA[Tempo útil atingido]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique a quantidade de acionamentos da válvula na tela pertinente]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="6">DescargaBB1</Name>
+				<DisplayName TxtId=""><![CDATA[FALHA NO PISTÃO DE DESCARGA NO BIGBAG 1]]></DisplayName>
+				<Comment TxtId=""><![CDATA[Falha no pistão de descarga no bigbag 1]]></Comment>
+				<Severity>Verbose</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Mau posicionamento dos sensores]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique se os sensores de recuo e avanço estão bem posicionados]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="2">
+					<Cause TxtId=""><![CDATA[Falta de pressão no sistema pneumático]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique a pressão do sistema pneumático]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="3">
+					<Cause TxtId=""><![CDATA[Sujeira no atuador]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique se o atuador está bem limpo e lubrificado]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="4">
+					<Cause TxtId=""><![CDATA[Tempo útil atingido]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique a quantidade de acionamentos da válvula na tela pertinente]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<EventId>
+				<Name Id="7">DescargaBB2</Name>
+				<DisplayName TxtId=""><![CDATA[FALHA NO PISTÃO DE DESCARGA NO BIGBAG 2]]></DisplayName>
+				<Comment TxtId=""><![CDATA[Falha no pistão de descarga no bigbag 2]]></Comment>
+				<Severity>Verbose</Severity>
+				<CauseRemedy Idx="1">
+					<Cause TxtId=""><![CDATA[Mau posicionamento dos sensores]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique se os sensores de recuo e avanço estão bem posicionados]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="2">
+					<Cause TxtId=""><![CDATA[Falta de pressão no sistema pneumático]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique a pressão do sistema pneumático]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="3">
+					<Cause TxtId=""><![CDATA[Sujeira no atuador]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique se o atuador está bem limpo e lubrificado]]></Remedy>
+				</CauseRemedy>
+				<CauseRemedy Idx="4">
+					<Cause TxtId=""><![CDATA[Tempo útil atingido]]></Cause>
+					<Remedy TxtId=""><![CDATA[Verifique a quantidade de acionamentos da válvula na tela pertinente]]></Remedy>
+				</CauseRemedy>
+			</EventId>
+			<Hides>
+				<Hide GUID="{FEA6E097-D5D8-4AB0-992A-DFC2CF1F22E8}"/>
+			</Hides>
+		</DataType>
 	</DataTypes>
 	<ImageDatas>
 		<ImageData Id="1000">424dd6020000000000003600000028000000100000000e0000000100180000000000a0020000c40e0000c40e00000000000000000000ff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080808080808080808080808080808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c000ffffc0c0c000ffff808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0ff0000c0c0c0ff0000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c00000ffc0c0c00000ff808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000bfff00bfffc0c0c0808080c0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0008000c0c0c0008000808080ff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff</ImageData>
@@ -1894,7 +2055,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{389A3C8F-A70E-42C4-8525-5577814438CA}" Name="Untitled1" PrjFilePath="Untitled1\Untitled1.plcproj" TmcFilePath="Untitled1\Untitled1.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Untitled1\Untitled1.tmc" TmcHash="{0B510565-382E-745B-44E0-111D1DC81AD1}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Untitled1\Untitled1.tmc" TmcHash="{2C24F57C-823F-6529-19EF-96EA9DBCAEE8}">
 					<Name>Untitled1 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">

@@ -8,11 +8,9 @@ VAR
 	DiaAtual			:WORD;
 	iCounter: INT;
 	iCounter2: INT;
-	Teste: BOOL;
 	i: INT;
-	// Borda de início de tratamento
-	InicioTrat: R_TRIG;
-	Teste2: TIME;
+	
+	InicioTrat: R_TRIG; // Borda de início de tratamento
 END_VAR
 VAR PERSISTENT
 	Consumos		:ARRAY[1..12] OF REAL;	//Array com os consumos atuais
@@ -23,8 +21,7 @@ END_VAR
     <Implementation>
       <ST><![CDATA[//Essa rotina calcula o consumo do uso de cada linha de acordo com o primeiro sensor de vazão
 
-
-TON_CalculoConsumo(IN:=TRUE AND NOT TON_CalculoConsumo.Q, PT:=T#1S); //Pulsa a cada 1s
+TON_CalculoConsumo(IN:= NOT TON_CalculoConsumo.Q, PT:=T#1S); //Pulsa a cada 1s
 
 IF TON_CalculoConsumo.Q THEN
 	//Os dados são divididos por 1000 para converter a vazão de mL/s para L/s. Só a vazão positiva é contabilizada
@@ -32,7 +29,7 @@ IF TON_CalculoConsumo.Q THEN
 	DatosProceso.ConsumoCircuito_1 := DatosProceso.ConsumoCircuito_1 + SEL(HMI.CA1_L1_FT1_caudal/1000 > 0, 0, HMI.CA1_L1_FT1_caudal/1000);
 	DatosProceso.ConsumoCircuito_2 := DatosProceso.ConsumoCircuito_2 + SEL(HMI.CA1_L2_FT1_caudal/1000 > 0, 0, HMI.CA1_L2_FT1_caudal/1000);
 	DatosProceso.ConsumoCircuito_3 := DatosProceso.ConsumoCircuito_3 + SEL(HMI.CA1_L3_FT1_caudal/1000 > 0, 0, HMI.CA1_L3_FT1_caudal/1000);
-	DatosProceso.ConsumoCircuito_4 := DatosProceso.ConsumoCircuito_4 + SEL(HMI.CA1_L4_FT1_caudal/1000 > 0, 0, HMI.CA1_L4_FT1_caudal/1000);
+	DatosProceso.ConsumoCircuito_4 := DatosProceso.ConsumoCircuito_4 + 	SEL(HMI.CA1_L4_FT1_caudal/1000 > 0, 0, HMI.CA1_L4_FT1_caudal/1000);
 	Consumos[1] := Consumos[1] + SEL(HMI.CA1_L1_FT1_caudal > 0, 0, HMI.CA1_L1_FT1_caudal/1000);
 	Consumos[2] := Consumos[2] + SEL(HMI.CA1_L2_FT1_caudal > 0, 0, HMI.CA1_L1_FT1_caudal/1000);
 	Consumos[3] := Consumos[3] + SEL(HMI.CA1_L3_FT1_caudal > 0, 0, HMI.CA1_L1_FT1_caudal/1000);
@@ -93,16 +90,15 @@ IF DiaAtual <> Main.fbTime.systemTime.wDay THEN
 		Consumos[iCounter] := 0;							//Zera o array de consumo
 	END_FOR
 	DiaAtual := Main.fbTime.systemTime.wDay;
-	//Teste := FALSE;
 END_IF
 
-//Computa a data e hora do inicio do tratamento atual
-InicioTrat(CLK := HMI.bRun OR Teste);
 
+
+//Computa a data e hora do inicio do tratamento atual
+InicioTrat(CLK := HMI.bRun);
 IF InicioTrat.Q THEN
 	DatosProceso.InicioTratamento := DT_TO_UDINT(MAIN.HoraAtual);
 END_IF
-
 
 //Cálculo do tempo restante para tratar todo o lote. 
 DatosProceso.TempoRestante := SEL(DatosProceso.KgLote_Procesados > 0 AND (HMI.bRun OR Teste) AND DatosProceso.Kg_a_Procesar > DatosProceso.KgLote_Procesados, 0,(DatosProceso.Kg_a_Procesar/DatosProceso.KgLote_Procesados) * (DT_TO_UDINT(MAIN.HoraAtual) - DatosProceso.InicioTratamento));
@@ -123,7 +119,7 @@ Teste2 := REAL_TO_TIME(DatosProceso.TempoRestante*1000);
     </Implementation>
     <LineIds Name="CalculoConsumo">
       <LineId Id="5" Count="0" />
-      <LineId Id="7" Count="1" />
+      <LineId Id="263" Count="0" />
       <LineId Id="6" Count="0" />
       <LineId Id="12" Count="0" />
       <LineId Id="11" Count="0" />
@@ -156,17 +152,15 @@ Teste2 := REAL_TO_TIME(DatosProceso.TempoRestante*1000);
       <LineId Id="80" Count="0" />
       <LineId Id="115" Count="0" />
       <LineId Id="75" Count="0" />
-      <LineId Id="117" Count="1" />
+      <LineId Id="117" Count="0" />
       <LineId Id="73" Count="0" />
+      <LineId Id="264" Count="1" />
       <LineId Id="205" Count="0" />
       <LineId Id="183" Count="0" />
       <LineId Id="207" Count="0" />
-      <LineId Id="211" Count="0" />
       <LineId Id="210" Count="0" />
       <LineId Id="206" Count="0" />
-      <LineId Id="212" Count="0" />
-      <LineId Id="214" Count="0" />
-      <LineId Id="213" Count="0" />
+      <LineId Id="212" Count="1" />
       <LineId Id="182" Count="0" />
       <LineId Id="215" Count="0" />
       <LineId Id="238" Count="0" />

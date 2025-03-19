@@ -666,7 +666,7 @@ END_VAR
                   <l2 n="ILLines" />
                   <v n="Comment">"Caixa de recebimento -&gt; caixa de 30
 "</v>
-                  <v n="Title">""</v>
+                  <v n="Title">"Elevador 1"</v>
                   <v n="Label">""</v>
                   <v n="OutCommented">false</v>
                   <l2 n="NetworkItems" cet="BoxTreeAssign">
@@ -1472,7 +1472,7 @@ END_VAR
                   <v n="ILValid">false</v>
                   <l2 n="ILLines" />
                   <v n="Comment">"Caixa de 30 -&gt; Caixa superior"</v>
-                  <v n="Title">""</v>
+                  <v n="Title">"Elevador 2"</v>
                   <v n="Label">""</v>
                   <v n="OutCommented">false</v>
                   <l2 n="NetworkItems" cet="BoxTreeAssign">
@@ -2315,8 +2315,8 @@ END_VAR
                   <v n="FBDValid">false</v>
                   <v n="ILValid">false</v>
                   <l2 n="ILLines" />
-                  <v n="Comment">""</v>
-                  <v n="Title">""</v>
+                  <v n="Comment">"Pistão de descarga da caixa superior 1.8T"</v>
+                  <v n="Title">"Registro 1.8T"</v>
                   <v n="Label">""</v>
                   <v n="OutCommented">false</v>
                   <l2 n="NetworkItems" cet="BoxTreeAssign">
