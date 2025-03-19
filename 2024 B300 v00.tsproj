@@ -1894,7 +1894,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{389A3C8F-A70E-42C4-8525-5577814438CA}" Name="Untitled1" PrjFilePath="Untitled1\Untitled1.plcproj" TmcFilePath="Untitled1\Untitled1.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Untitled1\Untitled1.tmc" TmcHash="{754EDED7-E535-ACD7-C96F-72DAF57CBD2A}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Untitled1\Untitled1.tmc" TmcHash="{4D2654F1-5722-1B29-D4F4-9B3DC902C79E}">
 					<Name>Untitled1 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
@@ -1971,18 +1971,17 @@
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
+							<Name>Entradas.TR_S_WT1_bWcState</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
 							<Name>Entradas.TR_S_WT1_wStatus</Name>
 							<Comment><![CDATA[TR_S_WT1 semilla]]></Comment>
 							<Type>WORD</Type>
 						</Var>
 						<Var>
-							<Name>Entradas.TR_S_WT1_bWcState</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>Entradas.TR_S_V1_ZC</Name>
-							<Comment><![CDATA[Tratadora]]></Comment>
-							<Type>BOOL</Type>
+							<Name>Entradas.TR_S_WT1_wState</Name>
+							<Type>WORD</Type>
 						</Var>
 						<Var>
 							<Name>Entradas.TR_S_WT1_rValue_REAL</Name>
@@ -2007,8 +2006,9 @@
 							<Type GUID="{C92AF341-7BD6-622A-489B-93F78F170DEA}" Namespace="Tc2_System">ST_AmsAddr</Type>
 						</Var>
 						<Var>
-							<Name>Entradas.TR_S_WT1_wState</Name>
-							<Type>WORD</Type>
+							<Name>Entradas.TR_S_V1_ZC</Name>
+							<Comment><![CDATA[Tratadora]]></Comment>
+							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>Entradas.TR_S_V1_ZO</Name>
@@ -2069,6 +2069,10 @@
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
+							<Name>Entradas.bPP1_L1_BD_MangRota</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
 							<Name>Entradas.wTR_S_VF1_St</Name>
 							<Comment><![CDATA[homoogenizador]]></Comment>
 							<Type>WORD</Type>
@@ -2098,14 +2102,6 @@
 							<Type>WORD</Type>
 						</Var>
 						<Var>
-							<Name>Entradas.bPP1_L1_BD_MangRota</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>Entradas.bPP1_L2_BD_MangRota</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
 							<Name>Entradas.wPP1_L2_BD_St</Name>
 							<Comment><![CDATA[Bomba Circuito 2]]></Comment>
 							<Type>WORD</Type>
@@ -2113,6 +2109,14 @@
 						<Var>
 							<Name>Entradas.wPP1_L2_BD_PV</Name>
 							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>Entradas.bPP1_L2_BD_MangRota</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>Entradas.bPP1_L3_BD_MangRota</Name>
+							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>Entradas.wPP1_L3_BD_St</Name>
@@ -2124,14 +2128,6 @@
 							<Type>WORD</Type>
 						</Var>
 						<Var>
-							<Name>Entradas.bPP1_L3_BD_MangRota</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>Entradas.bPP1_L4_BD_MangRota</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
 							<Name>Entradas.wPP1_L4_BD_St</Name>
 							<Comment><![CDATA[Bomba Circuito 4]]></Comment>
 							<Type>WORD</Type>
@@ -2139,6 +2135,14 @@
 						<Var>
 							<Name>Entradas.wPP1_L4_BD_PV</Name>
 							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>Entradas.bPP1_L4_BD_MangRota</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>Entradas.bPP2_L5_BD_MangRota</Name>
+							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>Entradas.wPP2_L5_BD_St</Name>
@@ -2150,14 +2154,6 @@
 							<Type>WORD</Type>
 						</Var>
 						<Var>
-							<Name>Entradas.bPP2_L5_BD_MangRota</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>Entradas.bPP2_L6_BD_MangRota</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
 							<Name>Entradas.wPP2_L6_BD_St</Name>
 							<Comment><![CDATA[Bomba Circuito 6]]></Comment>
 							<Type>WORD</Type>
@@ -2165,6 +2161,14 @@
 						<Var>
 							<Name>Entradas.wPP2_L6_BD_PV</Name>
 							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>Entradas.bPP2_L6_BD_MangRota</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>Entradas.bPP2_L7_BD_MangRota</Name>
+							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>Entradas.wPP2_L7_BD_St</Name>
@@ -2176,14 +2180,6 @@
 							<Type>WORD</Type>
 						</Var>
 						<Var>
-							<Name>Entradas.bPP2_L7_BD_MangRota</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>Entradas.bPP2_L8_BD_MangRota</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
 							<Name>Entradas.wPP2_L8_BD_St</Name>
 							<Comment><![CDATA[Bomba Circuito 8]]></Comment>
 							<Type>WORD</Type>
@@ -2191,6 +2187,14 @@
 						<Var>
 							<Name>Entradas.wPP2_L8_BD_PV</Name>
 							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>Entradas.bPP2_L8_BD_MangRota</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>Entradas.bPP3_L9_BD_MangRota</Name>
+							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>Entradas.wPP3_L9_BD_St</Name>
@@ -2202,14 +2206,6 @@
 							<Type>WORD</Type>
 						</Var>
 						<Var>
-							<Name>Entradas.bPP3_L9_BD_MangRota</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>Entradas.bPP3_L10_BD_MangRota</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
 							<Name>Entradas.wPP3_L10_BD_St</Name>
 							<Comment><![CDATA[Bomba Circuito 10]]></Comment>
 							<Type>WORD</Type>
@@ -2217,6 +2213,14 @@
 						<Var>
 							<Name>Entradas.wPP3_L10_BD_PV</Name>
 							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>Entradas.bPP3_L10_BD_MangRota</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>Entradas.bPP3_L11_BD_MangRota</Name>
+							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>Entradas.wPP3_L11_BD_St</Name>
@@ -2228,14 +2232,6 @@
 							<Type>WORD</Type>
 						</Var>
 						<Var>
-							<Name>Entradas.bPP3_L11_BD_MangRota</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>Entradas.bPP3_L12_BD_MangRota</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
 							<Name>Entradas.wPP3_L12_BD_St</Name>
 							<Comment><![CDATA[Bomba Circuito 12]]></Comment>
 							<Type>WORD</Type>
@@ -2243,6 +2239,14 @@
 						<Var>
 							<Name>Entradas.wPP3_L12_BD_PV</Name>
 							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>Entradas.bPP3_L12_BD_MangRota</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>Entradas.CA1_WT1_bWcState</Name>
+							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>Entradas.CA1_L1_FT1_temp</Name>
@@ -2552,24 +2556,12 @@
 							<Type GUID="{C92AF341-7BD6-622A-489B-93F78F170DEA}" Namespace="Tc2_System">ST_AmsAddr</Type>
 						</Var>
 						<Var>
-							<Name>Entradas.CA1_WT1_bWcState</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>Entradas.CA2_WT1_bWcState</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
 							<Name>Entradas.CA1_WT1_wState</Name>
 							<Type>WORD</Type>
 						</Var>
 						<Var>
 							<Name>Entradas.CA2_WT1_wStatus</Name>
 							<Comment><![CDATA[Balanza probeta CA2]]></Comment>
-							<Type>WORD</Type>
-						</Var>
-						<Var>
-							<Name>Entradas.CA2_WT1_wState</Name>
 							<Type>WORD</Type>
 						</Var>
 						<Var>
@@ -2581,17 +2573,25 @@
 							<Type GUID="{C92AF341-7BD6-622A-489B-93F78F170DEA}" Namespace="Tc2_System">ST_AmsAddr</Type>
 						</Var>
 						<Var>
-							<Name>Entradas.CA3_WT1_wStatus</Name>
-							<Comment><![CDATA[Balanza probeta CA3]]></Comment>
-							<Type>WORD</Type>
+							<Name>Entradas.CA2_WT1_bWcState</Name>
+							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>Entradas.CA3_WT1_bWcState</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>Entradas.PU1_WT1_bWcState</Name>
-							<Type>BOOL</Type>
+							<Name>Entradas.CA2_WT1_wState</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>Entradas.CA3_WT1_wStatus</Name>
+							<Comment><![CDATA[Balanza probeta CA3]]></Comment>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>Entradas.CA3_WT1_wState</Name>
+							<Type>WORD</Type>
 						</Var>
 						<Var>
 							<Name>Entradas.CA3_WT1_rValue_REAL</Name>
@@ -2602,13 +2602,17 @@
 							<Type GUID="{C92AF341-7BD6-622A-489B-93F78F170DEA}" Namespace="Tc2_System">ST_AmsAddr</Type>
 						</Var>
 						<Var>
-							<Name>Entradas.CA3_WT1_wState</Name>
-							<Type>WORD</Type>
-						</Var>
-						<Var>
 							<Name>Entradas.PU1_WT1_wStatus</Name>
 							<Comment><![CDATA[Balanza IBC 1]]></Comment>
 							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>Entradas.PU1_WT1_bWcState</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>Entradas.PU1_WT2_bWcState</Name>
+							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>Entradas.PU1_WT1_rValue_REAL</Name>
@@ -2636,24 +2640,12 @@
 							<Type GUID="{C92AF341-7BD6-622A-489B-93F78F170DEA}" Namespace="Tc2_System">ST_AmsAddr</Type>
 						</Var>
 						<Var>
-							<Name>Entradas.PU1_WT2_bWcState</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>Entradas.PU1_WT3_bWcState</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
 							<Name>Entradas.PU1_WT2_wState</Name>
 							<Type>WORD</Type>
 						</Var>
 						<Var>
 							<Name>Entradas.PU1_WT3_wStatus</Name>
 							<Comment><![CDATA[Balanza IBC 3]]></Comment>
-							<Type>WORD</Type>
-						</Var>
-						<Var>
-							<Name>Entradas.PU1_WT3_wState</Name>
 							<Type>WORD</Type>
 						</Var>
 						<Var>
@@ -2665,17 +2657,25 @@
 							<Type GUID="{C92AF341-7BD6-622A-489B-93F78F170DEA}" Namespace="Tc2_System">ST_AmsAddr</Type>
 						</Var>
 						<Var>
-							<Name>Entradas.PU1_WT4_wStatus</Name>
-							<Comment><![CDATA[Balanza IBC 4]]></Comment>
-							<Type>WORD</Type>
+							<Name>Entradas.PU1_WT3_bWcState</Name>
+							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>Entradas.PU1_WT4_bWcState</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>Entradas.PU2_WT5_bWcState</Name>
-							<Type>BOOL</Type>
+							<Name>Entradas.PU1_WT3_wState</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>Entradas.PU1_WT4_wStatus</Name>
+							<Comment><![CDATA[Balanza IBC 4]]></Comment>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>Entradas.PU1_WT4_wState</Name>
+							<Type>WORD</Type>
 						</Var>
 						<Var>
 							<Name>Entradas.PU1_WT4_rValue_REAL</Name>
@@ -2686,13 +2686,17 @@
 							<Type GUID="{C92AF341-7BD6-622A-489B-93F78F170DEA}" Namespace="Tc2_System">ST_AmsAddr</Type>
 						</Var>
 						<Var>
-							<Name>Entradas.PU1_WT4_wState</Name>
-							<Type>WORD</Type>
-						</Var>
-						<Var>
 							<Name>Entradas.PU2_WT5_wStatus</Name>
 							<Comment><![CDATA[Balanza IBC 5]]></Comment>
 							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>Entradas.PU2_WT5_bWcState</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>Entradas.PU2_WT6_bWcState</Name>
+							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>Entradas.PU2_WT5_rValue_REAL</Name>
@@ -2720,24 +2724,12 @@
 							<Type GUID="{C92AF341-7BD6-622A-489B-93F78F170DEA}" Namespace="Tc2_System">ST_AmsAddr</Type>
 						</Var>
 						<Var>
-							<Name>Entradas.PU2_WT6_bWcState</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>Entradas.PU2_WT7_bWcState</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
 							<Name>Entradas.PU2_WT6_wState</Name>
 							<Type>WORD</Type>
 						</Var>
 						<Var>
 							<Name>Entradas.PU2_WT7_wStatus</Name>
 							<Comment><![CDATA[Balanza IBC 7]]></Comment>
-							<Type>WORD</Type>
-						</Var>
-						<Var>
-							<Name>Entradas.PU2_WT7_wState</Name>
 							<Type>WORD</Type>
 						</Var>
 						<Var>
@@ -2749,17 +2741,25 @@
 							<Type GUID="{C92AF341-7BD6-622A-489B-93F78F170DEA}" Namespace="Tc2_System">ST_AmsAddr</Type>
 						</Var>
 						<Var>
-							<Name>Entradas.PU2_WT8_wStatus</Name>
-							<Comment><![CDATA[Balanza IBC 8]]></Comment>
-							<Type>WORD</Type>
+							<Name>Entradas.PU2_WT7_bWcState</Name>
+							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>Entradas.PU2_WT8_bWcState</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>Entradas.PU3_WT9_bWcState</Name>
-							<Type>BOOL</Type>
+							<Name>Entradas.PU2_WT7_wState</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>Entradas.PU2_WT8_wStatus</Name>
+							<Comment><![CDATA[Balanza IBC 8]]></Comment>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>Entradas.PU2_WT8_wState</Name>
+							<Type>WORD</Type>
 						</Var>
 						<Var>
 							<Name>Entradas.PU2_WT8_rValue_REAL</Name>
@@ -2770,13 +2770,17 @@
 							<Type GUID="{C92AF341-7BD6-622A-489B-93F78F170DEA}" Namespace="Tc2_System">ST_AmsAddr</Type>
 						</Var>
 						<Var>
-							<Name>Entradas.PU2_WT8_wState</Name>
-							<Type>WORD</Type>
-						</Var>
-						<Var>
 							<Name>Entradas.PU3_WT9_wStatus</Name>
 							<Comment><![CDATA[Balanza IBC 9]]></Comment>
 							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>Entradas.PU3_WT9_bWcState</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>Entradas.PU3_WT10_bWcState</Name>
+							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>Entradas.PU3_WT9_rValue_REAL</Name>
@@ -2804,24 +2808,12 @@
 							<Type GUID="{C92AF341-7BD6-622A-489B-93F78F170DEA}" Namespace="Tc2_System">ST_AmsAddr</Type>
 						</Var>
 						<Var>
-							<Name>Entradas.PU3_WT10_bWcState</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>Entradas.PU3_WT11_bWcState</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
 							<Name>Entradas.PU3_WT10_wState</Name>
 							<Type>WORD</Type>
 						</Var>
 						<Var>
 							<Name>Entradas.PU3_WT11_wStatus</Name>
 							<Comment><![CDATA[Balanza IBC 11]]></Comment>
-							<Type>WORD</Type>
-						</Var>
-						<Var>
-							<Name>Entradas.PU3_WT11_wState</Name>
 							<Type>WORD</Type>
 						</Var>
 						<Var>
@@ -2833,17 +2825,25 @@
 							<Type GUID="{C92AF341-7BD6-622A-489B-93F78F170DEA}" Namespace="Tc2_System">ST_AmsAddr</Type>
 						</Var>
 						<Var>
-							<Name>Entradas.PU3_WT12_wStatus</Name>
-							<Comment><![CDATA[Balanza IBC 12]]></Comment>
-							<Type>WORD</Type>
+							<Name>Entradas.PU3_WT11_bWcState</Name>
+							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>Entradas.PU3_WT12_bWcState</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>Entradas.TR_P1_WT1_bWcState</Name>
-							<Type>BOOL</Type>
+							<Name>Entradas.PU3_WT11_wState</Name>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>Entradas.PU3_WT12_wStatus</Name>
+							<Comment><![CDATA[Balanza IBC 12]]></Comment>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>Entradas.PU3_WT12_wState</Name>
+							<Type>WORD</Type>
 						</Var>
 						<Var>
 							<Name>Entradas.PU3_WT12_rValue_REAL</Name>
@@ -2854,13 +2854,17 @@
 							<Type GUID="{C92AF341-7BD6-622A-489B-93F78F170DEA}" Namespace="Tc2_System">ST_AmsAddr</Type>
 						</Var>
 						<Var>
-							<Name>Entradas.PU3_WT12_wState</Name>
-							<Type>WORD</Type>
-						</Var>
-						<Var>
 							<Name>Entradas.TR_P1_WT1_wStatus</Name>
 							<Comment><![CDATA[Balanza Polvo 1]]></Comment>
 							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>Entradas.TR_P1_WT1_bWcState</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>Entradas.TR_P2_WT1_bWcState</Name>
+							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>Entradas.TR_P1_WT1_rValue_REAL</Name>
@@ -2886,15 +2890,6 @@
 						<Var>
 							<Name>Entradas.TR_P2_WT1_stEcSlaveAmsNetAdr</Name>
 							<Type GUID="{C92AF341-7BD6-622A-489B-93F78F170DEA}" Namespace="Tc2_System">ST_AmsAddr</Type>
-						</Var>
-						<Var>
-							<Name>Entradas.TR_P2_WT1_bWcState</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>Entradas.TR_P1_ZS</Name>
-							<Comment><![CDATA[sensor velocidad dosif Polvo 1]]></Comment>
-							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>Entradas.TR_P2_WT1_wState</Name>
@@ -2937,6 +2932,11 @@
 							<Type>WORD</Type>
 						</Var>
 						<Var>
+							<Name>Entradas.TR_P1_ZS</Name>
+							<Comment><![CDATA[sensor velocidad dosif Polvo 1]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
 							<Name>Entradas.TR_P1_ZC</Name>
 							<Comment><![CDATA[posicion dosificar Polvo 1]]></Comment>
 							<Type>BOOL</Type>
@@ -2972,11 +2972,6 @@
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>Entradas.PE_B1_V1_ZO</Name>
-							<Comment><![CDATA[descarga intermedia 1 no descarga]]></Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
 							<Name>Entradas.wPE_B_VF1_St</Name>
 							<Comment><![CDATA[Perifericos Elevador 1]]></Comment>
 							<Type>WORD</Type>
@@ -3002,6 +2997,11 @@
 						<Var>
 							<Name>Entradas.wPE_H_VF2_PV</Name>
 							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>Entradas.PE_B1_V1_ZO</Name>
+							<Comment><![CDATA[descarga intermedia 1 no descarga]]></Comment>
+							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>Entradas.PE_B2_V1_ZO</Name>
