@@ -890,7 +890,7 @@ END_VAR]]></Declaration>
                             <v n="Id">65L</v>
                           </o>
                           <o>
-                            <v n="Operand">"Falla_L6_V1"</v>
+                            <v n="Operand">"Falla_L6_V2"</v>
                             <v n="Type">"BOOL"</v>
                             <v n="Comment">""</v>
                             <v n="SymbolComment">""</v>
@@ -1269,8 +1269,8 @@ END_VAR]]></Declaration>
                           <v n="Extensible">false</v>
                         </o>
                         <n n="InputFlags" />
-                        <l2 n="InputItems">
-                          <o t="BoxTreeOperand">
+                        <l2 n="InputItems" cet="BoxTreeOperand">
+                          <o>
                             <o n="Operand" t="Operand">
                               <v n="Operand">"HMI.CA2_L6_V2_RsAlr"</v>
                               <v n="Type">"BOOL"</v>
@@ -1289,117 +1289,24 @@ END_VAR]]></Declaration>
                             </o>
                             <v n="Id">301L</v>
                           </o>
-                          <o t="BoxTreeBox">
-                            <v n="BoxType">"EQ"</v>
-                            <o n="Instance" t="Operand">
-                              <n n="Operand" />
-                              <v n="Type">""</v>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"AlarmesDaMaquina.Confirmar"</v>
+                              <v n="Type">"BOOL"</v>
                               <v n="Comment">""</v>
                               <v n="SymbolComment">""</v>
                               <v n="Address">""</v>
                               <o n="Flags" t="Flags">
                                 <v n="Flags">0</v>
-                                <v n="Fixed">false</v>
+                                <v n="Fixed">true</v>
                                 <v n="Extensible">false</v>
                               </o>
                               <v n="LValue">false</v>
-                              <v n="Boolean">false</v>
-                              <v n="IsInstance">true</v>
-                              <v n="Id">852L</v>
+                              <v n="Boolean">true</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">1525L</v>
                             </o>
-                            <o n="OutputItems" t="OutputItemList">
-                              <l2 n="OutputItems">
-                                <n />
-                              </l2>
-                            </o>
-                            <o n="Flags" t="Flags">
-                              <v n="Flags">0</v>
-                              <v n="Fixed">false</v>
-                              <v n="Extensible">false</v>
-                            </o>
-                            <n n="InputFlags" />
-                            <l2 n="InputItems" cet="BoxTreeOperand">
-                              <o>
-                                <o n="Operand" t="Operand">
-                                  <v n="Operand">"Falla_L6_V2"</v>
-                                  <v n="Type">"BOOL"</v>
-                                  <v n="Comment">""</v>
-                                  <v n="SymbolComment">""</v>
-                                  <v n="Address">""</v>
-                                  <o n="Flags" t="Flags">
-                                    <v n="Flags">0</v>
-                                    <v n="Fixed">true</v>
-                                    <v n="Extensible">false</v>
-                                  </o>
-                                  <v n="LValue">false</v>
-                                  <v n="Boolean">true</v>
-                                  <v n="IsInstance">false</v>
-                                  <v n="Id">851L</v>
-                                </o>
-                                <v n="Id">850L</v>
-                              </o>
-                              <o>
-                                <o n="Operand" t="Operand">
-                                  <v n="Operand">"AlarmesDaMaquina.FalhaValv[22].eConfirmationState"</v>
-                                  <v n="Type">"TcEventConfirmationState"</v>
-                                  <v n="Comment">""</v>
-                                  <v n="SymbolComment">""</v>
-                                  <v n="Address">""</v>
-                                  <o n="Flags" t="Flags">
-                                    <v n="Flags">0</v>
-                                    <v n="Fixed">false</v>
-                                    <v n="Extensible">false</v>
-                                  </o>
-                                  <v n="LValue">false</v>
-                                  <v n="Boolean">false</v>
-                                  <v n="IsInstance">false</v>
-                                  <v n="Id">855L</v>
-                                </o>
-                                <v n="Id">854L</v>
-                              </o>
-                              <o>
-                                <o n="Operand" t="Operand">
-                                  <v n="Operand">"3"</v>
-                                  <v n="Type">"INT"</v>
-                                  <v n="Comment">""</v>
-                                  <v n="SymbolComment">""</v>
-                                  <v n="Address">""</v>
-                                  <o n="Flags" t="Flags">
-                                    <v n="Flags">0</v>
-                                    <v n="Fixed">false</v>
-                                    <v n="Extensible">false</v>
-                                  </o>
-                                  <v n="LValue">false</v>
-                                  <v n="Boolean">false</v>
-                                  <v n="IsInstance">false</v>
-                                  <v n="Id">857L</v>
-                                </o>
-                                <v n="Id">856L</v>
-                              </o>
-                            </l2>
-                            <o n="InputParam" t="ParamList">
-                              <l2 n="Names" cet="String">
-                                <v>EN</v>
-                              </l2>
-                              <l2 n="Types" cet="String">
-                                <v>BOOL</v>
-                              </l2>
-                            </o>
-                            <o n="OutputParam" t="ParamList">
-                              <l2 n="Names" cet="String">
-                                <v></v>
-                              </l2>
-                              <l2 n="Types" cet="String">
-                                <v>BOOL</v>
-                              </l2>
-                            </o>
-                            <v n="CallType" t="Operator">Eq</v>
-                            <v n="EN">true</v>
-                            <v n="ENO">false</v>
-                            <n n="STSnippet" />
-                            <v n="ContainsExtensibleInputs">false</v>
-                            <v n="ProvidesSTSnippet">false</v>
-                            <v n="Id">853L</v>
+                            <v n="Id">1524L</v>
                           </o>
                         </l2>
                         <o n="InputParam" t="ParamList">
@@ -1471,7 +1378,7 @@ END_VAR]]></Declaration>
                             <v n="Id">76L</v>
                           </o>
                           <o>
-                            <v n="Operand">"Falla_L6_V1"</v>
+                            <v n="Operand">"Falla_L6_V3"</v>
                             <v n="Type">"BOOL"</v>
                             <v n="Comment">""</v>
                             <v n="SymbolComment">""</v>
@@ -1959,7 +1866,7 @@ END_VAR]]></Declaration>
                             <v n="Id">317L</v>
                           </o>
                           <o>
-                            <v n="Operand">"Falla_L6_V1"</v>
+                            <v n="Operand">"Falla_L6_V4"</v>
                             <v n="Type">"BOOL"</v>
                             <v n="Comment">""</v>
                             <v n="SymbolComment">""</v>

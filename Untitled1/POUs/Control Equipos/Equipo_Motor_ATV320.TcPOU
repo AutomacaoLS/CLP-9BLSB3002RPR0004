@@ -81,12 +81,12 @@ END_IF
 (*Aviso Falla*)
 IF (Aux_Status=16#0008 OR Aux_Status=16#0028 OR Aux_Status=16#000F OR Aux_Status=16#0038 OR Aux_Status=16#002F OR Aux_Status=16#0018 ) THEN
 	bAlr:=1;
-	ELSE
+ELSE
 	bAlr:=0;	
-	END_IF
+END_IF
 	
 (*Reset Falla*)
-IF bAlr AND ResetFalhas THEN
+IF bAlr AND (ResetFalhas OR AlarmesDaMaquina.Confirmar) THEN
 	wControl := 128;		//Aciona o bit 7 da palavra de controle
 	ResetFalhas := FALSE;
 END_IF

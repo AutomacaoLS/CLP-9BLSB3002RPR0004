@@ -65,6 +65,10 @@ ELSE
 	END_IF
 END_IF
 
+//Reset de falhas
+IF Falla AND AlarmesDaMaquina.Confirmar THEN
+	Falla := FALSE;
+END_IF
 //A lógica abaixo foi feita para calcular o tempo de acionamento da válvula
 //Detecta a borda de subida do comando de acionamento
 RTrig(CLK:= Actuar.04, Q=> );
@@ -143,7 +147,9 @@ Range := UltimasPosicoes[1] - UltimasPosicoes[2];		//Calcula o range de abertura
       <LineId Id="58" Count="1" />
       <LineId Id="56" Count="0" />
       <LineId Id="54" Count="0" />
+      <LineId Id="270" Count="0" />
       <LineId Id="121" Count="0" />
+      <LineId Id="271" Count="2" />
       <LineId Id="111" Count="0" />
       <LineId Id="105" Count="0" />
       <LineId Id="101" Count="0" />
