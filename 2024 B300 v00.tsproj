@@ -1881,8 +1881,8 @@
 					<ManualSelect>{648F394E-7DD1-499C-8112-7C38E161A94C}</ManualSelect>
 					<ManualSelect>{777F1598-583B-4503-99BB-7C02E0ABD97E}</ManualSelect>
 					<TargetSelect TargetId="2">{648F394E-7DD1-499C-8112-7C38E161A94C}</TargetSelect>
-					<TargetSelect TargetId="2">{796D380F-D49E-4C0C-A05F-500052FAC883}</TargetSelect>
 					<TargetSelect TargetId="2">{66689887-CCBD-452C-AC9A-039D997C6E66}</TargetSelect>
+					<TargetSelect TargetId="2">{796D380F-D49E-4C0C-A05F-500052FAC883}</TargetSelect>
 					<LicenseDevice Disabled="true" DongleHardwareId="2" DongleDevice="#x03020007" DongleLevel="92" DongleSerialNumber="000br40o"/>
 				</Target>
 			</Licenses>

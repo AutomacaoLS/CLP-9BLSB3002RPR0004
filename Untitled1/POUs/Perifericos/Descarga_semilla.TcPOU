@@ -8190,7 +8190,7 @@ Se a descarga para o bigbag não estiver selecionada, a descarga na caixa 3 fica
                   <v n="FBDValid">false</v>
                   <v n="ILValid">false</v>
                   <l2 n="ILLines" />
-                  <v n="Comment">"O pistão da caixa 3 retornará se tiver nível na caixa 3 e se, por alternância, estiver carregando a caixa 2 e se o tempo de atraso de descarga para a caixa 3 for atingido"</v>
+                  <v n="Comment">"O pistão da caixa 3 retornará se tiver nível na caixa 3 se, por alternância, estiver carregando a caixa 2 e se o tempo de atraso de descarga para a caixa 3 for atingido"</v>
                   <v n="Title">"Retorno do pistão da caixa 3 - Recusa descarga"</v>
                   <v n="Label">""</v>
                   <v n="OutCommented">false</v>

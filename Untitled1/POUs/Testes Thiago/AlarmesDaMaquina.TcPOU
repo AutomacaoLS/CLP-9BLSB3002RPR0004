@@ -188,7 +188,7 @@ Emerg(evtEntry:= TC_Events.B300_EventClass.Emergencia, bEvt:= NOT Seguridad.PB_E
 	IntervCalibracao[11](evtEntry:= TC_Events.IntervaloExcedidoCalibracao.Calibracao_L11, bEvt:= DT_TO_UDINT(Main.HoraAtual) - HMI.UltimoAlrCalibr[11] > IntervaloLavCalibr.IntervaloCalibracao * 3600, bConfirm:= Confirmar);
 	IntervCalibracao[12](evtEntry:= TC_Events.IntervaloExcedidoCalibracao.Calibracao_L12, bEvt:= DT_TO_UDINT(Main.HoraAtual) - HMI.UltimoAlrCalibr[12] > IntervaloLavCalibr.IntervaloCalibracao * 3600, bConfirm:= Confirmar);
 {endregion}
-
+(*
 {Region "Intervalo de lavagem excedido"}
 	IntervLavagem[1](evtEntry:= TC_Events.IntervaloExcedidoLavagem.IntervaloExcedidoL1, bEvt:= (DT_TO_LINT(Main.HoraAtual) - Liquidos.UltimoAlrLavagem[1]) > IntervaloLavCalibr.IntervaloLavagem * 3600, bConfirm:= Confirmar);
 	IntervLavagem[2](evtEntry:= TC_Events.IntervaloExcedidoLavagem.IntervaloExcedidoL2, bEvt:= (DT_TO_LINT(Main.HoraAtual) - Liquidos.UltimoAlrLavagem[2]) > IntervaloLavCalibr.IntervaloLavagem * 3600, bConfirm:= Confirmar);
@@ -204,7 +204,7 @@ Emerg(evtEntry:= TC_Events.B300_EventClass.Emergencia, bEvt:= NOT Seguridad.PB_E
 	IntervLavagem[12](evtEntry:= TC_Events.IntervaloExcedidoLavagem.IntervaloExcedidoL12, bEvt:= (DT_TO_LINT(Main.HoraAtual) - Liquidos.UltimoAlrLavagem[12]) > IntervaloLavCalibr.IntervaloLavagem * 3600, bConfirm:= Confirmar);
 
 {endregion}
-
+*)
 {Region "Ângulo de abertura das válvulas IOLink"}
 	//Válvula 1
 	AnguloValv[1](evtEntry:= TC_Events.AnguloValvulas.AnguloV1L1, bEvt:= Circuito_L1.ControlValv_ioLink_V1.Range < RangeMinimo, bConfirm:= Confirmar);
