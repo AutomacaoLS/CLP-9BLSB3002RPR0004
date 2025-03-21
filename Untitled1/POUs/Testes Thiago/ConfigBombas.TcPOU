@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <POU Name="ConfigBombas" Id="{bc00c36d-4d5c-46fe-9da3-cbaf6e8e71b0}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM ConfigBombas
+VAR
+	//Modelo padrão
+	Apex10:DUT_cfgBombas;	//Parâmetros da Apex 10
+	Apex15:DUT_cfgBombas;	//Parâmetros da Apex 15
+	Apex20:DUT_cfgBombas;	//Parâmetros da Apex 20
+	Apex28:DUT_cfgBombas;	//Parâmetros da Apex 28
+	
+	HmiModeloBomba		:INT;	//Modelo da bomba em edição, vindo da IHM
+	LinhaSelecionada	:INT;	//Linha em que a bomba esta sendo editada
+	Editar				:BOOL;	//Comando para editar os parâmetros
+END_VAR
+VAR PERSISTENT
+	BD_L01	:DUT_cfgBombas;	//Bomba de dosagem da linha 1
+	BD_L02	:DUT_cfgBombas;	//Bomba de dosagem da linha 2
+	BD_L03	:DUT_cfgBombas;	//Bomba de dosagem da linha 3
+	BD_L04	:DUT_cfgBombas;	//Bomba de dosagem da linha 4
+	BD_L05	:DUT_cfgBombas;	//Bomba de dosagem da linha 5
+	BD_L06	:DUT_cfgBombas;	//Bomba de dosagem da linha 6
+	BD_L07	:DUT_cfgBombas;	//Bomba de dosagem da linha 7
+	BD_L08	:DUT_cfgBombas;	//Bomba de dosagem da linha 8
+	BD_L09	:DUT_cfgBombas;	//Bomba de dosagem da linha 9
+	BD_L10	:DUT_cfgBombas;	//Bomba de dosagem da linha 10
+	BD_L11	:DUT_cfgBombas;	//Bomba de dosagem da linha 11
+	BD_L12	:DUT_cfgBombas;	//Bomba de dosagem da linha 12
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Essa rotina gerencia as configurações das bombas de dosagem de liquidos
+
+{Region "Configurações dos modelos"}
+	//Apex 10
+	Apex10.Apex 		:= 10;
+	Apex10.VazaoNominal	:= 36.667;		//Ajustar a vazão
+	Apex10.BandaMorta	:= 5;
+	Apex10.Kp			:= 0.1;
+	Apex10.Ti			:= 100;
+	Apex10.OutMax		:= 100;
+	Apex10.OutMin		:= 0;
+	Apex10.PvMax		:= 500;
+	Apex10.PvMin		:= 0;
+	
+	//Apex 15
+	Apex15.Apex 		:= 15;
+	Apex15.VazaoNominal	:= 80.556;		//Ajustar a vazão
+	Apex15.BandaMorta	:= 5;
+	Apex15.Kp			:= 0.1;
+	Apex15.Ti			:= 100;
+	Apex15.OutMax		:= 100;
+	Apex15.OutMin		:= 0;
+	Apex15.PvMax		:= 500;
+	Apex15.PvMin		:= 0;
+	
+	//Apex 20
+	Apex20.Apex 		:= 20;
+	Apex20.VazaoNominal	:= 140.277;		//Ajustar a vazão
+	Apex20.BandaMorta	:= 5;
+	Apex20.Kp			:= 0.1;
+	Apex20.Ti			:= 100;
+	Apex20.OutMax		:= 100;
+	Apex20.OutMin		:= 0;
+	Apex20.PvMax		:= 500;
+	Apex20.PvMin		:= 0;
+	
+	//Apex 28
+	Apex28.Apex 		:= 28;
+	Apex28.VazaoNominal	:= 347.222;		//Ajustar a vazão
+	Apex28.BandaMorta	:= 5;
+	Apex28.Kp			:= 0.1;
+	Apex28.Ti			:= 100;
+	Apex28.OutMax		:= 100;
+	Apex28.OutMin		:= 0;
+	Apex28.PvMax		:= 500;
+	Apex28.PvMin		:= 0;
+{endregion}
+
+IF Editar THEN
+	CASE LinhaSelecionada OF
+		1:	CASE HmiModeloBomba OF
+				10:	BD_L01 := Apex10;
+				15: BD_L01 := Apex15;
+				20: BD_L01 := Apex20;
+				28: BD_L01 := Apex28;
+			END_CASE
+			
+		2:	CASE HmiModeloBomba OF
+			10:	BD_L02 := Apex10;
+			15: BD_L02 := Apex15;
+			20: BD_L02 := Apex20;
+			28: BD_L02 := Apex28;
+		END_CASE
+		
+		3:	CASE HmiModeloBomba OF
+			10:	BD_L03 := Apex10;
+			15: BD_L03 := Apex15;
+			20: BD_L03 := Apex20;
+			28: BD_L03 := Apex28;
+		END_CASE
+		
+		4:	CASE HmiModeloBomba OF
+			10:	BD_L04 := Apex10;
+			15: BD_L04 := Apex15;
+			20: BD_L04 := Apex20;
+			28: BD_L04 := Apex28;
+		END_CASE
+		
+		5:	CASE HmiModeloBomba OF
+			10:	BD_L05 := Apex10;
+			15: BD_L05 := Apex15;
+			20: BD_L05 := Apex20;
+			28: BD_L05 := Apex28;
+		END_CASE
+		
+		6:	CASE HmiModeloBomba OF
+			10:	BD_L06 := Apex10;
+			15: BD_L06 := Apex15;
+			20: BD_L06 := Apex20;
+			28: BD_L06 := Apex28;
+		END_CASE
+		
+		7:	CASE HmiModeloBomba OF
+			10:	BD_L07 := Apex10;
+			15: BD_L07 := Apex15;
+			20: BD_L07 := Apex20;
+			28: BD_L07 := Apex28;
+		END_CASE
+		
+		8:	CASE HmiModeloBomba OF
+			10:	BD_L08 := Apex10;
+			15: BD_L08 := Apex15;
+			20: BD_L08 := Apex20;
+			28: BD_L08 := Apex28;
+		END_CASE
+		
+		9:	CASE HmiModeloBomba OF
+			10:	BD_L09 := Apex10;
+			15: BD_L09 := Apex15;
+			20: BD_L09 := Apex20;
+			28: BD_L09 := Apex28;
+		END_CASE
+		
+		10:	CASE HmiModeloBomba OF
+			10:	BD_L10 := Apex10;
+			15: BD_L10 := Apex15;
+			20: BD_L10 := Apex20;
+			28: BD_L10 := Apex28;
+		END_CASE
+		
+		11:	CASE HmiModeloBomba OF
+			10:	BD_L11 := Apex10;
+			15: BD_L11 := Apex15;
+			20: BD_L11 := Apex20;
+			28: BD_L11 := Apex28;
+		END_CASE
+		
+		12:	CASE HmiModeloBomba OF
+			10:	BD_L12 := Apex10;
+			15: BD_L12 := Apex15;
+			20: BD_L12 := Apex20;
+			28: BD_L12 := Apex28;
+		END_CASE
+	END_CASE
+	Editar := FALSE;
+END_IF
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="ConfigBombas">
+      <LineId Id="5" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="81" Count="41" />
+      <LineId Id="80" Count="0" />
+      <LineId Id="79" Count="0" />
+      <LineId Id="149" Count="0" />
+      <LineId Id="148" Count="0" />
+      <LineId Id="151" Count="0" />
+      <LineId Id="153" Count="0" />
+      <LineId Id="155" Count="0" />
+      <LineId Id="157" Count="2" />
+      <LineId Id="156" Count="0" />
+      <LineId Id="160" Count="0" />
+      <LineId Id="162" Count="4" />
+      <LineId Id="161" Count="0" />
+      <LineId Id="167" Count="0" />
+      <LineId Id="169" Count="4" />
+      <LineId Id="168" Count="0" />
+      <LineId Id="174" Count="0" />
+      <LineId Id="176" Count="4" />
+      <LineId Id="175" Count="0" />
+      <LineId Id="181" Count="0" />
+      <LineId Id="183" Count="4" />
+      <LineId Id="182" Count="0" />
+      <LineId Id="188" Count="0" />
+      <LineId Id="190" Count="4" />
+      <LineId Id="189" Count="0" />
+      <LineId Id="195" Count="0" />
+      <LineId Id="197" Count="4" />
+      <LineId Id="196" Count="0" />
+      <LineId Id="202" Count="0" />
+      <LineId Id="204" Count="4" />
+      <LineId Id="203" Count="0" />
+      <LineId Id="209" Count="0" />
+      <LineId Id="211" Count="4" />
+      <LineId Id="210" Count="0" />
+      <LineId Id="216" Count="0" />
+      <LineId Id="218" Count="4" />
+      <LineId Id="217" Count="0" />
+      <LineId Id="223" Count="0" />
+      <LineId Id="225" Count="4" />
+      <LineId Id="224" Count="0" />
+      <LineId Id="230" Count="0" />
+      <LineId Id="232" Count="4" />
+      <LineId Id="231" Count="0" />
+      <LineId Id="154" Count="0" />
+      <LineId Id="237" Count="0" />
+      <LineId Id="152" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="42" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

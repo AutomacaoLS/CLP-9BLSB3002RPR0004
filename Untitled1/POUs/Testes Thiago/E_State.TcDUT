@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <DUT Name="E_State" Id="{179ba152-c003-42dd-ae70-9687a5f9855d}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+TYPE E_State :
+(
+    Init,
+    Idle,
+    ReadOnce_CpuUsage,
+    ReadOnce_CpuTemperature,
+    ReadOnce_SrnMainboard,
+    ReadOnce_SrnIPC,
+    Write_DHCP,
+    Write_IPAddr,
+    ReadPeriodically,
+    Error
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,278 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.14">
+  <POU Name="iPC_Diagnostic" Id="{ab991fe8-1462-4b77-a673-2fff64373188}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM iPC_Diagnostic
+VAR CONSTANT
+	cNetId			: T_AmsNetID := '';				// local
+END_VAR
+VAR
+	eState			: E_State := E_State.Init;
+	
+	//Informações do iPC
+	sDeviceName		:STRING(39);	//Nome do dispositivo
+	nTcBuild		:STRING;			//Versão do twincat
+	CpuName			:STRING;		//Nome da CPU
+	HardwareVersion	:STRING(100);		//Versão de hardware
+	iPCSerialNumber	:STRING;		//Numero de série do IPC
+	TCStatus		:UINT;		//Status do twincat
+	
+	//Desempenho do sistema
+	nCpuFreq		:UDINT;			//Frequencia da CPU
+	CpuTemp			:INT;			//Temperatura da CPU
+	MB_Temperature	:INT;			//Temperatura da placa mãe
+	MB_MaxTemperature	:DINT;			//Temperatura máximada placa mãe
+	CpuUsage		:UINT;			//Uso da CPU
+	OperationTime	:UDINT;			//Tempo de operação
+	TotalMRAM		:ULINT;			//Memória ram total
+	FreeMRAM		:ULINT;			//Memória ram em uso
+	
+	//Energia e armazenamento
+	ulFreeDisk		:ULINT;			//Espaço livre no disco C
+	ulTotalDisk		:ULINT;			//Espaço livre no disco C
+	UPSBattCapacity	:USINT;			//Capacidade da bateria UPS
+	UPSBattStatus	:USINT;		//Status da bateria UPS - 0-Unknown, 1-OK, 2-Change Battery
+	
+	//IPCDiag
+	fbDiagRegister	: FB_IPCDiag_Register := (sNetId:=cNetId);
+	
+	//Leitura dos parâmetros
+	
+	//Informações do iPC
+	fbDeviceName		: FB_IPCDiag_ReadParameterPeriodic := (eParameterKey:=E_IPCDiag_ParameterKey.IPCDeviceName, tPeriod:= T#10M, sNetId:=cNetId);
+	fbTcBuild			: FB_IPCDiag_ReadParameterPeriodic := (eParameterKey:=E_IPCDiag_ParameterKey.TC_Version, tPeriod:= T#10M, sNetId:=cNetId);
+	fbCpuName			: FB_IPCDiag_ReadParameterPeriodic := (eParameterKey:=E_IPCDiag_ParameterKey.CPU_Name, tPeriod:= T#10M, sNetId:=cNetId);
+	fbHWVersion			: FB_IPCDiag_ReadParameterPeriodic := (eParameterKey:=E_IPCDiag_ParameterKey.IPCHardwareVersion, tPeriod:= T#10M, sNetId:=cNetId);
+	fbiPCSerialNumber	: FB_IPCDiag_ReadParameterPeriodic := (eParameterKey:=E_IPCDiag_ParameterKey.IPCSerialNumber, tPeriod:= T#10M, sNetId:=cNetId);
+	fbTCStatus			: FB_IPCDiag_ReadParameterPeriodic := (eParameterKey:=E_IPCDiag_ParameterKey.TC_Status, tPeriod:= T#10S, sNetId:=cNetId);
+	
+	//Desempenho do sistema
+	fbCpuFreq			: FB_IPCDiag_ReadParameterPeriodic := (eParameterKey:=E_IPCDiag_ParameterKey.CPU_Frequency, tPeriod:= T#2S, sNetId:=cNetId);
+	fbCpuTemp			: FB_IPCDiag_ReadParameterPeriodic := (eParameterKey:=E_IPCDiag_ParameterKey.CPU_Temp, tPeriod:= T#2S, sNetId:=cNetId);
+	fbMBTemp			: FB_IPCDiag_ReadParameterPeriodic := (eParameterKey:=E_IPCDiag_ParameterKey.MB_Temperature, tPeriod:= T#2S, sNetId:=cNetId);
+	fbMBMaxTemp			: FB_IPCDiag_ReadParameterPeriodic := (eParameterKey:=E_IPCDiag_ParameterKey.MB_MaxTemperature, tPeriod:= T#60S, sNetId:=cNetId);
+	fbCpuUsage			: FB_IPCDiag_ReadParameterPeriodic := (eParameterKey:=E_IPCDiag_ParameterKey.CPU_Usage, tPeriod:= T#2S, sNetId:=cNetId);
+	fbOpTime			: FB_IPCDiag_ReadParameterPeriodic := (eParameterKey:=E_IPCDiag_ParameterKey.MB_OperationTime, tPeriod:= T#3M, sNetId:=cNetId);
+	fbTotalMRam			: FB_IPCDiag_ReadParameterPeriodic := (eParameterKey:=E_IPCDiag_ParameterKey.Memory_ProgramMemoryAllocated, tPeriod:= T#3M, sNetId:=cNetId);
+	fbFreeMRam			: FB_IPCDiag_ReadParameterPeriodic := (eParameterKey:=E_IPCDiag_ParameterKey.Memory_ProgramMemoryAvailable, tPeriod:= T#2S, sNetId:=cNetId);
+	
+	//Energia e armazenamento
+	fbFreeDisk			: FB_IPCDiag_ReadParameterPeriodic := (eParameterKey:=E_IPCDiag_ParameterKey.Disk_FreeSpaceOfVolumeC, tPeriod:= T#10S, sNetId:=cNetId);
+	fbTotalSize		: FB_IPCDiag_ReadParameterPeriodic := (eParameterKey:=E_IPCDiag_ParameterKey.Disk_VolumeList_TotelSize, tPeriod:= T#1M, sNetId:=cNetId);
+	fbUPSCap			: FB_IPCDiag_ReadParameterPeriodic := (eParameterKey:=E_IPCDiag_ParameterKey.UPS_BatteryCapacity, tPeriod:= T#10S, sNetId:=cNetId);
+	fbUPSStatus			: FB_IPCDiag_ReadParameterPeriodic := (eParameterKey:=E_IPCDiag_ParameterKey.UPS_BatteryStatus, tPeriod:= T#10S, sNetId:=cNetId);
+	
+	//Ajuste dos valores de memória
+	rFreeRAM:REAL;
+	rTotalRAM:REAL;
+	rFreeDisk:REAL;
+	rDiskTotalSize:REAL;;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Esse programa faz a leitura dos parâmetros do iPC
+
+CASE eState OF
+E_State.Init:
+	IF NOT fbDiagRegister.bBusy THEN
+		fbDiagRegister(bExecute:=TRUE); // need to be executed once
+	ELSE
+		fbDiagRegister(bExecute:=FALSE);
+	END_IF
+	IF NOT fbDiagRegister.bBusy THEN
+		IF fbDiagRegister.bError THEN
+			eState := E_State.Error;
+		ELSE
+			eState := E_State.Idle;
+		END_IF
+	END_IF
+E_State.Idle:
+		eState := E_State.ReadPeriodically;
+		
+E_State.ReadPeriodically:
+
+	{Region "Informações do iPC"}	//Informações do iPC
+		//Nome do dispositivo
+		fbDeviceName(bEnable:=TRUE, fbRegister:=fbDiagRegister);
+		IF fbDeviceName.bValid THEN
+			fbDeviceName.GetParameter(pBuffer:=ADR(sDeviceName), nBufferSize:=SIZEOF(sDeviceName) );	
+		END_IF
+		
+		//Versão do twincat
+		fbTcBuild(bEnable:=TRUE, fbRegister:=fbDiagRegister);
+		IF fbTcBuild.bValid THEN
+			fbTcBuild.GetParameter(pBuffer:=ADR(nTcBuild), nBufferSize:=SIZEOF(nTcBuild) );	
+		END_IF
+		
+		//Nome da CPU
+		fbCpuName(bEnable:=TRUE, fbRegister:=fbDiagRegister);
+		IF fbCpuName.bValid THEN
+			fbCpuName.GetParameter(pBuffer:=ADR(CpuName), nBufferSize:=SIZEOF(CpuName) );
+		END_IF
+		
+		//Versão do hardware
+		fbHWVersion(bEnable:=TRUE, fbRegister:=fbDiagRegister);
+		IF fbHWVersion.bValid THEN
+			fbHWVersion.GetParameter(pBuffer:=ADR(HardwareVersion), nBufferSize:=SIZEOF(HardwareVersion) );	
+		END_IF
+		
+		//Numero de série do iPC
+		fbiPCSerialNumber(bEnable:=TRUE, fbRegister:=fbDiagRegister);
+		IF fbiPCSerialNumber.bValid THEN
+			fbiPCSerialNumber.GetParameter(pBuffer:=ADR(iPCSerialNumber), nBufferSize:=SIZEOF(iPCSerialNumber) );	
+		END_IF
+		
+		//Status do Twincat
+		fbTCStatus(bEnable:=TRUE, fbRegister:=fbDiagRegister);
+		IF fbTCStatus.bValid THEN
+			fbTCStatus.GetParameter(pBuffer:=ADR(TCStatus), nBufferSize:=SIZEOF(TCStatus) );	
+		END_IF
+	{endregion}
+	
+	{Region "Desempenho do sistema"}
+		//Frequencia do CPU
+		fbCpuFreq(bEnable:=TRUE, fbRegister:=fbDiagRegister);
+		IF fbCpuFreq.bValid THEN
+			fbCpuFreq.GetParameter(pBuffer:=ADR(nCpuFreq), nBufferSize:=SIZEOF(nCpuFreq) );	
+		END_IF
+		//Temperatura do CPU
+		fbCpuTemp(bEnable:=TRUE, fbRegister:=fbDiagRegister);
+		IF fbCpuTemp.bValid THEN
+			fbCpuTemp.GetParameter(pBuffer:=ADR(CpuTemp), nBufferSize:=SIZEOF(CpuTemp) );	
+		END_IF
+		//Temperatura da placa mae
+		fbMBTemp(bEnable:=TRUE, fbRegister:=fbDiagRegister);
+		IF fbMBTemp.bValid THEN
+			fbMBTemp.GetParameter(pBuffer:=ADR(MB_Temperature), nBufferSize:=SIZEOF(MB_Temperature) );	
+		END_IF
+		//Temperatura máxima da placa mae
+		fbMBMaxTemp(bEnable:=TRUE, fbRegister:=fbDiagRegister);
+		IF fbMBMaxTemp.bValid THEN
+			fbMBMaxTemp.GetParameter(pBuffer:=ADR(MB_MaxTemperature), nBufferSize:=SIZEOF(MB_MaxTemperature) );	
+		END_IF
+		//Uso do CPU
+		fbCpuUsage(bEnable:=TRUE, fbRegister:=fbDiagRegister);
+		IF fbCpuUsage.bValid THEN
+			fbCpuUsage.GetParameter(pBuffer:=ADR(CpuUsage), nBufferSize:=SIZEOF(CpuUsage) );	
+		END_IF
+		//Tempo de operação
+		fbOpTime(bEnable:=TRUE, fbRegister:=fbDiagRegister);
+		IF fbOpTime.bValid THEN
+			fbOpTime.GetParameter(pBuffer:=ADR(OperationTime), nBufferSize:=SIZEOF(OperationTime) );	
+		END_IF
+		//Total de RAM
+		fbTotalMRam(bEnable:=TRUE, fbRegister:=fbDiagRegister);
+		IF fbTotalMRam.bValid THEN
+			fbTotalMRam.GetParameter(pBuffer:=ADR(TotalMRAM), nBufferSize:=SIZEOF(TotalMRAM) );	
+			rTotalRAM := TO_REAL(TotalMRAM)/(1024*1024*1024);
+		END_IF
+		//RAM disponível
+		fbFreeMRam(bEnable:=TRUE, fbRegister:=fbDiagRegister);
+		IF fbFreeMRam.bValid THEN
+			fbFreeMRam.GetParameter(pBuffer:=ADR(FreeMRAM), nBufferSize:=SIZEOF(FreeMRAM) );	
+			rFreeRAM := TO_REAL(FreeMRAM)/(1024*1024*1024);
+		END_IF
+	{endregion}
+	
+	{Region "Energia e armazenamento"}		//Energia e armazenamento
+	
+		//Memória livre
+		fbFreeDisk(bEnable:=TRUE, fbRegister:=fbDiagRegister);
+		IF fbFreeDisk.bValid THEN
+			fbFreeDisk.GetParameter(pBuffer:=ADR(ulFreeDisk), nBufferSize:=SIZEOF(ulFreeDisk) );	
+			rFreeDisk := TO_REAL(ulFreeDisk)/(1024*1024*1024);
+		END_IF
+		//Memória total
+		fbTotalSize(bEnable:=TRUE, fbRegister:=fbDiagRegister);
+		IF fbTotalSize.bValid THEN
+			fbTotalSize.GetParameter(pBuffer:=ADR(ulTotalDisk), nBufferSize:=SIZEOF(ulTotalDisk) );	
+			rDiskTotalSize := TO_REAL(ulTotalDisk)/(1024*1024*1024);
+		END_IF
+		//Capacidade da bateria UPS
+		fbUPSCap(bEnable:=TRUE, fbRegister:=fbDiagRegister);
+		IF fbUPSCap.bValid THEN
+			fbUPSCap.GetParameter(pBuffer:=ADR(UPSBattCapacity), nBufferSize:=SIZEOF(UPSBattCapacity) );	
+		END_IF
+		//Status da bateria UPS
+		fbUPSStatus(bEnable:=TRUE, fbRegister:=fbDiagRegister);
+		IF fbUPSStatus.bValid THEN
+			fbUPSStatus.GetParameter(pBuffer:=ADR(UPSBattStatus), nBufferSize:=SIZEOF(UPSBattStatus) );	
+		END_IF
+	{endregion}
+	
+	
+	
+
+	
+E_State.Error:
+	(* implementation of error logging and error handling *)
+	(* hint: An error could also occur if a parameter is not supported by chosen hardware or image. 
+	E.g. not all IPCs offer a CPU temperature measurement. *)
+
+END_CASE]]></ST>
+    </Implementation>
+    <LineIds Name="iPC_Diagnostic">
+      <LineId Id="5" Count="0" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="84" Count="11" />
+      <LineId Id="83" Count="0" />
+      <LineId Id="217" Count="2" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="136" Count="0" />
+      <LineId Id="105" Count="0" />
+      <LineId Id="104" Count="0" />
+      <LineId Id="53" Count="3" />
+      <LineId Id="106" Count="0" />
+      <LineId Id="132" Count="3" />
+      <LineId Id="107" Count="1" />
+      <LineId Id="128" Count="3" />
+      <LineId Id="109" Count="1" />
+      <LineId Id="124" Count="3" />
+      <LineId Id="111" Count="1" />
+      <LineId Id="120" Count="3" />
+      <LineId Id="113" Count="1" />
+      <LineId Id="116" Count="3" />
+      <LineId Id="115" Count="0" />
+      <LineId Id="140" Count="2" />
+      <LineId Id="184" Count="0" />
+      <LineId Id="145" Count="2" />
+      <LineId Id="160" Count="0" />
+      <LineId Id="186" Count="0" />
+      <LineId Id="161" Count="2" />
+      <LineId Id="246" Count="9" />
+      <LineId Id="168" Count="0" />
+      <LineId Id="188" Count="0" />
+      <LineId Id="169" Count="3" />
+      <LineId Id="189" Count="0" />
+      <LineId Id="173" Count="3" />
+      <LineId Id="190" Count="0" />
+      <LineId Id="177" Count="2" />
+      <LineId Id="224" Count="0" />
+      <LineId Id="180" Count="0" />
+      <LineId Id="191" Count="0" />
+      <LineId Id="181" Count="2" />
+      <LineId Id="225" Count="0" />
+      <LineId Id="143" Count="1" />
+      <LineId Id="198" Count="1" />
+      <LineId Id="213" Count="1" />
+      <LineId Id="202" Count="2" />
+      <LineId Id="238" Count="0" />
+      <LineId Id="200" Count="0" />
+      <LineId Id="232" Count="3" />
+      <LineId Id="239" Count="0" />
+      <LineId Id="231" Count="0" />
+      <LineId Id="215" Count="0" />
+      <LineId Id="206" Count="2" />
+      <LineId Id="205" Count="0" />
+      <LineId Id="216" Count="0" />
+      <LineId Id="210" Count="2" />
+      <LineId Id="209" Count="0" />
+      <LineId Id="201" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="66" Count="1" />
+      <LineId Id="70" Count="0" />
+      <LineId Id="72" Count="5" />
+      <LineId Id="51" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
