@@ -101,15 +101,14 @@ IF InicioTrat.Q THEN
 END_IF
 
 //Cálculo do tempo restante para tratar todo o lote. 
-DatosProceso.TempoRestante := SEL(DatosProceso.KgLote_Procesados > 0 AND (HMI.bRun OR Teste) AND DatosProceso.Kg_a_Procesar > DatosProceso.KgLote_Procesados, 0,(DatosProceso.Kg_a_Procesar/DatosProceso.KgLote_Procesados) * (DT_TO_UDINT(MAIN.HoraAtual) - DatosProceso.InicioTratamento));
+DatosProceso.TempoRestante := SEL(DatosProceso.KgLote_Procesados > 0 AND (HMI.bRun) AND DatosProceso.Kg_a_Procesar > DatosProceso.KgLote_Procesados, 0,(DatosProceso.Kg_a_Procesar/DatosProceso.KgLote_Procesados) * (DT_TO_UDINT(MAIN.HoraAtual) - DatosProceso.InicioTratamento));
 
 //Cálculo do tempo decorrido no tratamento atual
-DatosProceso.TempoTratamento := SEL(HMI.bRun OR Teste, 0, (DT_TO_UDINT(MAIN.HoraAtual) - DatosProceso.InicioTratamento));
+DatosProceso.TempoTratamento := SEL(HMI.bRun, 0, (DT_TO_UDINT(MAIN.HoraAtual) - DatosProceso.InicioTratamento));
 
 //Cálculo do tempo total da batelada
-DatosProceso.TempoTotal := SEL(DatosProceso.KgLote_Procesados > 0 AND(HMI.bRun OR Teste), 0, DatosProceso.TempoRestante + TO_REAL(DatosProceso.TempoTratamento));
+DatosProceso.TempoTotal := SEL(DatosProceso.KgLote_Procesados > 0 AND(HMI.bRun), 0, DatosProceso.TempoRestante + TO_REAL(DatosProceso.TempoTratamento));
 
-Teste2 := REAL_TO_TIME(DatosProceso.TempoRestante*1000);
 
 
 
@@ -168,7 +167,6 @@ Teste2 := REAL_TO_TIME(DatosProceso.TempoRestante*1000);
       <LineId Id="243" Count="0" />
       <LineId Id="242" Count="0" />
       <LineId Id="244" Count="0" />
-      <LineId Id="239" Count="0" />
       <LineId Id="217" Count="0" />
       <LineId Id="204" Count="0" />
       <LineId Id="203" Count="0" />
