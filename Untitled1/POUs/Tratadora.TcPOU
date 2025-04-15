@@ -2478,7 +2478,7 @@ A tampa do homogeneizador é travada quando o sistema está em automático"</v>
                           </o>
                           <o>
                             <o n="Operand" t="Operand">
-                              <v n="Operand">"HMI.SetTmr_Alr_Mot"</v>
+                              <v n="Operand">"t#5s"</v>
                               <v n="Type">"TIME"</v>
                               <v n="Comment">""</v>
                               <v n="SymbolComment">""</v>

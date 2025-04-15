@@ -157,18 +157,25 @@ CASE Step OF
 		tiempo[1]:=Aux_tiempo_iny;
 	
 		IF ((mlMedido<toleInf) OR (mlMedido>toleSup)) THEN  //medicion fuera de tolerancia
-				//aux_offset:=(mlMedido-mlpedido)/mlPedido;
-				aux_offset:= SEL(mlPedido > 0, mlMedido , mlMedido/mlPedido);
+			aux_offset:= SEL(mlPedido > 0, mlMedido , mlMedido/mlPedido);
 			
 			IF (aux_offset<=0.9) THEN
 				aux_offset_correc:=0.06;
 			END_IF;
 			
-			IF (aux_offset>0.9 AND aux_offset<1) THEN
+			IF (aux_offset>0.9 AND aux_offset<0.95) THEN
 				aux_offset_correc:=0.01;
 			END_IF;	
 			
-			IF (aux_offset>1 AND aux_offset<1.1) THEN
+			IF (aux_offset >= 0.95 AND aux_offset<1) THEN
+				aux_offset_correc:=0.001;
+			END_IF;	
+		
+			IF (aux_offset>1 AND aux_offset<1.05) THEN
+				aux_offset_correc:=-0.001;
+			END_IF;	
+			
+			IF (aux_offset>=1.05 AND aux_offset<1.1) THEN
 				aux_offset_correc:=-0.01;
 			END_IF;
 			
@@ -257,16 +264,10 @@ END_IF;
       <LineId Id="537" Count="1" />
       <LineId Id="581" Count="1" />
       <LineId Id="580" Count="0" />
-      <LineId Id="539" Count="9" />
+      <LineId Id="539" Count="8" />
       <LineId Id="600" Count="0" />
       <LineId Id="552" Count="0" />
-      <LineId Id="554" Count="2" />
-      <LineId Id="1100" Count="2" />
-      <LineId Id="557" Count="0" />
-      <LineId Id="1103" Count="0" />
-      <LineId Id="558" Count="2" />
-      <LineId Id="1096" Count="0" />
-      <LineId Id="1098" Count="1" />
+      <LineId Id="1177" Count="21" />
       <LineId Id="1097" Count="0" />
       <LineId Id="605" Count="0" />
       <LineId Id="563" Count="3" />

@@ -35,7 +35,7 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[//Serial da máquina
-SerialDaMaquina := '9BLSB3002RPR0004';
+SerialDaMaquina := 'LS-B300S-001';
 
 
 

@@ -104,8 +104,8 @@ HMI.TR_L12_FT2_temp 	:= TO_REAL(Entradas.TR_L12_FT2_temp.itemp)*0.01; // en grad
 	HMI.TR_L8_FT2_caudal :=TO_REAL(Entradas.TR_L8_FT2_caudal.icaudal)*0.0166667*16.6667; // en ml/s
 	HMI.TR_L9_FT2_caudal :=TO_REAL(Entradas.TR_L9_FT2_caudal.icaudal)*0.0166667*16.6667; // en ml/s
 	HMI.TR_L10_FT2_caudal :=TO_REAL(Entradas.TR_L10_FT2_caudal.icaudal)*0.0166667*16.6667; // en ml/s
-	HMI.TR_L11_FT2_caudal :=TO_REAL(Entradas.TR_L11_FT2_caudal.icaudal)*0.0166667*16.6667; // en ml/s
-	HMI.TR_L12_FT2_caudal :=TO_REAL(Entradas.TR_L12_FT2_caudal.icaudal)*0.0166667*16.6667; // en ml/s
+	HMI.TR_L11_FT2_caudal :=TO_REAL(Entradas.TR_L11_FT2_caudal.icaudal)*0.00166667*16.6667; // en ml/s
+	HMI.TR_L12_FT2_caudal :=TO_REAL(Entradas.TR_L12_FT2_caudal.icaudal)*0.00166667*16.6667; // en ml/s
 	
 	//Sensores de temperatura da tratadora
 	HMI.TR_L1_FT2_temp :=TO_REAL(Entradas.TR_L1_FT2_temp.itemp)*0.01; // en grados centigrados

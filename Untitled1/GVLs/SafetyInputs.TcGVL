@@ -6,19 +6,19 @@ VAR_GLOBAL
 	//Essa GVL é para os sensores de porta da tratadora
 	
 	//Entradas da régua TR_2
-	TR2_E1_CH01 AT %I*	:BOOL;	//Tampa frontal da balança
+	TR2_E1_CH01 AT %I*	:BOOL;	//Tampa esquerda da balança
 	TR2_E1_CH02 AT %I*	:BOOL;
-	TR2_E2_CH01 AT %I*	:BOOL;	//Tampa traseira da balança
+	TR2_E2_CH01 AT %I*	:BOOL;	//Tampa traseira inferior da balança
 	TR2_E2_CH02 AT %I*	:BOOL;
-	TR2_E3_CH01 AT %I*	:BOOL;	//Tampa esquerda da balança
+	TR2_E3_CH01 AT %I*	:BOOL;	//Tampa frontal da balança
 	TR2_E3_CH02 AT %I*	:BOOL;
-	TR2_E4_CH01 AT %I*	:BOOL;	//Tampa direita da balança
+	TR2_E4_CH01 AT %I*	:BOOL;	//Tampa frontal inferior da balança
 	TR2_E4_CH02 AT %I*	:BOOL;
 	
 		//Entradas da régua TR_2
-	TR3_E1_CH01 AT %I*	:BOOL;	//Tampa frontal inferior da balança
+	TR3_E1_CH01 AT %I*	:BOOL;	//Tampa direita da balança
 	TR3_E1_CH02 AT %I*	:BOOL;
-	TR3_E2_CH01 AT %I*	:BOOL;	//Tampa traseira inferior da balança
+	TR3_E2_CH01 AT %I*	:BOOL;	//Tampa traseira da balança
 	TR3_E2_CH02 AT %I*	:BOOL;
 	TR3_E3_CH01 AT %I*	:BOOL;	//Tampas do homogeneizador
 	TR3_E3_CH02 AT %I*	:BOOL;

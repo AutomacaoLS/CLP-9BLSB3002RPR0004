@@ -619,7 +619,7 @@ END_VAR
                         </o>
                         <o>
                           <o n="Operand" t="Operand">
-                            <v n="Operand">"HMI.rPesoPatron_TR_P2_WT1/1000"</v>
+                            <v n="Operand">"HMI.rPesoPatron_TR_P2_WT1"</v>
                             <v n="Type">"REAL"</v>
                             <v n="Comment">""</v>
                             <v n="SymbolComment">""</v>

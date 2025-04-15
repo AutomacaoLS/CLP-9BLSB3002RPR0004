@@ -8436,17 +8436,27 @@ O totalizador de tempo para de contar quando a válvula de descarga á recuada"<
                                   <v n="Extensible">false</v>
                                 </o>
                                 <n n="InputFlags" />
-                                <l2 n="InputItems">
-                                  <o t="BoxTreeTerminator">
-                                    <n n="Input" />
-                                    <o n="Flags" t="Flags">
-                                      <v n="Flags">0</v>
-                                      <v n="Fixed">false</v>
-                                      <v n="Extensible">false</v>
+                                <l2 n="InputItems" cet="BoxTreeOperand">
+                                  <o>
+                                    <o n="Operand" t="Operand">
+                                      <v n="Operand">"HMI.bModo_Auto"</v>
+                                      <v n="Type">"BOOL"</v>
+                                      <v n="Comment">""</v>
+                                      <v n="SymbolComment">""</v>
+                                      <v n="Address">""</v>
+                                      <o n="Flags" t="Flags">
+                                        <v n="Flags">0</v>
+                                        <v n="Fixed">true</v>
+                                        <v n="Extensible">false</v>
+                                      </o>
+                                      <v n="LValue">false</v>
+                                      <v n="Boolean">true</v>
+                                      <v n="IsInstance">false</v>
+                                      <v n="Id">2391L</v>
                                     </o>
-                                    <v n="Id">2136L</v>
+                                    <v n="Id">2390L</v>
                                   </o>
-                                  <o t="BoxTreeOperand">
+                                  <o>
                                     <o n="Operand" t="Operand">
                                       <v n="Operand">"iStep"</v>
                                       <v n="Type">"INT"</v>
@@ -8465,7 +8475,7 @@ O totalizador de tempo para de contar quando a válvula de descarga á recuada"<
                                     </o>
                                     <v n="Id">2137L</v>
                                   </o>
-                                  <o t="BoxTreeOperand">
+                                  <o>
                                     <o n="Operand" t="Operand">
                                       <v n="Operand">"0"</v>
                                       <v n="Type">"INT"</v>
@@ -9796,7 +9806,7 @@ O totalizador de tempo para de contar quando a válvula de descarga á recuada"<
                         </o>
                         <o>
                           <o n="Operand" t="Operand">
-                            <v n="Operand">"(HMI.rPesoPatron_TR_S_WT1/1000)"</v>
+                            <v n="Operand">"(HMI.rPesoPatron_TR_S_WT1)"</v>
                             <v n="Type">"REAL"</v>
                             <v n="Comment">""</v>
                             <v n="SymbolComment">""</v>

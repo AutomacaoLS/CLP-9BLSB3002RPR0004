@@ -98,7 +98,7 @@ END_IF
 
 // Instância dos timers
 TON1_Lavagem(IN:= LigaBombaCW, PT:= DINT_TO_TIME(Config.TempoDeCiclo)*1000, Q=> , ET=> ); 
-TON2_Lavagem(IN:= LigaBombaCCW, PT:= DINT_TO_TIME(Config.TempoDeCiclo)*1000, Q=> , ET=> );
+TON2_Lavagem(IN:= LigaBombaCCW, PT:= REAL_TO_TIME(Config.TempoDeCiclo + 3)*1000, Q=> , ET=> ); //três segundos a mais para retornar corretamente o produto
 TON3_Lavagem(IN:= , PT:= T#1S, Q=> , ET=> ); //Tempo entre a reversão das bombas
 TON4_Lavagem(IN:= , PT:= T#5S, Q=> , ET=> ); //Timer de finalização da lavagem
 TON5_Lavagem(IN:= , PT:= T#10S, Q=> , ET=> );	//Temporizador para esperar as válvulas posicionarem
@@ -150,14 +150,14 @@ CASE SwitchCase OF
 		
 	10: //Inicia a lavagem com água residual
 		Abre_V1 := TRUE;
-		Abre_V2 := TRUE;
-		Abre_V3 := FALSE;
+		Abre_V2 := FALSE;
+		Abre_V3 := TRUE;
 		AguaLimpa := FALSE;
 		AguaResid := TRUE; 
 		Lavando := TRUE;
 		
 		//Verifica se todas as válvulas abriram
-		IF Status_V1 = 2 AND Status_V2 = 2 AND Status_V3 = 1 AND Status_ValvAguaResid = 2 THEN
+		IF Status_V1 = 2 AND Status_V2 = 1 AND Status_V3 = 2 AND Status_ValvAguaResid = 2 THEN
 			LigaBombaCW := TRUE;
 			LigaBombaCCW :=  FALSE;
 			TON5_Lavagem.IN := FALSE;
@@ -183,7 +183,7 @@ CASE SwitchCase OF
 		END_IF
 		
 	20: //Giro reverso
-		LigaBombaCW := FALSE;
+		LigaBombaCW := TRUE;
 		LigaBombaCCW :=  TRUE;
 		
 		IF TON2_Lavagem.Q THEN
@@ -212,13 +212,13 @@ CASE SwitchCase OF
 		END_IF
 		
 	30: Abre_V1 := TRUE;
-		Abre_V2 := FALSE;
-		Abre_V3 := FALSE;
+		Abre_V2 := TRUE;
+		Abre_V3 := TRUE;
 		AguaLimpa := TRUE;
 		AguaResid := FALSE;
 		Lavando := TRUE;
 		
-		IF Status_V1 = 2 AND Status_V2 = 1 AND Status_V3 = 1 AND Status_ValvAguaLimpa = 2 THEN
+		IF Status_V1 = 2 AND Status_V2 = 2 AND Status_V3 = 2 AND Status_ValvAguaLimpa = 2 THEN
 			LigaBombaCW := TRUE;
 			LigaBombaCCW :=  FALSE;
 			TON5_Lavagem.IN := FALSE;
@@ -234,7 +234,7 @@ CASE SwitchCase OF
 		IF TON1_Lavagem.Q THEN
 			SwitchCase := 31;
 			Abre_V2 := TRUE;
-			Abre_V3 := FALSE;
+			Abre_V3 := TRUE;
 			Abre_V4 := TRUE;
 			AguaLimpa := FALSE;
 			AguaResid := TRUE;
@@ -248,19 +248,21 @@ CASE SwitchCase OF
 			TON3_Lavagem.IN := FALSE;
 		END_IF
 		
-	40: LigaBombaCW := FALSE;	//A água limpa, deve retornar para o recipiente de água residual
+	40: LigaBombaCW := TRUE;	//A água limpa, deve retornar para o recipiente de água residual
 		LigaBombaCCW :=  TRUE;
+		
+		//Abre válvulas para voltar o liquido para o recipiente residual
+		Abre_V1 := TRUE;
+		Abre_V2 := FALSE;
+		Abre_V3 := TRUE;
+		AguaLimpa := FALSE;
+		AguaResid := true;
 		
 		
 		IF TON2_Lavagem.Q THEN
 			QntLavLimpa := QntLavLimpa + 1;
 			IF (QntLavLimpa < Config.LavAguaLimpa) AND AtivaBloco THEN
 				SwitchCase := 41;
-				Abre_V1 := TRUE;
-				Abre_V2 := FALSE;
-				Abre_V3 := FALSE;
-				AguaLimpa := TRUE;
-				AguaResid := FALSE;
 			ELSE
 				SwitchCase := 42;
 			END_IF
@@ -430,13 +432,15 @@ END_CASE
       <LineId Id="161" Count="0" />
       <LineId Id="168" Count="0" />
       <LineId Id="170" Count="1" />
+      <LineId Id="1031" Count="0" />
+      <LineId Id="1036" Count="0" />
+      <LineId Id="1032" Count="3" />
+      <LineId Id="1030" Count="0" />
       <LineId Id="362" Count="0" />
       <LineId Id="172" Count="0" />
       <LineId Id="623" Count="0" />
       <LineId Id="211" Count="0" />
       <LineId Id="174" Count="0" />
-      <LineId Id="176" Count="0" />
-      <LineId Id="379" Count="3" />
       <LineId Id="378" Count="0" />
       <LineId Id="177" Count="1" />
       <LineId Id="627" Count="2" />

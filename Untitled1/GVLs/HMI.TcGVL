@@ -742,6 +742,9 @@ VAR_GLOBAL PERSISTENT
 	bDeshabilitaRecepcion:BOOL;
 	bDeshabilita30t		:BOOL;	
 	
+	SelecionaBigBag1:BOOL;	//Permite descarga no bigbag1
+	SelecionaBigBag2:BOOL;	//DESCARGA NO BIGBAG2
+	
 	CmdV_TR_S_VF1	:REAL; // Homogenizador velocidad manual en % 
 	CmdV_TR_S_VF2	:REAL; // Aspersor velocidad manual en % 
 	CmdV_PC1_L1_BD	:REAL; //Bomba circuito L1 velocidad manual en % 
